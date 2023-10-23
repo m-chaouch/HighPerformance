@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 import com.mongodb.client.*;
 import org.bson.Document;
+import org.bson.conversions.Bson;
+import com.mongodb.client.model.Filters;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -15,6 +17,7 @@ public class ManageSalesmen implements ManagePersonal {
     private MongoCollection<Document> general_salesmen_data;
     private MongoCollection<Document> performance_records;
     private MongoClient mongoClient;    //muss offen bleiben. Darf nicht in einer Methode deklariert werden.
+    
 
 
     public void login(String passwort){
@@ -68,13 +71,23 @@ public class ManageSalesmen implements ManagePersonal {
     }
     @Override
     public <T> void updateSalseMan(String attribute, String key, T e) {
-        Document doc = general_salesmen_data.find(eq(attribute, key)).first();
+         FindIterable<Document> list = general_salesmen_data.find(eq(attribute, key));
 
-        doc.append(attribute, e);
+         deleteSalseMan(attribute, key);
+
+         for(Document doc: list){
+            doc.append(attribute, e);
+         }
+         
+         for(Document doc: list){
+
+         }
+        
     }
     @Override
     public void deleteSalseMan(String attribute, String key) {
-
+        Bson filter = Filters.eq(attribute, key); // create a filter to for the mongodb
+        general_salesmen_data.deleteMany(filter);
     }
 
 //    @Override
