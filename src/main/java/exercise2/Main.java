@@ -24,7 +24,7 @@ public class Main {
                         System.out.println("Sie sind nun eingeloggt.");
                         logflag = true;
                     }
-                    System.out.println("Wollen Sie die Salesmen-Daten lesen oder schreiben?");
+                    System.out.println("Wollen Sie die Salesmen-Daten lesen, schreiben, updaten oder löschen?");
                     String s = scanner.next();
                     if(s.equals("lesen")){
                         System.out.println("Geben sie die ID des SalesMan ein:");
@@ -44,17 +44,26 @@ public class Main {
                         m.createSalesMan(salesManinsert);
                         System.out.println("Der SalesMan wurde erfolgreich eingetragen!");
                     }
+                    if(s.equals("updaten")){
+                        System.out.println("Welches Attribut soll geändert werden?");
+                        String attr = scanner.next();
+                        System.out.println("Welcher Wert dieses Attributs soll geändert werden?");
+                        String oldVal = scanner.next();
+                        System.out.println("Zu welchem Wert soll der Wert des Attributs geändert werden?");
+                        String newVal = scanner.next();
+                        m.updateSalseMan(oldVal,attr,newVal);
+                        System.out.println("Der SalesMan wurde erfolgreich geupdatet!");
+                    }
+                    if(s.equals("löschen")){
+                        System.out.println("Zu welchem Attribut gehört der zu löschende Wert?");
+                        String attr = scanner.next();
+                        System.out.println("Welcher Wert dieses Attributs soll gelöscht werden?");
+                        String val = scanner.next();
+                        m.deleteSalseMan(attr,val);
+                        System.out.println("Der SalesMan wurde erfolgreich gelöscht!");
+                    }
                 }
         }
         System.out.println("ENDE");
-//        ManageSalesmen m = new ManageSalesmen();
-//
-//        SalesMan s1 = new SalesMan("Ömer","Suezen",321);
-//        m.login();
-//        m.createSalesMan(s1);
-//        System.out.println((m.querySalesMan("id","21")).toString());  //wichtig: Der Array wird leer sein, weil die querySalesMan zwei Strings erwartet und man so nicht nach zahlen suchen kann.
-
-
-
     }
 }
