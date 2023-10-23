@@ -9,6 +9,8 @@ import com.mongodb.client.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -70,19 +72,11 @@ public class ManageSalesmen implements ManagePersonal {
         return salesmanlist;
     }
     @Override
-    public  <T> void updateSalseMan(String attribute, String key, T e) {
-         FindIterable<Document> list = general_salesmen_data.find(eq(attribute, key));
+    public   void updateSalseMan(String attribute, String key, String e) {
 
-         deleteSalseMan(attribute, key);
-
-         for(Document doc: list){
-            doc.append(attribute, e);
-         }
-         
-         for(Document doc: list){
-            general_salesmen_data.insertOne(doc);
-         }
-
+        Bson filter = Filters.eq("attribute", key);
+        Bson update = Updates.set("attribute", e);
+        UpdateResult updateResult = general_salesmen_data.updateMany(filter, update);
          
         
     }
