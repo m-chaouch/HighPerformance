@@ -71,10 +71,6 @@ public class ManageSalesmen implements ManagePersonal {
         Document doc = general_salesmen_data.find(eq(attribute, key)).first();
 
         doc.append(attribute, e);
-        
-
-
-
     }
     @Override
     public void deleteSalseMan(String attribute, String key) {
