@@ -66,6 +66,20 @@ public class ManageSalesmen implements ManagePersonal {
         }
         return salesmanlist;
     }
+    @Override
+    public <T> void updateSalseMan(String attribute, String key, T e) {
+        Document doc = general_salesmen_data.find(eq(attribute, key)).first();
+
+        doc.append(attribute, e);
+        
+
+
+
+    }
+    @Override
+    public void deleteSalseMan(String attribute, String key) {
+
+    }
 
 //    @Override
 //    public EvaluationRecord readEvaluationRecords(int sid) {
