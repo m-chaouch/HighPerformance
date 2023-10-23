@@ -11,16 +11,15 @@ import org.bson.Document;
 import static com.mongodb.client.model.Filters.eq;
 
 public class ManageSalesmen implements ManagePersonal {
-    private String password;
     private MongoDatabase database;
     private MongoCollection<Document> general_salesmen_data;
     private MongoCollection<Document> performance_records;
-    private MongoClient mongoClient;
+    private MongoClient mongoClient;    //muss offen bleiben. Darf nicht in einer Methode deklariert werden.
 
 
     public void login(String passwort){
 //        Scanner scanner = new Scanner(System.in);
-//        password = scanner.next().toString();//q7Jibjcj4t2ORk7D
+//        password = scanner.next().toString();
         String uri = "mongodb+srv://m-chaouch:" + passwort + "@cluster0.v8whdmg.mongodb.net/?retryWrites=true&w=majority";
 
         //try catch evtl. hinzufügen?
