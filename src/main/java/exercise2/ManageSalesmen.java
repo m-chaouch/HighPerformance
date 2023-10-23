@@ -80,8 +80,10 @@ public class ManageSalesmen implements ManagePersonal {
          }
          
          for(Document doc: list){
-
+            general_salesmen_data.insertOne(doc);
          }
+
+         
         
     }
     @Override
