@@ -70,7 +70,7 @@ public class ManageSalesmen implements ManagePersonal {
         return salesmanlist;
     }
     @Override
-    public synchronized <T> void updateSalseMan(String attribute, String key, T e) {
+    public  <T> void updateSalseMan(String attribute, String key, T e) {
          FindIterable<Document> list = general_salesmen_data.find(eq(attribute, key));
 
          deleteSalseMan(attribute, key);
