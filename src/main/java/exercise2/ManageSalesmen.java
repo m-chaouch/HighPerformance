@@ -18,10 +18,10 @@ public class ManageSalesmen implements ManagePersonal {
     private MongoClient mongoClient;
 
 
-    public void login(){
-        Scanner scanner = new Scanner(System.in);
-        password = scanner.next().toString();//q7Jibjcj4t2ORk7D
-        String uri = "mongodb+srv://m-chaouch:" + password + "@cluster0.v8whdmg.mongodb.net/?retryWrites=true&w=majority";
+    public void login(String passwort){
+//        Scanner scanner = new Scanner(System.in);
+//        password = scanner.next().toString();//q7Jibjcj4t2ORk7D
+        String uri = "mongodb+srv://m-chaouch:" + passwort + "@cluster0.v8whdmg.mongodb.net/?retryWrites=true&w=majority";
 
         //try catch evtl. hinzufügen?
         mongoClient = MongoClients.create(uri);
@@ -42,7 +42,7 @@ public class ManageSalesmen implements ManagePersonal {
     @Override
     public SalesMan readSalesMan(int sid) {
         Document doc = general_salesmen_data.find(eq("id",sid)).first();
-        return querySalesMan("id",""+sid).get(0);
+        return new SalesMan(doc.getString("firstname"), doc.getString("lastname"), doc.getInteger("id"));
         /*
         eq ist die Abfragebedingung. Sie sucht nach Dokumenten, bei denen das Feld "id" den Wert sid hat.
         Die eq-Methode steht für "equals" und wird verwendet, um nach genauen Übereinstimmungen zu suchen.
