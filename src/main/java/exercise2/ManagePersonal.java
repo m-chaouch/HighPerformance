@@ -23,9 +23,9 @@ public interface ManagePersonal {
       * @param attribute  is the attribute i want to update
       * @param e is the value i want to update it with
       */
-     public <T> void updateSalseMan(String key, String attribute, T e );
+     public <T> void updateSalseMan(String attribute, String key, T e );
 
-     public void deleteSalseMan(String key);
+     public void deleteSalseMan(String attribute, String key);
 
 
 
