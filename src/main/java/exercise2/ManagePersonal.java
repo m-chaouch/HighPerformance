@@ -28,5 +28,4 @@ public interface ManagePersonal {
      public void deleteSalseMan(String attribute, String key);
 
 
-
 }

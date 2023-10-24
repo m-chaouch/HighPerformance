@@ -71,20 +71,12 @@ public class ManageSalesmen implements ManagePersonal {
     }
     @Override
     public  <T> void updateSalseMan(String attribute, String key, T e) {
-         FindIterable<Document> list = general_salesmen_data.find(eq(attribute, key));
-
-         deleteSalseMan(attribute, key);
-
-         for(Document doc: list){
-            doc.append(attribute, e);
-         }
-         
-         for(Document doc: list){
-            general_salesmen_data.insertOne(doc);
-         }
-
-         
-        
+        Document olddoc = general_salesmen_data.find(eq(attribute+"",key)).first();
+        Document newdoc = new Document();
+        newdoc.append(attribute+"",e);
+        Document update = new Document();
+        update.append("$set",newdoc);
+        general_salesmen_data.updateOne(olddoc,update);
     }
     @Override
     public void deleteSalseMan(String attribute, String key) {
