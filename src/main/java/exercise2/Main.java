@@ -13,7 +13,7 @@ public class Main {
                 if(!flag){
                     passwort = scanner.nextLine();
                 }
-                if(!passwort.equals("PASSWORT")){   //Hier muss das Passwort stehen, dass zu dem Link gehört!!
+                if(!passwort.equals("q7Jibjcj4t2ORk7D")){   //Hier muss das Passwort stehen, dass zu dem Link gehört!!
                     System.out.println("Das Passwort ist falsch. Bitte nochmal versuchen.");
                     continue;
                 }else{
@@ -51,7 +51,7 @@ public class Main {
                         String oldVal = scanner.next();
                         System.out.println("Zu welchem Wert soll der Wert des Attributs geändert werden?");
                         String newVal = scanner.next();
-                        m.updateSalseMan(oldVal,attr,newVal);
+                        m.updateSalseMan(attr,oldVal,newVal);
                         System.out.println("Der SalesMan wurde erfolgreich geupdatet!");
                     }
                     if(s.equals("löschen")){
