@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.mongodb.ConnectionString;
 import com.mongodb.client.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -20,14 +21,9 @@ public class ManageSalesmen implements ManagePersonal {
     
 
 
-    public void login(String passwort){
-//        Scanner scanner = new Scanner(System.in);
-//        password = scanner.next().toString();
-        String uri = "mongodb+srv://m-chaouch:" + passwort + "@cluster0.v8whdmg.mongodb.net/?retryWrites=true&w=majority";
-
-        //try catch evtl. hinzufügen?
-        mongoClient = MongoClients.create(uri);
-        database = mongoClient.getDatabase("Performance_Computation");
+    public void login(){
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("HighPerformance");
         general_salesmen_data = database.getCollection("general_salesmen_data");
         performance_records = database.getCollection("performance_records");
     }
