@@ -1,7 +1,9 @@
 package exercise2;
 
 
+import java.security.DomainCombiner;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -83,9 +85,53 @@ public class ManageSalesmen implements ManagePersonal {
         Bson filter = Filters.eq(attribute, key); // create a filter to for the mongodb
         general_salesmen_data.deleteMany(filter);
     }
+    @Override
+    public void addPerformanceRecord(EvaluationRecord record, int sid) {
+        //performance_records
+        Document d = record.tDocument();
+        d.append("sid", sid);
+        performance_records.insertOne(d);
+        
 
-//    @Override
-//    public EvaluationRecord readEvaluationRecords(int sid) {
-//        return null;
-//    }
+    }
+    
+    /**
+     * returns the Evaluation record of the latest year
+     */
+    @Override
+    public EvaluationRecord readEvaluationRecords(int sid) {
+        FindIterable<Document> d =  performance_records.find(eq("sid", sid)); // contians all the evaluaitons records of the employee
+    
+       // Document evaluationrecord = getHighestYear(d);
+        return new EvaluationRecord(getHighestYear(d), sid);
+        
+    }
+    /**
+     * 
+     * @param d
+     * @return the goals of the latest Evaluation record of the all Evalution documetn
+     */
+    private EvaluationRecordEntry[] getHighestYear(Iterable<Document> d){
+
+        Document highestYear ; // keeps the Evaluation record  wiht the highst year in during while loop
+        Document tmp;// allows to iterate though the all Evaluations records like with a list
+
+
+        Iterator<Document> i = d.iterator();
+        if(!i.hasNext()) // if the employee has no Evaluaion records at all
+        return null;
+        
+        highestYear = i.next();
+
+        while(i.hasNext()){
+            tmp = i.next();
+            if(highestYear.getInteger("year") < tmp.getInteger("year")){
+                highestYear = tmp;
+            }
+        }
+        List<Document> list = highestYear.get("goals", List.class); // it has to be an list, becuase its not possible wihe an array
+        return list.toArray(new EvaluationRecordEntry[list.size()]); //convert the evaluation list with hights year as an array
+    }
+
+
 }

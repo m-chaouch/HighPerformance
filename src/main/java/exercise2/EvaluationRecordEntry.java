@@ -2,20 +2,18 @@ package exercise2;
 
 public class EvaluationRecordEntry {
     private String goalDescription;
-    private int targetValue, actualValue, year;
+    private int targetValue, actualValue;
 
     public EvaluationRecordEntry( String goalDescription,  int targetValue,
-                                  int actualValue, int year)
+                                  int actualValue)
     {
         this.goalDescription = goalDescription;
         this.targetValue = targetValue;
-        this.year = year;
+        this.actualValue = actualValue;
+        
         
     }
-    //copies the object,so that integrity will not be lost
-    public static EvaluationRecordEntry copy(EvaluationRecordEntry e){
-        return new EvaluationRecordEntry(e.goalDescription, e.targetValue , e.actualValue, e.year);
-    }
+
 
 
      

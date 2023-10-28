@@ -1,21 +1,23 @@
 package exercise2;
+
+import org.bson.Document;
+
 public class EvaluationRecord {
     private EvaluationRecordEntry[] goals;
-    private int salseManId;
+    private int year;
 
-    public EvaluationRecord(EvaluationRecordEntry[] goals, int salseManId){
+    public EvaluationRecord(EvaluationRecordEntry[] goals, int year){
         this.goals = goals;
-        this.salseManId = salseManId;
+        this.year = year;
     }
-    //copies the goals so that integrity of the data is guranteed 
-    private static  EvaluationRecord[] copy(EvaluationRecord[] e ){
-         EvaluationRecord[] tmp = new EvaluationRecord[e.length];
-         int i = 0;
-         for(EvaluationRecord data: e){
-            tmp[i++] = data;
-         }
-         return tmp;
-        
-    } 
+
+    public Document tDocument(){
+        Document d = new Document();
+
+        d.append("year", year);
+        d.append("goals", goals);
+        return d;
+    }
+
     
 }
