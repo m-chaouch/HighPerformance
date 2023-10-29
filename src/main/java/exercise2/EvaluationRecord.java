@@ -17,7 +17,7 @@ public class EvaluationRecord {
         d.append("year", year);
         //d.append("goals", goals);
         for(EvaluationRecordEntry e: goals){
-
+            d.append(e.getGoalDescription(), e.toDocument() );
         }
         return d;
     }

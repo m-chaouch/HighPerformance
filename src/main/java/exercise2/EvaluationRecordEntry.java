@@ -16,12 +16,18 @@ public class EvaluationRecordEntry {
 
     }
 
+    /**
+     *
+     * @return the actual ans target value as document
+     */
     public Document toDocument(){
-        return null;
+        Document d = new Document();
+        d.append("targetValue", targetValue);
+        d.append("actualValue", actualValue);
+        return d;
     }
 
-
-
-
-
+    public String getGoalDescription() {
+        return goalDescription;
+    }
 }
