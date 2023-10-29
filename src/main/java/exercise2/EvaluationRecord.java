@@ -15,9 +15,18 @@ public class EvaluationRecord {
         Document d = new Document();
 
         d.append("year", year);
-        d.append("goals", goals);
+        //d.append("goals", goals);
+        for(EvaluationRecordEntry e: goals){
+
+        }
         return d;
     }
 
-    
+
 }
+
+
+
+
+
+

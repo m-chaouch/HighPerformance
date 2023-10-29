@@ -20,7 +20,7 @@ public class ManageSalesmen implements ManagePersonal {
     private MongoCollection<Document> general_salesmen_data;
     private MongoCollection<Document> performance_records;
     private MongoClient mongoClient;    //muss offen bleiben. Darf nicht in einer Methode deklariert werden.
-    
+
 
 
     public void login(){
@@ -87,23 +87,23 @@ public class ManageSalesmen implements ManagePersonal {
         Document d = record.tDocument();
         d.append("sid", sid);
         performance_records.insertOne(d);
-        
+
 
     }
-    
+
     /**
      * returns the Evaluation record of the latest year
      */
     @Override
     public EvaluationRecord readEvaluationRecords(int sid) {
         FindIterable<Document> d =  performance_records.find(eq("sid", sid)); // contians all the evaluaitons records of the employee
-    
-       // Document evaluationrecord = getHighestYear(d);
+
+        // Document evaluationrecord = getHighestYear(d);
         return new EvaluationRecord(getHighestYear(d), sid);
-        
+
     }
     /**
-     * 
+     *
      * @param d
      * @return the goals of the latest Evaluation record of the all Evalution documetn
      */
@@ -115,8 +115,8 @@ public class ManageSalesmen implements ManagePersonal {
 
         Iterator<Document> i = d.iterator();
         if(!i.hasNext()) // if the employee has no Evaluaion records at all
-        return null;
-        
+            return null;
+
         highestYear = i.next();
 
         while(i.hasNext()){
