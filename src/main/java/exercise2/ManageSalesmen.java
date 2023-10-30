@@ -122,7 +122,7 @@ public class ManageSalesmen implements ManagePersonal {
             tmp = iterator.next();
             if(highest.getInteger("year") <= tmp.getInteger("year"))
                 highest = tmp;
-            System.out.println("hekkoi");
+
         }
         return highest;
     }
