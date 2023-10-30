@@ -8,21 +8,21 @@ public class EvaluationRecord {
     EvaluationRecordEntry socialBehaviourToEmployee;
     EvaluationRecordEntry attitudeTowardsClient;
     EvaluationRecordEntry CommunicationSkills;
-    EvaluationRecordEntry IntegirtyToConpany;
+    EvaluationRecordEntry IntegrityToCompany;
 
 
     private int year;
 
     public EvaluationRecord(EvaluationRecordEntry leadershipCompetence, EvaluationRecordEntry opennessToEmployee,
                                  EvaluationRecordEntry socialBehaviourToEmployee, EvaluationRecordEntry attitudeTowardsClient,
-                                 EvaluationRecordEntry CommunicationSkills, EvaluationRecordEntry IntegirtyToConpany)
+                                 EvaluationRecordEntry CommunicationSkills, EvaluationRecordEntry IntegrityToCompany)
     {
         this.leadershipCompetence = leadershipCompetence;
         this.opennessToEmployee = opennessToEmployee;
         this.socialBehaviourToEmployee = socialBehaviourToEmployee;
         this.attitudeTowardsClient = attitudeTowardsClient;
         this.CommunicationSkills = CommunicationSkills;
-        this.IntegirtyToConpany = IntegirtyToConpany;
+        this.IntegrityToCompany = IntegrityToCompany;
 
     }
 
@@ -37,7 +37,7 @@ public class EvaluationRecord {
         .append("socialBehaviourToEmployee", socialBehaviourToEmployee.toDocument())
         .append("attitudeTowardsClient", attitudeTowardsClient.toDocument())
         .append("CommunicationSkills", CommunicationSkills.toDocument())
-        .append("IntegirtyToConpany", IntegirtyToConpany.toDocument());
+        .append("IntegirtyToConpany", IntegrityToCompany.toDocument());
     }
 
 

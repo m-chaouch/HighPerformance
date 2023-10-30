@@ -57,22 +57,62 @@ public class Main {
                     System.out.println("Bitte \"lesen\", \"schreiben\", \"updaten\" oder \"löschen\" auswählen! ");
                 }
             }else if(s.equals("Performance-Records")){
+                ManageSalesmen m = new ManageSalesmen();
+                m.login();
                 System.out.println("Wollen sie Performance Records schreiben oder lesen?");
                 s = scanner.next();
                 if(s.equals("schreiben")){
+                    System.out.println("Zu welcher Salesmen ID soll dieser Evaluationrecord geschrieben werden?");
+                    int sid = scanner.nextInt();
+                    System.out.println("was wäre der durchschnittliche Wert der Führungskompetenz?");
+                    int a = scanner.nextInt();
+                    System.out.println("was wäre der echte Wert der Führungskompetenz?");
+                    int b = scanner.nextInt();
+                    EvaluationRecordEntry ere0 = new EvaluationRecordEntry(a,b);
+                    System.out.println("was wäre der durchschnittliche Wert der Offenheit zu Angestellten?");
+                    a = scanner.nextInt();
+                    System.out.println("was wäre der echte Wert der Offenheit zu Angestellten?");
+                    b = scanner.nextInt();
+                    EvaluationRecordEntry ere1 = new EvaluationRecordEntry(a,b);
+                    System.out.println("was wäre der durchschnittliche Wert des sozialen Verhaltens zum Angestellten?");
+                    a = scanner.nextInt();
+                    System.out.println("was wäre der echte Wert des sozialen Verhaltens zum Angestellten?");
+                    b = scanner.nextInt();
+                    EvaluationRecordEntry ere2 = new EvaluationRecordEntry(a,b);
+                    System.out.println("was wäre der durchschnittliche Wert des Verhalten zum Kunden?");
+                    a = scanner.nextInt();
+                    System.out.println("was wäre der echte Wert des Verhalten zum Kunden?");
+                    b = scanner.nextInt();
+                    EvaluationRecordEntry ere3 = new EvaluationRecordEntry(a,b);
+                    System.out.println("was wäre der durchschnittliche Wert der Kommunikationsfähigkeit?");
+                    a = scanner.nextInt();
+                    System.out.println("was wäre der echte Wert des Kommunikationsfähigkeit?");
+                    b = scanner.nextInt();
+                    EvaluationRecordEntry ere4 = new EvaluationRecordEntry(a,b);
+                    System.out.println("was wäre der durchschnittliche Wert der Integrität für das Unternehmen?");
+                    a = scanner.nextInt();
+                    System.out.println("was wäre der echte Wert der Integrität für das Unternehmen??");
+                    b = scanner.nextInt();
 
+                    EvaluationRecordEntry ere5 = new EvaluationRecordEntry(a,b);
+                    EvaluationRecord er = new EvaluationRecord(ere0,ere1,ere2,ere3,ere4,ere5);
+
+                    m.addPerformanceRecord(er,sid);
+                    System.out.println("Der Evaluationrecord wurde erfolgreich eingetragen!");
                 }
                 else if(s.equals("lesen")){
-
+                    System.out.println("Von welcher SalesMan-ID wollen sie die Evaluationrecords lesen?");
+                    int sid = scanner.nextInt();
+                    EvaluationRecord er = m.readEvaluationRecords(sid);
+                    System.out.println(er.toDocument());
                 }
                 else{
                     System.out.println("Bitte \"lesen\" oder \"schreiben\" auswählen!");
-
                 }
             }else{
                 System.out.println("Bitte \"Salesmen-Daten\" oder \"Performance-Records\" auswählen!");
             }
-            System.out.println("Wollen Sie Zugriff auf die Salesmen-Daten oder auf die Performance Records?");
+            System.out.println("Wollen Sie Zugriff auf die Salesmen-Daten oder auf die Performance-Records?");
         }
         System.out.println("ENDE");
     }
