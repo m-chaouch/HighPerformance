@@ -8,7 +8,7 @@ public interface ManagePersonal {
 
      public void createSalesMan(SalesMan record );
 
-     public void addPerformanceRecord(EvaluationRecord record , int sid );
+     public void addPerformanceRecord(EvaluationRecord record , int sid ) throws Exception;
 
      public SalesMan readSalesMan(int sid );
 

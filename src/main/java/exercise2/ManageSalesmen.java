@@ -1,13 +1,10 @@
 package exercise2;
 
 
-import java.security.DomainCombiner;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
 
-import com.mongodb.ConnectionString;
 import com.mongodb.client.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -81,52 +78,77 @@ public class ManageSalesmen implements ManagePersonal {
         Bson filter = Filters.eq(attribute, key); // create a filter to for the mongodb
         general_salesmen_data.deleteMany(filter);
     }
+
+    /**
+     *
+     * @param record  the Evaluation record that needs to be added
+     * @param sid is the is of the corrsponding employee
+     *            does not prevent duplicates
+     */
     @Override
     public void addPerformanceRecord(EvaluationRecord record, int sid) {
-        //performance_records
-        Document d = record.tDocument();
-        d.append("sid", sid);
-        performance_records.insertOne(d);
-
-
+        performance_records.insertOne(record.toDocument().append("sid", sid));
     }
 
     /**
      * returns the Evaluation record of the latest year
+     *
+     * if there is a duplicate (with same year) it is not predictable
+     *
      */
     @Override
     public EvaluationRecord readEvaluationRecords(int sid) {
-        FindIterable<Document> d =  performance_records.find(eq("sid", sid)); // contians all the evaluaitons records of the employee
-
-        // Document evaluationrecord = getHighestYear(d);
-        return new EvaluationRecord(getHighestYear(d), sid);
-
+        Document d = getHighestYear(performance_records.find(eq("sid", sid)));
+        return toEvaluationRecord(d);
+    /*
+        toEvaluationRecord(d.get("leadershipCompetence", Document.class),
+                                    d.get("opennessToEmployee", Document.class),
+                                    d.get("socialBehaviourToEmployee", Document.class),
+                                    d.get("attitudeTowardsClient", Document.class),
+                                    d.get("CommunicationSkills", Document.class),
+                                    d.get("IntegirtyToConpany", Document.class));
+    */
     }
+
+    private Document getHighestYear(Iterable<Document> d){
+        Iterator<Document> iterator = d.iterator();
+        Document highest;
+        Document tmp;
+        if(!iterator.hasNext())
+            return null;
+        highest = iterator.next();
+        while(iterator.hasNext()){
+
+            tmp = iterator.next();
+            if(highest.getInteger("year") <= tmp.getInteger("year"))
+                highest = tmp;
+            System.out.println("hekkoi");
+        }
+        return highest;
+    }
+
+    /**
+     *
+     * @param d is the document form of an Evaluation record
+     * @return an EvaluationRecord-Object from the document
+     */
+    private EvaluationRecord toEvaluationRecord(Document d){
+        return new EvaluationRecord(toEvaluationRecordEntry(d.get("leadershipCompetence", Document.class)),
+                                    toEvaluationRecordEntry(d.get("opennessToEmployee", Document.class)),
+                                    toEvaluationRecordEntry(d.get("socialBehaviourToEmployee", Document.class)),
+                                    toEvaluationRecordEntry(d.get("attitudeTowardsClient", Document.class)),
+                                    toEvaluationRecordEntry(d.get("CommunicationSkills", Document.class)),
+                                    toEvaluationRecordEntry(d.get("IntegirtyToConpany", Document.class))
+                                    );
+    }
+
     /**
      *
      * @param d
-     * @return the goals of the latest Evaluation record of the all Evalution documetn
+     * @return a EvaluationRecordEntry-Object form the document
      */
-    private EvaluationRecordEntry[] getHighestYear(Iterable<Document> d){
-
-        Document highestYear ; // keeps the Evaluation record  wiht the highst year in during while loop
-        Document tmp;// allows to iterate though the all Evaluations records like with a list
-
-
-        Iterator<Document> i = d.iterator();
-        if(!i.hasNext()) // if the employee has no Evaluaion records at all
-            return null;
-
-        highestYear = i.next();
-
-        while(i.hasNext()){
-            tmp = i.next();
-            if(highestYear.getInteger("year") < tmp.getInteger("year")){
-                highestYear = tmp;
-            }
-        }
-        List<Document> list = highestYear.get("goals", List.class); // it has to be an list, becuase its not possible wihe an array
-        return list.toArray(new EvaluationRecordEntry[list.size()]); //convert the evaluation list with hights year as an array
+    private EvaluationRecordEntry toEvaluationRecordEntry(Document d){
+        return new EvaluationRecordEntry( d.getInteger("targetValue"), d.getInteger("actualValue"));
     }
 
 

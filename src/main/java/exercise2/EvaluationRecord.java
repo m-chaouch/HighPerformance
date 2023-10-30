@@ -3,23 +3,41 @@ package exercise2;
 import org.bson.Document;
 
 public class EvaluationRecord {
-    private EvaluationRecordEntry[] goals;
+    EvaluationRecordEntry leadershipCompetence;
+    EvaluationRecordEntry opennessToEmployee;
+    EvaluationRecordEntry socialBehaviourToEmployee;
+    EvaluationRecordEntry attitudeTowardsClient;
+    EvaluationRecordEntry CommunicationSkills;
+    EvaluationRecordEntry IntegirtyToConpany;
+
+
     private int year;
 
-    public EvaluationRecord(EvaluationRecordEntry[] goals, int year){
-        this.goals = goals;
-        this.year = year;
+    public EvaluationRecord(EvaluationRecordEntry leadershipCompetence, EvaluationRecordEntry opennessToEmployee,
+                                 EvaluationRecordEntry socialBehaviourToEmployee, EvaluationRecordEntry attitudeTowardsClient,
+                                 EvaluationRecordEntry CommunicationSkills, EvaluationRecordEntry IntegirtyToConpany)
+    {
+        this.leadershipCompetence = leadershipCompetence;
+        this.opennessToEmployee = opennessToEmployee;
+        this.socialBehaviourToEmployee = socialBehaviourToEmployee;
+        this.attitudeTowardsClient = attitudeTowardsClient;
+        this.CommunicationSkills = CommunicationSkills;
+        this.IntegirtyToConpany = IntegirtyToConpany;
+
     }
 
-    public Document tDocument(){
-        Document d = new Document();
+    public int getYear(){
+        return year;
+    }
 
-        d.append("year", year);
-        //d.append("goals", goals);
-        for(EvaluationRecordEntry e: goals){
-            d.append(e.getGoalDescription(), e.toDocument() );
-        }
-        return d;
+    public Document toDocument(){
+        return new Document().append("year", year)
+        .append("leadershipCompetence", leadershipCompetence.toDocument())
+        .append("opennessToEmployee", opennessToEmployee.toDocument())
+        .append("socialBehaviourToEmployee", socialBehaviourToEmployee.toDocument())
+        .append("attitudeTowardsClient", attitudeTowardsClient.toDocument())
+        .append("CommunicationSkills", CommunicationSkills.toDocument())
+        .append("IntegirtyToConpany", IntegirtyToConpany.toDocument());
     }
 
 

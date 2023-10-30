@@ -13,12 +13,17 @@ public class solala {
         ManageSalesmen control = new ManageSalesmen();
         control.login();
         SalesMan a = new SalesMan("null", "2n2ll2", 1);
-        EvaluationRecord b;
-        EvaluationRecordEntry[] c = {new EvaluationRecordEntry("reding", 10, 3),
-                new EvaluationRecordEntry("communication", 22, 3)};
+        EvaluationRecord b = new EvaluationRecord(new EvaluationRecordEntry( 10, 3),
+                                                  new EvaluationRecordEntry(10, 3),
+                                                  new EvaluationRecordEntry(10, 3),
+                                                  new EvaluationRecordEntry(10, 3),
+                                                  new EvaluationRecordEntry(10, 3),
+                                                  new EvaluationRecordEntry(10, 3));
 
-        b = new EvaluationRecord(c, 2023);
+
+
         control.addPerformanceRecord(b, 1);
+        System.out.println(control.readEvaluationRecords(1).toDocument());
 
     }
 
