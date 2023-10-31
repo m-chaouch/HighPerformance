@@ -42,7 +42,7 @@ public class Main {
                     String oldVal = scanner.next();
                     System.out.println("Zu welchem Wert soll der Wert des Attributs geändert werden?");
                     String newVal = scanner.next();
-                    m.updateSalseMan(attr, oldVal, newVal);
+                    m.updateSalesMan(attr, oldVal, newVal);
                     System.out.println("Der SalesMan wurde erfolgreich geupdatet!");
                 }
                 else if (s.equals("löschen")) {
@@ -50,7 +50,7 @@ public class Main {
                     String attr = scanner.next();
                     System.out.println("Welcher Wert dieses Attributs soll gelöscht werden?");
                     String val = scanner.next();
-                    m.deleteSalseMan(attr, val);
+                    m.deleteSalesMan(attr, val);
                     System.out.println("Der SalesMan wurde erfolgreich gelöscht!");
                 }
                 else{

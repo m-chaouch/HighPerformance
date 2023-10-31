@@ -65,7 +65,7 @@ public class ManageSalesmen implements ManagePersonal {
         return salesmanlist;
     }
     @Override
-    public  <T> void updateSalseMan(String attribute, String key, T e) {
+    public  <T> void updateSalesMan(String attribute, String key, T e) {
         Document olddoc = general_salesmen_data.find(eq(attribute+"",key)).first();
         Document newdoc = new Document();
         newdoc.append(attribute+"",e);
@@ -74,7 +74,7 @@ public class ManageSalesmen implements ManagePersonal {
         general_salesmen_data.updateOne(olddoc,update);
     }
     @Override
-    public void deleteSalseMan(String attribute, String key) {
+    public void deleteSalesMan(String attribute, String key) {
         Bson filter = Filters.eq(attribute, key); // create a filter to for the mongodb
         general_salesmen_data.deleteMany(filter);
     }
