@@ -1,4 +1,7 @@
-package exercise2;
+package exercise2.Service;
+import exercise2.Entity.EvaluationRecord;
+import exercise2.Entity.SalesMan;
+
 import java.util.List;
 
 /**
@@ -22,6 +25,7 @@ public interface ManagePersonal {
       * @param s is the id of the salsemen 
       * @param attribute  is the attribute i want to update
       * @param e is the value i want to update it with
+      *  it is generic to so it can update any kind of data corresponding to the kind of attribute which was parsed
       */
      public <T> void updateSalseMan(String attribute, String key, T e );
 

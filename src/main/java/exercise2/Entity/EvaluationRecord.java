@@ -1,4 +1,4 @@
-package exercise2;
+package exercise2.Entity;
 
 import org.bson.Document;
 

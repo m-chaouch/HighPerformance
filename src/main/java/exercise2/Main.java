@@ -1,5 +1,8 @@
 package exercise2;
 
+import exercise2.Entity.SalesMan;
+import exercise2.Implementaion.ManageSalesmen;
+
 import java.util.Scanner;
 
 public class Main {
