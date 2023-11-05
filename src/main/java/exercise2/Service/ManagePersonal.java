@@ -27,9 +27,9 @@ public interface ManagePersonal {
       * @param e is the value i want to update it with
       *  it is generic to so it can update any kind of data corresponding to the kind of attribute which was parsed
       */
-     public <T> void updateSalseMan(String attribute, String key, T e );
+     public <T> void updateSalesMan(String attribute, String key, T e );
 
-     public void deleteSalseMan(String attribute, String key);
+     public void deleteSalesMan(String attribute, String key);
 
 
 }
