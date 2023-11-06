@@ -1,23 +1,25 @@
 package exercise2.Service;
 import exercise2.Entity.EvaluationRecord;
+import exercise2.Entity.EvaluationRecordEntry;
 import exercise2.Entity.SalesMan;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
- * Code lines are commented for suppressing compile errors.
+ * the interface that is our bussines lo
  */
+
 public interface ManagePersonal {
 
      public void createSalesMan(SalesMan record );
 
-     public void addPerformanceRecord(EvaluationRecord record , int sid ) throws Exception;
+
 
      public SalesMan readSalesMan(int sid );
 
      public List<SalesMan> querySalesMan(String attribute , String key );
 
-     public EvaluationRecord readEvaluationRecords(int sid );
 
      /**
       * 
@@ -28,8 +30,22 @@ public interface ManagePersonal {
       *  it is generic to so it can update any kind of data corresponding to the kind of attribute which was parsed
       */
      public <T> void updateSalesMan(String attribute, String key, T e );
-
      public void deleteSalesMan(String attribute, String key);
+
+
+
+
+
+
+     public void addPerformanceRecord(EvaluationRecord record , int sid ) throws Exception;
+
+     public EvaluationRecord readEvaluationRecords(int sid );
+
+     public void updateEvaluationRecord (String attribute, EvaluationRecordEntry e);
+     public void deleteEvaluationRecord (String attribute, EvaluationRecordEntry e);
+
+
+
 
 
 }

@@ -13,11 +13,11 @@ import exercise2.Service.ManagePersonal;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import com.mongodb.client.model.Filters;
-
+import org.springframework.stereotype.Service;
 
 
 import static com.mongodb.client.model.Filters.eq;
-
+@Service
 public class ManageSalesmen implements ManagePersonal {
     private MongoDatabase database;
     private MongoCollection<Document> general_salesmen_data;
@@ -72,9 +72,9 @@ public class ManageSalesmen implements ManagePersonal {
     }
     @Override
     public  <T> void updateSalesMan(String attribute, String key, T e) {
-        Document olddoc = general_salesmen_data.find(eq(attribute+"",key)).first();
+        Document olddoc = general_salesmen_data.find(eq(attribute, key)).first();
         Document newdoc = new Document();
-        newdoc.append(attribute+"",e);
+        newdoc.append(attribute,e);
         Document update = new Document();
         update.append("$set",newdoc);
         general_salesmen_data.updateOne(olddoc,update);
@@ -116,6 +116,7 @@ public class ManageSalesmen implements ManagePersonal {
     */
     }
 
+
     private Document getHighestYear(Iterable<Document> d){
         Iterator<Document> iterator = d.iterator();
         Document highest;
@@ -155,6 +156,19 @@ public class ManageSalesmen implements ManagePersonal {
      */
     private EvaluationRecordEntry toEvaluationRecordEntry(Document d){
         return new EvaluationRecordEntry( d.getInteger("targetValue"), d.getInteger("actualValue"));
+    }
+
+
+
+
+    @Override
+    public void updateEvaluationRecord(String attribute, EvaluationRecordEntry e) {
+
+    }
+
+    @Override
+    public void deleteEvaluationRecord(String attribute, EvaluationRecordEntry e) {
+
     }
 
 
