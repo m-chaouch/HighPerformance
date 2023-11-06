@@ -23,7 +23,7 @@ public class solala {
 
 
         control.addPerformanceRecord(b, 1);
-        System.out.println(control.readEvaluationRecords(1).toDocument());
+        System.out.println(control.readEvaluationRecords(1, 3).toDocument());
 
     }
 

@@ -24,8 +24,8 @@ public class EvaluationRecordController {
 
     }
     @GetMapping
-    public EvaluationRecord readEvaluationRecord(){
-        return null;
+    public EvaluationRecord readEvaluationRecord(int sid, int year){
+        return manageSalesman.readEvaluationRecords(sid, year);
     }
     @PutMapping("/{sid}")
     public void updateEvaluationRecord(@RequestBody(required = true) int sid,
