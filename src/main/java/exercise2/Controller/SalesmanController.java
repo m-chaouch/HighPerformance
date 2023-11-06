@@ -2,22 +2,30 @@ package exercise2.Controller;
 
 import exercise2.Entity.SalesMan;
 import exercise2.Implementaion.ManageSalesmen;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/manageSalesman")
 public class SalesmanController {
+
     @Autowired // connects the already exsisting ManageSalesman-Object
-    private ManageSalesmen manageSalesmen;
+    private ManageSalesmen manageSalesman;
+    @PostConstruct
+    public void postContruct(){
+        manageSalesman = new ManageSalesmen();
+        manageSalesman.login();
+    }
+
     @GetMapping("/{sid}")
     public SalesMan getSalesMan(@PathVariable(required = true) Integer sid){
-        return manageSalesmen.readSalesMan(sid);
+        return manageSalesman.readSalesMan(sid);
     }
 
     @PostMapping
     public void createSalesman(@RequestBody(required = true) SalesMan s){
-        manageSalesmen.createSalesMan(s);
+        manageSalesman.createSalesMan(s);
     }
 
     /**
@@ -43,16 +51,16 @@ public class SalesmanController {
             throw new Exception("sid  is not the same as the id of the person");
 
 
-        SalesMan tmp = manageSalesmen.readSalesMan(sid);
+        SalesMan tmp = manageSalesman.readSalesMan(sid);
         tmp.setFirstname(s.getFirstname());
         tmp.setLastname(s.getLastname());
         tmp.setId(s.getId());
-        manageSalesmen.deleteSalesMan("id", sid +"");
-        manageSalesmen.createSalesMan(tmp);
+        manageSalesman.deleteSalesMan("id", sid +"");
+        manageSalesman.createSalesMan(tmp);
     }
     @DeleteMapping("/sid")
     public void deleteSalesman(@PathVariable(required = true) int sid){
-        manageSalesmen.deleteSalesMan("id", sid);
+        manageSalesman.deleteSalesMan("id", sid);
     }
 
 

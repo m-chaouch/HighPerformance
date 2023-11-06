@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 import java.util.Scanner;
-@SpringBootApplication
+//@SpringBootApplication
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);

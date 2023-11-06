@@ -4,6 +4,7 @@ import exercise2.Entity.EvaluationRecord;
 import exercise2.Entity.EvaluationRecordEntry;
 import exercise2.Entity.SalesMan;
 import exercise2.Implementaion.ManageSalesmen;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 @RestController
@@ -12,6 +13,11 @@ public class EvaluationRecordController {
     @Autowired // connects the already exsisting ManageSalesman-Object
     private ManageSalesmen manageSalesman;
 
+    @PostConstruct
+    public void postContruct(){
+        manageSalesman = new ManageSalesmen();
+        manageSalesman.login();
+    }
 
 
     public void createEvaluationRecord (@RequestBody(required = true) EvaluationRecord evaluationRecord){
