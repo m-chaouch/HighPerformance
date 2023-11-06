@@ -1,10 +1,14 @@
 package exercise2;
 
+import exercise2.Entity.EvaluationRecord;
+import exercise2.Entity.EvaluationRecordEntry;
 import exercise2.Entity.SalesMan;
 import exercise2.Implementaion.ManageSalesmen;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 
 import java.util.Scanner;
-
+@SpringBootApplication
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);

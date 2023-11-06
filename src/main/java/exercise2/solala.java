@@ -5,8 +5,11 @@ import exercise2.Entity.EvaluationRecordEntry;
 import exercise2.Entity.SalesMan;
 import exercise2.Implementaion.ManageSalesmen;
 
+
+
+
 public class solala {
-    public static void main(String[] args) {
+    public static void LL(String[] args) {
         ManageSalesmen control = new ManageSalesmen();
         control.login();
         SalesMan a = new SalesMan("null", "2n2ll2", 1);
