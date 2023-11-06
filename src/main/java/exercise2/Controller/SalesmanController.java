@@ -50,6 +50,10 @@ public class SalesmanController {
         manageSalesmen.deleteSalesMan("id", sid +"");
         manageSalesmen.createSalesMan(tmp);
     }
+    @DeleteMapping("/sid")
+    public void deleteSalesman(@PathVariable(required = true) int sid){
+        manageSalesmen.deleteSalesMan("id", sid);
+    }
 
 
 

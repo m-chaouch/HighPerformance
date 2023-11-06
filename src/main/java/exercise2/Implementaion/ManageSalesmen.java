@@ -4,6 +4,7 @@ package exercise2.Implementaion;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+;
 
 import com.mongodb.client.*;
 import exercise2.Entity.EvaluationRecord;
@@ -80,7 +81,7 @@ public class ManageSalesmen implements ManagePersonal {
         general_salesmen_data.updateOne(olddoc,update);
     }
     @Override
-    public void deleteSalesMan(String attribute, String key) {
+    public <T> void deleteSalesMan(String attribute, T key) {
         Bson filter = Filters.eq(attribute, key); // create a filter to for the mongodb
         general_salesmen_data.deleteMany(filter);
     }
@@ -162,12 +163,12 @@ public class ManageSalesmen implements ManagePersonal {
 
 
     @Override
-    public void updateEvaluationRecord(String attribute, EvaluationRecordEntry e) {
+    public void updateEvaluationRecord(int sid, int year, String attribute, EvaluationRecordEntry e) {
 
     }
 
     @Override
-    public void deleteEvaluationRecord(String attribute, EvaluationRecordEntry e) {
+    public void deleteEvaluationRecord(int sid, int year) { // in Evaluation recors ist ein attribut "year". du musst sid und year nutzenum ein perdormance record zu identifizieren
 
     }
 

@@ -30,7 +30,7 @@ public interface ManagePersonal {
       *  it is generic to so it can update any kind of data corresponding to the kind of attribute which was parsed
       */
      public <T> void updateSalesMan(String attribute, String key, T e );
-     public void deleteSalesMan(String attribute, String key);
+     public <T> void deleteSalesMan(String attribute, T key);
 
 
 
@@ -41,8 +41,8 @@ public interface ManagePersonal {
 
      public EvaluationRecord readEvaluationRecords(int sid );
 
-     public void updateEvaluationRecord (String attribute, EvaluationRecordEntry e);
-     public void deleteEvaluationRecord (String attribute, EvaluationRecordEntry e);
+     public void updateEvaluationRecord (int sid, int year, String attribute, EvaluationRecordEntry e);
+     public void deleteEvaluationRecord (int sid, int year);
 
 
 
