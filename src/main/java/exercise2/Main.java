@@ -108,9 +108,10 @@ public class Main {
                     System.out.println("Der Evaluationrecord wurde erfolgreich eingetragen!");
                 }
                 else if(s.equals("lesen")){
-                    System.out.println("Von welcher SalesMan-ID wollen sie die Evaluationrecords lesen?");
+                    System.out.println("Von welcher SalesMan-ID und jahr wollen sie die Evaluationrecords lesen?");
                     int sid = scanner.nextInt();
-                    EvaluationRecord er = m.readEvaluationRecords(sid);
+                    int year = scanner.nextInt();
+                    EvaluationRecord er = m.readEvaluationRecords(sid, year);
                     System.out.println(er.toDocument());
                 }
                 else{

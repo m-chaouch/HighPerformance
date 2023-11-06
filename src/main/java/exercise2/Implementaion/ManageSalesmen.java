@@ -104,7 +104,7 @@ public class ManageSalesmen implements ManagePersonal {
      *
      */
     @Override
-    public EvaluationRecord readEvaluationRecords(int sid) {
+    public EvaluationRecord readEvaluationRecords(int sid, int year) {
         Document d = getHighestYear(performance_records.find(eq("sid", sid)));
         return toEvaluationRecord(d);
     /*

@@ -39,7 +39,7 @@ public interface ManagePersonal {
 
      public void addPerformanceRecord(EvaluationRecord record , int sid ) throws Exception;
 
-     public EvaluationRecord readEvaluationRecords(int sid );
+     public EvaluationRecord readEvaluationRecords(int sid, int year );
 
      public void updateEvaluationRecord (int sid, int year, String attribute, EvaluationRecordEntry e);
      public void deleteEvaluationRecord (int sid, int year);
