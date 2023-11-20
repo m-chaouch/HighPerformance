@@ -4,6 +4,7 @@ package exercise2.Implementaion;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+;
 
 import com.mongodb.client.*;
 import exercise2.Entity.EvaluationRecord;
@@ -13,11 +14,11 @@ import exercise2.Service.ManagePersonal;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import com.mongodb.client.model.Filters;
-
+import org.springframework.stereotype.Service;
 
 
 import static com.mongodb.client.model.Filters.eq;
-
+@Service
 public class ManageSalesmen implements ManagePersonal {
     private MongoDatabase database;
     private MongoCollection<Document> general_salesmen_data;
@@ -72,15 +73,15 @@ public class ManageSalesmen implements ManagePersonal {
     }
     @Override
     public  <T> void updateSalesMan(String attribute, String key, T e) {
-        Document olddoc = general_salesmen_data.find(eq(attribute+"",key)).first();
+        Document olddoc = general_salesmen_data.find(eq(attribute, key)).first();
         Document newdoc = new Document();
-        newdoc.append(attribute+"",e);
+        newdoc.append(attribute,e);
         Document update = new Document();
         update.append("$set",newdoc);
         general_salesmen_data.updateOne(olddoc,update);
     }
     @Override
-    public void deleteSalesMan(String attribute, String key) {
+    public <T> void deleteSalesMan(String attribute, T key) {
         Bson filter = Filters.eq(attribute, key); // create a filter to for the mongodb
         general_salesmen_data.deleteMany(filter);
     }
@@ -103,7 +104,7 @@ public class ManageSalesmen implements ManagePersonal {
      *
      */
     @Override
-    public EvaluationRecord readEvaluationRecords(int sid) {
+    public EvaluationRecord readEvaluationRecords(int sid, int year) {
         Document d = getHighestYear(performance_records.find(eq("sid", sid)));
         return toEvaluationRecord(d);
     /*
@@ -115,6 +116,7 @@ public class ManageSalesmen implements ManagePersonal {
                                     d.get("IntegirtyToConpany", Document.class));
     */
     }
+
 
     private Document getHighestYear(Iterable<Document> d){
         Iterator<Document> iterator = d.iterator();
@@ -155,6 +157,19 @@ public class ManageSalesmen implements ManagePersonal {
      */
     private EvaluationRecordEntry toEvaluationRecordEntry(Document d){
         return new EvaluationRecordEntry( d.getInteger("targetValue"), d.getInteger("actualValue"));
+    }
+
+
+
+
+    @Override
+    public void updateEvaluationRecord(int sid, int year, String attribute, EvaluationRecordEntry e) {
+
+    }
+
+    @Override
+    public void deleteEvaluationRecord(int sid, int year) { // in Evaluation recors ist ein attribut "year". du musst sid und year nutzenum ein perdormance record zu identifizieren
+
     }
 
 

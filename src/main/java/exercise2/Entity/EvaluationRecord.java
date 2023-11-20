@@ -1,17 +1,21 @@
 package exercise2.Entity;
 
 import org.bson.Document;
+import java.time.Year;
 
 public class EvaluationRecord {
-    EvaluationRecordEntry leadershipCompetence;
-    EvaluationRecordEntry opennessToEmployee;
-    EvaluationRecordEntry socialBehaviourToEmployee;
-    EvaluationRecordEntry attitudeTowardsClient;
-    EvaluationRecordEntry CommunicationSkills;
-    EvaluationRecordEntry IntegrityToCompany;
-
+    private EvaluationRecordEntry leadershipCompetence;
+    private EvaluationRecordEntry opennessToEmployee;
+    private EvaluationRecordEntry socialBehaviourToEmployee;
+    private EvaluationRecordEntry attitudeTowardsClient;
+    private EvaluationRecordEntry CommunicationSkills;
+    private EvaluationRecordEntry IntegrityToCompany;
 
     private int year;
+
+
+
+
 
     public EvaluationRecord(EvaluationRecordEntry leadershipCompetence, EvaluationRecordEntry opennessToEmployee,
                                  EvaluationRecordEntry socialBehaviourToEmployee, EvaluationRecordEntry attitudeTowardsClient,
@@ -23,6 +27,7 @@ public class EvaluationRecord {
         this.attitudeTowardsClient = attitudeTowardsClient;
         this.CommunicationSkills = CommunicationSkills;
         this.IntegrityToCompany = IntegrityToCompany;
+        year = Year.now().getValue();
 
     }
 
@@ -37,7 +42,8 @@ public class EvaluationRecord {
         .append("socialBehaviourToEmployee", socialBehaviourToEmployee.toDocument())
         .append("attitudeTowardsClient", attitudeTowardsClient.toDocument())
         .append("CommunicationSkills", CommunicationSkills.toDocument())
-        .append("IntegirtyToConpany", IntegrityToCompany.toDocument());
+        .append("IntegirtyToConpany", IntegrityToCompany.toDocument())
+        .append("year", year);
     }
 
 
