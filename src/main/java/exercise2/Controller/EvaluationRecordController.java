@@ -20,8 +20,8 @@ public class EvaluationRecordController {
     }
 
 
-    public void createEvaluationRecord (@RequestBody(required = true) EvaluationRecord evaluationRecord){
-
+    public void createEvaluationRecord (@RequestBody(required = true) EvaluationRecord evaluationRecord, int sid){
+        manageSalesman.addPerformanceRecord(evaluationRecord, sid);
     }
     @GetMapping
     public EvaluationRecord readEvaluationRecord(int sid, int year){
