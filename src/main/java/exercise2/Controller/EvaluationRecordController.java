@@ -19,26 +19,27 @@ public class EvaluationRecordController {
         manageSalesman.login();
     }
 
-
+    @PostMapping
     public void createEvaluationRecord (@RequestBody(required = true) EvaluationRecord evaluationRecord,@RequestBody(required = true) int sid){
         manageSalesman.addPerformanceRecord(evaluationRecord, sid);
     }
     @GetMapping
-    public EvaluationRecord readEvaluationRecord(@RequestParam int sid, @RequestParam int year){
+    public EvaluationRecord readEvaluationRecord(  @RequestParam(name = "sid") int sid,
+                                                   @RequestParam(name = "year") int year){
         return manageSalesman.readEvaluationRecords(sid, year);
     }
     @PutMapping("/{sid}")
-    public void updateEvaluationRecord(@RequestBody(required = true) int sid,
-                                       @RequestBody(required = true) int year,
-                                       @RequestBody(required = true) String attribute,
-                                       @RequestBody(required = true) EvaluationRecordEntry e)
+    public void updateEvaluationRecord(@PathVariable   int sid,
+                                       @RequestParam  int year,
+                                       @RequestBody(required = false) String attribute,
+                                       @RequestBody(required = false) EvaluationRecordEntry e)
     {
         manageSalesman.updateEvaluationRecord(sid, year,attribute, e);
     }
 
 
-    @DeleteMapping("/id")
-    public void deleteEvaluationRecord(@RequestBody(required = true) int sid, @RequestBody(required = true) int year){
+    @DeleteMapping("/{sid}")
+    public void deleteEvaluationRecord(@PathVariable int sid, @RequestParam int year) {
         manageSalesman.deleteEvaluationRecord(sid, year);
     }
 
