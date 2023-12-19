@@ -4,7 +4,7 @@ package exercise2.Implementaion;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-;
+
 
 import com.mongodb.client.*;
 import exercise2.Entity.EvaluationRecord;
@@ -105,7 +105,11 @@ public class ManageSalesmen implements ManagePersonal {
      */
     @Override
     public EvaluationRecord readEvaluationRecords(int sid, int year) {
-        Document d = getHighestYear(performance_records.find(eq("sid", sid)));
+        Document query = new Document("sid", sid)
+                .append("year", year);
+
+        Document d = performance_records.find(query).first();
+
         return toEvaluationRecord(d);
     /*
         toEvaluationRecord(d.get("leadershipCompetence", Document.class),
@@ -116,6 +120,7 @@ public class ManageSalesmen implements ManagePersonal {
                                     d.get("IntegirtyToConpany", Document.class));
     */
     }
+
 
 
     private Document getHighestYear(Iterable<Document> d){
@@ -146,8 +151,9 @@ public class ManageSalesmen implements ManagePersonal {
                                     toEvaluationRecordEntry(d.get("socialBehaviourToEmployee", Document.class)),
                                     toEvaluationRecordEntry(d.get("attitudeTowardsClient", Document.class)),
                                     toEvaluationRecordEntry(d.get("CommunicationSkills", Document.class)),
-                                    toEvaluationRecordEntry(d.get("IntegirtyToConpany", Document.class))
-                                    );
+                                    toEvaluationRecordEntry(d.get("IntegirtyToConpany", Document.class)),
+                                    d.get("year", Integer.class)
+        );
     }
 
     /**
@@ -170,6 +176,17 @@ public class ManageSalesmen implements ManagePersonal {
     @Override
     public void deleteEvaluationRecord(int sid, int year) { // in Evaluation recors ist ein attribut "year". du musst sid und year nutzenum ein perdormance record zu identifizieren
 
+    }
+    public List<EvaluationRecord> getAllPeformanceRecords() {
+        // Assuming yourCollection is the collection you want to query
+        FindIterable<Document> results = performance_records.find();
+
+        // Convert the FindIterable to a List
+        List<EvaluationRecord> resultList = new ArrayList<>();
+        for(Document d: results){
+            resultList.add(toEvaluationRecord(d));
+        }
+        return resultList;
     }
 
 
