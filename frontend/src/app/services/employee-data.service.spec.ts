@@ -22,7 +22,7 @@
  *  - @expect(service).toBeTruthy() - Erwartet, dass die Service-Instanz existiert (d.h., dass sie nicht `null`
  *    oder `undefined` ist). Wenn diese Bedingung wahr ist, besteht der Test.
  *
- * Der Zweck dieses Tests ist es, sicherzustellen, dass der `EmployeeDataService`-Service korrekt instanziiert wird
+ * Der Zweck dieses Tests ist es, sicherzustellen, dass der `EmployeeDataPoint`-Service korrekt instanziiert wird
  * und keine grundlegenden Fehler auftreten, wenn der Service in der Anwendung verwendet wird.
  */
 
