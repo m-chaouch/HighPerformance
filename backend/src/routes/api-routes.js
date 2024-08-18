@@ -2,9 +2,13 @@ const express = require('express');
 const router = express.Router();
 const {checkAuthorization} = require('../middlewares/auth-middleware');
 
+
+
 /*
     In this file is the routing for the REST-endpoints under /api managed
  */
+
+
 
 const authApi = require('../apis/auth-api'); //api-endpoints are loaded from separate files
 router.post('/login', authApi.login); //the function decides which request type should be accepted
@@ -16,5 +20,8 @@ router.get('/user', checkAuthorization(), userApi.getSelf);
 
 const peopleDemoApi = require('../apis/people-demo-api');
 router.get('/people', checkAuthorization(), peopleDemoApi.getPeople);
+
+const employeeApi = require('../apis/employee-data-api');
+router.get('/employee', checkAuthorization(), employeeApi.getEmployeeData);
 
 module.exports = router;
