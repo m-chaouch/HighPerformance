@@ -10,13 +10,14 @@ class SocialPerformance {
         communicationSkills: { actual: 0, target: 4 },
         integrityToCompany: { actual: 0, target: 4 }
     }) {
-        // Initialize properties with default values
+        // Initialize properties with default values and frezzes the object
         this.leadershipCompetence = defaults.leadershipCompetence;
         this.opennessToEmployee = defaults.opennessToEmployee;
         this.socialBehaviourToEmployee = defaults.socialBehaviourToEmployee;
         this.attitudeTowardsClients = defaults.attitudeTowardsClients;
         this.communicationSkills = defaults.communicationSkills;
         this.integrityToCompany = defaults.integrityToCompany;
+        Object.freeze(this);
     }
 
     /**
