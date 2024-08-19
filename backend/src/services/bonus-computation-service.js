@@ -1,4 +1,4 @@
-
+const { SocialPerformance } = require('../models/SocialPeformance'); // Adjust the path as necessary
 
 /**
  * Calculates the bonus based on actual and target social skill points.
@@ -26,14 +26,37 @@ function defaultCalculation(criterion = { actual: 0, target: 0 }, config = { bon
 /**
  * Computes the bonus for a performance report.
  * 
- * @param {Object} performanceReport - The performance report containing actual and target skill points.
+ * @param {SocialPerformance} socialPerformance - The instance of SocialPerformance class.
  * @param {Function} [calculation=defaultCalculation] - The calculation function to use.
- * @returns {number} - The computed bonus.
+ * @returns {Object} - The computed bonuses for each criterion and the total bonus.
  */
+function bonusComputation(socialPerformance, calculation = defaultCalculation) {
+    const performanceReport = socialPerformance.getSocialPeformance();
+    const bonus = {};
+    let totalBonus = 0;
 
-function bonusComputation (performanceReport, calculation = defaultCalculation) {
-    return calculation(performanceReport);
+    for (let key in performanceReport) {
+        if (performanceReport.hasOwnProperty(key)) {
+            bonus[key] = calculation(performanceReport[key]);
+            totalBonus += bonus[key];
+        }
+    }
+
+    bonus['total'] = totalBonus;
+    return bonus;
 };
 
 exports.bonusComputation = bonusComputation;
 
+// Test the implementation
+const socialPerformance = new SocialPerformance({
+    leadershipCompetence: { actual: 5, target: 4 }, // Exceeds target
+    opennessToEmployee: { actual: 3, target: 4 },  // Below target
+    socialBehaviourToEmployee: { actual: 4, target: 4 }, // Meets target
+    attitudeTowardsClients: { actual: 6, target: 4 }, // Exceeds target
+    communicationSkills: { actual: 4, target: 4 }, // Meets target
+    integrityToCompany: { actual: 7, target: 4 } // Exceeds target
+});
+
+const calculatedBonuses = bonusComputation(socialPerformance);
+console.log('Calculated Bonuses:', calculatedBonuses);
