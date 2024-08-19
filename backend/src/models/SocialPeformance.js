@@ -40,7 +40,7 @@ class SocialPerformance {
      * 
      * @returns {Object} The performance report object.
      */
-    getPerformanceReport() {
+    getSocialPeformance() {
         return {
             leadershipCompetence: this.leadershipCompetence,
             opennessToEmployee: this.opennessToEmployee,
