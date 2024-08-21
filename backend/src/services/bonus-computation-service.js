@@ -67,19 +67,20 @@ async function storePerformanceReport(db, salesManId, performanceRecord, bonus, 
     };
 
     await collection.insertOne(document);
+    return document;
 }
 
 /**
- * Computes the bonus from a social performance report and stores it in the database.
+ * Computes the bonus from a social performance and stores the performance report including the bonus in the database.
  * 
  * @param {Object} db - The database connection object.
  * @param {string} salesManId - The ID of the salesperson.
  * @param {SocialPerformance} socialPerformance - The social performance data.
- * @returns {Promise} - A promise that resolves once the process is complete.
+ * @returns {Promise} - Returns the performance record, including the calculated bonus.
  */
 async function processBonusAndStore(db, salesManId, socialPerformance) {
     const bonus = bonusComputation(socialPerformance);
-    await storePerformanceReport(db, salesManId, socialPerformance, bonus);
+    return await storePerformanceReport(db, salesManId, socialPerformance, bonus);
 }
 
 /**
@@ -89,10 +90,10 @@ async function processBonusAndStore(db, salesManId, socialPerformance) {
  * @param {string} salesManId - The ID of the salesperson.
  * @param {Object} updateFields - The fields to update in the performance report.
  * @param {Object} [options={ upsert: false }] - Additional options for the update operation.
- * @param {Date | string} [date=new Date().getFullYear()] - The date of the report to update.
+ * @param {Date | string} [date=new Date()] - The date of the report to update.
  * @returns {Object} - The result of the update operation.
  */
-async function updatePerformanceReport(db, salesManId, updateFields, options = { upsert: false }, date = new Date().getFullYear()) {
+async function updatePerformanceReport(db, salesManId, updateFields, options = { upsert: false }, date = new Date()) {
     const collection = db.collection('sales-man');
 
     const query = { salesManId: salesManId, date: date };
