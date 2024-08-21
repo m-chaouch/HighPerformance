@@ -1,4 +1,4 @@
-const { SocialPerformance } = require('../models/SocialPeformance'); // Adjust the path as necessary
+const { SocialPerformance } = require('../models/SocialPerformance');
 
 /**
  * Calculates the bonus based on actual and target social skill points.
@@ -44,19 +44,76 @@ function bonusComputation(socialPerformance, calculation = defaultCalculation) {
 
     bonus['total'] = totalBonus;
     return bonus;
-};
+}
+
+/**
+ * Stores a performance report in the database.
+ * 
+ * @param {Object} db - The database connection object.
+ * @param {string} salesManId - The ID of the salesperson.
+ * @param {Object} performanceRecord - The performance record data (e.g., social and sales performance).
+ * @param {Object} bonus - The calculated bonus based on the performance.
+ * @param {Date | string} [date=new Date().getFullYear()] - The date of the performance report.
+ * @returns {Promise} - A promise that resolves once the report is stored.
+ */
+async function storePerformanceReport(db, salesManId, performanceRecord, bonus, date = new Date().getFullYear()) {
+    const collection = db.collection('sales-man');
+
+    const document = {
+        salesManId: salesManId,
+        performanceRecord: performanceRecord,
+        bonus: bonus,
+        date: date
+    };
+
+    await collection.insertOne(document);
+}
+
+/**
+ * Computes the bonus from a social performance report and stores it in the database.
+ * 
+ * @param {Object} db - The database connection object.
+ * @param {string} salesManId - The ID of the salesperson.
+ * @param {SocialPerformance} socialPerformance - The social performance data.
+ * @returns {Promise} - A promise that resolves once the process is complete.
+ */
+async function processBonusAndStore(db, salesManId, socialPerformance) {
+    const bonus = bonusComputation(socialPerformance);
+    await storePerformanceReport(db, salesManId, socialPerformance, bonus);
+}
+
+/**
+ * Updates a performance report for a given salesperson and date.
+ * 
+ * @param {Object} db - The database connection object.
+ * @param {string} salesManId - The ID of the salesperson.
+ * @param {Object} updateFields - The fields to update in the performance report.
+ * @param {Object} [options={ upsert: false }] - Additional options for the update operation.
+ * @param {Date | string} [date=new Date().getFullYear()] - The date of the report to update.
+ * @returns {Object} - The result of the update operation.
+ */
+async function updatePerformanceReport(db, salesManId, updateFields, options = { upsert: false }, date = new Date().getFullYear()) {
+    const collection = db.collection('sales-man');
+
+    const query = { salesManId: salesManId, date: date };
+
+    const result = await collection.updateOne(query, { $set: updateFields }, options);
+    return result;
+}
+
+/**
+ * Example usage:
+ * 
+ * const updateFields = {
+ *   'performanceRecord.socialPerformance.communicationSkills.actual': 5,
+ *   'bonus.total': 2000
+ * };
+ * 
+ * const result = await updatePerformanceReport(db, 'salesman123', updateFields);
+ * console.log('Update Result:', result);
+ */
 
 exports.bonusComputation = bonusComputation;
+exports.processBonusAndStore = processBonusAndStore;
+exports.updatePerformanceReport = updatePerformanceReport;
 
-// Test the implementation
-const socialPerformance = new SocialPerformance({
-    leadershipCompetence: { actual: 5, target: 4 }, // Exceeds target
-    opennessToEmployee: { actual: 3, target: 4 },  // Below target
-    socialBehaviourToEmployee: { actual: 4, target: 4 }, // Meets target
-    attitudeTowardsClients: { actual: 6, target: 4 }, // Exceeds target
-    communicationSkills: { actual: 4, target: 4 }, // Meets target
-    integrityToCompany: { actual: 7, target: 4 } // Exceeds target
-});
-
-const calculatedBonuses = bonusComputation(socialPerformance);
-console.log('Calculated Bonuses:', calculatedBonuses);
