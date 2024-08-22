@@ -36,7 +36,7 @@ class SocialPerformance {
     }
 
     /**
-     * Returns a report of the current performance.
+     * Returns a copy of the current social performance.
      * 
      * @returns {Object} The performance report object.
      */

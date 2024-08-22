@@ -1,10 +1,10 @@
 const { bonusComputation } = require("../services/bonus-computation-service");
-const { SocialPerformance } = require('../models/SocialPeformance');
+const { SocialPerformance } = require('../models/SocialPerformance'); 
 
 
 exports.socialPerformance = function (req, res){
     const socialPerformance = req.body;
-    cost db 
+    
     
 
 };
