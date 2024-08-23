@@ -10,7 +10,7 @@ const MongoClient = mongoMock.MongoClient;
  * @param {*} url provide an url which should be used by the mocked db
  * @returns a db objct which can be used for further interation (CRUD-testing, etc)
  */
-async function createDB(url="localhost:27017/test" ){
+async function createDB(url="localhost:27000/test" ){
     const connetionURL = `mongodb://${url}`;
     const mongoClient = await MongoClient.connect(connetionURL);
     return mongoClient.db();
@@ -52,7 +52,8 @@ exports.closeMockedDB = closeDB;
  * Example:
  * await collection.deleteMany({ age: { $lt: 30 } });
  */
-
+exports.createDB = createDB;
+exports.closeDB = closeDB;
 
 
   
