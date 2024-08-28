@@ -2,30 +2,44 @@ const mongoMock = require('mongo-mock');
 const MongoClient = mongoMock.MongoClient;
 
 /**
- * this file  explains how mongoMock works and can CREATE different and multiple DBs by provideing when calling  createDB different URLs 
+ * This file demonstrates how `mongo-mock` works and how to create
+ * different and multiple databases by providing different URLs
+ * when calling `createDB`.
  */
 
 /**
+ * Creates a mock database connection.
  * 
- * @param {*} url provide an url which should be used by the mocked db
- * @returns a db objct which can be used for further interation (CRUD-testing, etc)
+ * @param {string} [url="localhost:27000/test"] - The URL to use for the mocked database.
+ * @returns {Promise<object>} - A promise that resolves to a mock database object for further interactions (CRUD testing, etc).
  */
-async function createDB(url="localhost:27000/test" ){
-    const connetionURL = `mongodb://${url}`;
-    const mongoClient = await MongoClient.connect(connetionURL);
-    return mongoClient.db();
+async function createDB(url = 'localhost:27000/test') {
+    const connectionURL = `mongodb://${url}`;
+    const mongoClient = await MongoClient.connect(connectionURL);
+    let db = mongoClient.db();
+    db.client = mongoClient;
+    return db;
 }
 
-async function closeDB(db){
-    await db.client.close();
+/**
+ * Closes the mock database and client connections.
+ * 
+ * @param {object} db - The mock database object to close.
+ */
+function closeDB(db) {
+    try {
+        db.close(); // Close the mock database
+        db.client.close(); // Close the mock client
+    } catch (error) {
+        console.error('Error closing the database:', error); // Log any errors that occur
+    }
 }
 
-exports.createMockedDB = createDB;
-exports.closeMockedDB = closeDB;
+// Export functions for use in other modules
+exports.createDB = createDB;
+exports.closeDB = closeDB;
 
-
-
-
+// CRUD Operations Examples:
 
 // Update One Document: updateOne(query, newValue)
 /**
@@ -52,9 +66,3 @@ exports.closeMockedDB = closeDB;
  * Example:
  * await collection.deleteMany({ age: { $lt: 30 } });
  */
-exports.createDB = createDB;
-exports.closeDB = closeDB;
-
-
-  
-
