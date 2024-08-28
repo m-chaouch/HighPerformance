@@ -6,7 +6,11 @@ const collectionName = 'sales_man'; // Consider using snake_case for consistency
  * Calculates the bonus based on actual and target social skill points.
  * 
  * @param {Object} criterion - Object containing actual and target values.
- * @param {Object} config - Configuration object containing bonus factors.
+ * @param {number} criterion.actual - The actual value achieved.
+ * @param {number} criterion.target - The target value to be achieved.
+ * @param {Object} [config] - Configuration object containing bonus factors.
+ * @param {number} [config.bonusFactor=25] - The base factor for calculating the bonus.
+ * @param {number} [config.additionalBonus=20] - The additional bonus for exceeding the target.
  * @returns {number} - The calculated bonus.
  * @throws {Error} - Throws an error if actual or target is not a number.
  */
@@ -14,24 +18,29 @@ function defaultCalculation(criterion = { actual: 0, target: 0 }, config = { bon
     const { actual, target } = criterion;
     const { bonusFactor, additionalBonus } = config;
 
-    if (typeof actual !== 'number' || typeof target !== 'number') {
-        throw new Error('Actual and target must be numbers.');
+    if (actual < 0  && target < 0) {
+        throw new Error('Actual and target must be greater than 0.');
     }
-
-    let bonus = target * bonusFactor;
-    if (actual > target) {
+    
+    let bonus;
+    if(actual <= target){
+        bonus = actual * bonusFactor;
+    }else{
+        bonus = target * bonusFactor;
         bonus += (actual - target) * additionalBonus;
     }
+
+
 
     return bonus;
 }
 
 /**
- * Computes the bonus for a performance report.
+ * Computes the bonus for a performance report based on social performance criteria.
  * 
- * @param {SocialPerformance} socialPerformanceInstance - Instance of SocialPerformance class.
- * @param {Function} calculation - Bonus calculation function.
- * @returns {Object} - Object containing bonuses for each criterion and total bonus.
+ * @param {SocialPerformance} socialPerformance - Instance of the SocialPerformance class.
+ * @param {Function} [calculation=defaultCalculation] - Bonus calculation function. Defaults to `defaultCalculation`.
+ * @returns {Object} - Object containing bonuses for each criterion and the total bonus.
  */
 function bonusComputation(socialPerformance, calculation = defaultCalculation) {
     const bonus = {};
@@ -73,7 +82,7 @@ async function storePerformanceRecord(db, performanceRecord) {
  * 
  * @param {Object} db - The database connection object.
  * @param {string} salesManId - The ID of the salesperson.
- * @param {number} date - The date for the report.
+ * @param {number} date - The year for the report.
  * @returns {Promise<Object>} - Resolves with the performance report.
  * @throws {Error} - Throws an error if there is an issue with retrieving the report.
  */
@@ -87,10 +96,8 @@ async function getPerformanceReport(db, salesManId, date) {
             throw new Error('Performance report not found.');
         }
 
-        // Assuming report.SocialPerformance is an object, create a new instance of SocialPerformance
+        // Retrieve the social performance instance from the report
         const socialPerformanceInstance = report.socialPerformance;
-        console.log(report); //TODO turn this off when done testing
-        console.log(socialPerformanceInstance);
         report.bonus = bonusComputation(socialPerformanceInstance);
         return report;
     } catch (error) {
@@ -104,17 +111,23 @@ async function getPerformanceReport(db, salesManId, date) {
  * 
  * @param {Object} db - The database connection object.
  * @param {string} salesManId - The ID of the salesperson.
- * @param {number} date - The date for the report.
+ * @param {number} date - The year for the report.
  * @param {Object} updateFields - The fields to update.
- * @param {Object} [options] - Additional options for the update operation.
+ * @param {Object} [options={ upsert: false }] - Additional options for the update operation. Defaults to `{ upsert: false }`.
  * @returns {Promise<Object>} - Resolves with the result of the update operation.
  * @throws {Error} - Throws an error if there is an issue with updating the report.
  */
 async function updatePerformanceReport(db, salesManId, date, updateFields, options = { upsert: false }) {
     try {
         const collection = db.collection(collectionName);
-        const update = { $set: updateFields };
 
+        // Prepare the update object
+        const update = { $set:{} };
+        // Iterate over the keys in updateFields and populate the $set object
+        for (const [key, value] of Object.entries(updateFields)) {
+            update.$set[key] = value;
+        }
+        // Perform the update operation
         const result = await collection.updateOne({ salesManId, date }, update, options);
 
         if (result.matchedCount > 0) {
@@ -130,10 +143,35 @@ async function updatePerformanceReport(db, salesManId, date, updateFields, optio
     }
 }
 
+/**
+ * Updates specific criteria in the social performance of a performance record.
+ * 
+ * @param {Object} db - The database connection object.
+ * @param {string} salesManId - The ID of the salesperson.
+ * @param {number} date - The year for the report.
+ * @param {Object} newValues - Contains arrays of criteria names and corresponding new values.
+ * @param {string[]} newValues.criterias - Array of criteria names to be updated.
+ * @param {number[]} newValues.values - Array of new values corresponding to the criteria.
+ * @returns {Promise<Object>} - Resolves with the result of the update operation.
+ */
+async function updateSocialCriteria(db, salesManId, date, criterias=[], values=[]) {
+
+    const updateFields = {};
+
+    // Prepare the update object for nested fields
+    criterias.forEach((criteria, index) => {
+        updateFields[`socialPerformance.${criteria}.actual`] = values[index];
+    });
+
+    // Update the performance report with the new values
+    return await updatePerformanceReport(db, salesManId, date, updateFields);
+}
+
 module.exports = {
     bonusComputation,
-    updatePerformanceReport,
+    updateSocialCriteria,
     getPerformanceReport,
     storePerformanceRecord,
-    defaultCalculation
+    defaultCalculation,
+    updatePerformanceReport
 };
