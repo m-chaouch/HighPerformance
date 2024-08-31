@@ -9,7 +9,7 @@ const {fetchOrders} = require('../services/order-service');
 
 const getOrderData = function (req, res) {
     fetchOrders().then(orderData => {
-        res.send(orderData); // order data hat keinen inhalt
+        res.send(orderData);
     }).catch( () => {
         res.status(400).send();
     });

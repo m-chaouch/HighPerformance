@@ -37,5 +37,5 @@ async function getProductName(PID) {
 
 
 module.exports = {
-    getProductName
+    fetchProducts
 }

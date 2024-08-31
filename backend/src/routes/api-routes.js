@@ -31,6 +31,16 @@ router.get('/employee', checkAuthorization(), employeeApi.getEmployeeData);
 const orderApi = require ('../apis/order-data-api');
 router.get('/orders', orderApi.getOrderData);
 
+const accountApi = require('../apis/account-data-api');
+router.get('/accounts', accountApi.getAccountData);
+router.get('/accounts/:id', accountApi.getAccountData);
+
+const productApi = require('../apis/product-data-api');
+router.get('/products', productApi.getProductData);
+router.get('/products/:id', productApi.getProductData);
+
+
+
 
 
 module.exports = router;
