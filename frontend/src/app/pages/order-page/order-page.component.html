@@ -28,7 +28,7 @@
         <!-- Priority -->
         <ng-container matColumnDef="priority">
             <th mat-header-cell *matHeaderCellDef>Priority</th>
-            <td mat-cell *matCellDef="let orders">{{orders.priority}}</td>
+            <td mat-cell *matCellDef="let orders">{{orders.priority | transformPriority}}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

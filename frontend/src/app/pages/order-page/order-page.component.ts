@@ -2,12 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import { OrderDatapoint } from '../../interfaces/order-datapoint';
 import {OrderService} from '../../services/order.service';
 import { MatTableModule } from '@angular/material/table';
-
+import { TransformPriorityPipe } from '../../services/transform-priority.pipe';
 
 
 @Component({
     imports: [
-        MatTableModule
+        MatTableModule,
+        TransformPriorityPipe
     ],
     selector: 'app-order-page',
     standalone: true,

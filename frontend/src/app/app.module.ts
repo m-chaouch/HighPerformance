@@ -18,6 +18,7 @@ import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
 import { ExamplePageComponent } from './pages/example-page/example-page.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import {MatTableModule} from '@angular/material/table';
+import { TransformPriorityPipe } from './services/transform-priority.pipe';
 
 @NgModule({
     declarations: [
@@ -40,7 +41,8 @@ import {MatTableModule} from '@angular/material/table';
         MatCardModule,
         MatToolbarModule,
         MatIconModule,
-        MatTableModule
+        MatTableModule,
+        TransformPriorityPipe
     ],
     providers: [],
     bootstrap: [AppComponent]
