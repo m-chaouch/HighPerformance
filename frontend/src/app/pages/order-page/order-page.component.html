@@ -1,0 +1,38 @@
+<h1>All Orders</h1>
+<div class="order-list">
+    <table mat-table [dataSource]="orders" class="mat-elevation-z8 demo-table">
+        <!-- Contract Name -->
+        <ng-container matColumnDef="contractName">
+            <th mat-header-cell *matHeaderCellDef>Contract Name</th>
+            <td mat-cell *matCellDef="let orders">{{orders.name}}</td>
+        </ng-container>
+
+        <!-- Client -->
+        <ng-container matColumnDef="client">
+            <th mat-header-cell *matHeaderCellDef>Client</th>
+            <td mat-cell *matCellDef="let orders ">{{orders.customerName}}</td>
+        </ng-container>
+
+        <!-- total (Incl. Tax) -->
+        <ng-container matColumnDef="totalAmountIncludingTax">
+            <th mat-header-cell *matHeaderCellDef>Total (Incl. Tax)</th>
+            <td mat-cell *matCellDef="let orders">{{orders.totalAmountIncludingTax}}</td>
+        </ng-container>
+
+        <!-- Seller -->
+        <ng-container matColumnDef="seller">
+            <th mat-header-cell *matHeaderCellDef>Seller</th>
+            <td mat-cell *matCellDef="let orders">{{orders.sellerName}}</td>
+        </ng-container>
+
+        <!-- Priority -->
+        <ng-container matColumnDef="priority">
+            <th mat-header-cell *matHeaderCellDef>Priority</th>
+            <td mat-cell *matCellDef="let orders">{{orders.priority}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+    </table>
+</div>
