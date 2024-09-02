@@ -10,7 +10,7 @@ import {environment} from '../../../environments/environment';
 export class OrderService {
     constructor(private http: HttpClient){}
 
-    public getOrders(): Observable<OrderDatapoint[]> {
-        return this.http.get<OrderDatapoint[]>(environment.apiEndpoint + '/api/orders');
+    public getOrders(SOID= ''): Observable<OrderDatapoint[]| OrderDatapoint> {
+        return this.http.get<OrderDatapoint[]|OrderDatapoint>(environment.apiEndpoint + `/api/orders/${SOID}`);
     }
 }

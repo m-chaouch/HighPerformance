@@ -1,6 +1,6 @@
 const {getLastSegment} = require('../utils/helper');
 const {loginService} = require("./login-service");
-const {getProductName} = require('./product-service');
+const {fetchProducts} = require('./product-service');
 
 
 /**
@@ -50,7 +50,7 @@ async function filterPositions(responseData){
         positionID: getLastSegment(position.identity),
         positionNumber: position.positionNumber,
         productID: getLastSegment(position.product['@href']),
-        productName: await getProductName(getLastSegment(position.product['@href'])),
+        productName: await fetchProducts(getLastSegment(position.product['@href'])),
         productDescription: position.productDescription,
         quantity: position.quantity,
         pricePerUnit: position.pricePerUnit,

@@ -3,6 +3,7 @@ import { OrderDatapoint } from '../../interfaces/order-datapoint';
 import {OrderService} from '../../services/order.service';
 import { MatTableModule } from '@angular/material/table';
 import { TransformPriorityPipe } from '../../services/transform-priority.pipe';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -19,12 +20,15 @@ export class OrderPageComponent implements OnInit{
     orders: OrderDatapoint[] = [];
     displayedColumns: string[] = ['contractName', 'client', 'totalAmountIncludingTax', 'seller', 'priority'];
 
-    constructor(private orderService: OrderService){}
+    constructor(private orderService: OrderService, private router: Router){}
 
     ngOnInit(): void {
         this.orderService.getOrders().subscribe((orders): void => {
-            this.orders = orders;
+            this.orders = orders as OrderDatapoint[];  // safe because fetchOrders WITHOUT ID always returns an array, even having one element
         });
+    }
+    handleOrderClick(id: string): void {
+        void this.router.navigate(['/orders', id]);  // relative to the previous route, add /id
     }
 }
 

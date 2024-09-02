@@ -14,7 +14,9 @@ const {getAccountName} = require("./account-service");
  */
 async function fetchOrders(SOID = ""){
     const responseData = await loginService(`https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX/org.opencrx.kernel.contract1/provider/CRX/segment/Standard/salesOrder/${SOID}`);
-    return await filterOrders(responseData)
+    const orders = await filterOrders(responseData);
+    console.log(orders)
+    return orders
 }
 
 /**
@@ -22,24 +24,34 @@ async function fetchOrders(SOID = ""){
  *
  * This function processes the `responseData` from an API response to extract and format
  * relevant information about each order. It converts raw API data into a simplified object
- * format, including fields like SalesOrderID, contractNumber, customerID, and more.
+ * format, including fields like SalesOrderID, contractID, name, customerID, and more.
  *
  * @param {object} responseData - The raw response data containing order information.
- * @returns {object[]} An array of formatted order objects with properties:
- *   - SalesOrderID
- *   - contractNumber
- *   - name
- *   - customerID
- *   - totalAmount
- *   - totalAmountIncludingTax
- *   - priority     ||  5: immediate, 4: Urgent , 3: High, 2: Normal, 1: Low , 0: None
- *   - state        || ???
- *   - sellerID
+ * @returns {Promise<object[]>} A promise that resolves to an array of formatted order objects
+ *   with properties:
+ *   - SalesOrderID             // Unique identifier for the order
+ *   - contractID               // Contract number for the order
+ *   - name                     // Name of the order
+ *   - customerID               // Unique identifier for the customer
+ *   - customerName             // Name of the customer
+ *   - totalAmount              // Total amount of the order (excluding tax)
+ *   - totalAmountIncludingTax  // Total amount of the order (including tax)
+ *   - priority                 // Priority of the order (5: immediate, 4: urgent, 3: high, 2: normal, 1: low, 0: none)
+ *   - state                    // State or status of the contract
+ *   - sellerID                 // Unique identifier for the sales representative
+ *   - sellerName               // Name of the sales representative
  */
 async function filterOrders(responseData) {
-    const orderPromises = responseData.objects.map(async order => ({
+    let orders;
+    if(responseData.objects){
+        orders = responseData.objects   // we have an array!
+    } else {
+        orders = [responseData]     // if responseData.objects is not defined, we dont have an array!
+    }
+
+    const orderPromises = orders.map(async order => ({
         SalesOrderID: getLastSegment(order.identity),
-        contractNumber: order.contractNumber,
+        contractID: order.contractNumber,
         name: order.name,
         customerID: getLastSegment(order.customer['@href']),
         customerName: await getAccountName(getLastSegment(order.customer['@href'])),
@@ -49,10 +61,9 @@ async function filterOrders(responseData) {
         state: order.contractState,
         sellerID: getLastSegment(order.salesRep['@href']),        // using the "[]" -Notation bc the @ makes problems with the "." -Notation
         sellerName: await getAccountName(getLastSegment(order.salesRep['@href']))
-    }))
+    }));
     return await Promise.all(orderPromises);
 }
-
 
 module.exports = {
     fetchOrders

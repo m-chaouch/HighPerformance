@@ -1,6 +1,6 @@
 export interface OrderDatapoint {
     SalesOrderID: string;
-    contractNumber: string;
+    contractID: string;
     name: string;
     customerID: string;
     clientName: string;

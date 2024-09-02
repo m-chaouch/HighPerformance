@@ -10,6 +10,7 @@
 
 .mat-mdc-row:hover .mat-mdc-cell {
     border-color: currentColor;
+    background-color: rgb(173,216,230);
 }
 
 .demo-row-is-clicked {

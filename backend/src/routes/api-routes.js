@@ -30,6 +30,7 @@ router.get('/employee', checkAuthorization(), employeeApi.getEmployeeData);
 
 const orderApi = require ('../apis/order-data-api');
 router.get('/orders', orderApi.getOrderData);
+router.get('/orders/:id', orderApi.getOrderData);
 
 const accountApi = require('../apis/account-data-api');
 router.get('/accounts', accountApi.getAccountData);

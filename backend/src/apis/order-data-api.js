@@ -8,7 +8,9 @@ const {fetchOrders} = require('../services/order-service');
  */
 
 const getOrderData = function (req, res) {
-    fetchOrders().then(orderData => {
+    const id = req.params.id;
+    fetchOrders(id).then(orderData => {
+
         res.send(orderData);
     }).catch( () => {
         res.status(400).send();

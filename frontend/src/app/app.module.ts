@@ -19,6 +19,7 @@ import { ExamplePageComponent } from './pages/example-page/example-page.componen
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import {MatTableModule} from '@angular/material/table';
 import { TransformPriorityPipe } from './services/transform-priority.pipe';
+import { DetailedOrderPageComponent } from './pages/detailed-order-page/detailed-order-page.component';
 
 @NgModule({
     declarations: [
@@ -28,7 +29,8 @@ import { TransformPriorityPipe } from './services/transform-priority.pipe';
         LandingPageComponent,
         MenuBarComponent,
         ExamplePageComponent,
-        NotFoundPageComponent
+        NotFoundPageComponent,
+        DetailedOrderPageComponent
     ],
     imports: [
         BrowserModule,

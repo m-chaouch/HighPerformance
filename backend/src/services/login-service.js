@@ -25,7 +25,6 @@ async function loginService(URL) {
             auth: credentials
         });
         return res.data
-
     } catch(error){
         console.error(error);
     }
