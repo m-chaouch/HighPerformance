@@ -4,12 +4,14 @@ import {OrderService} from '../../services/order.service';
 import { MatTableModule } from '@angular/material/table';
 import { TransformPriorityPipe } from '../../services/transform-priority.pipe';
 import { Router } from '@angular/router';
+import {DecimalPipe} from "@angular/common";
 
 
 @Component({
     imports: [
         MatTableModule,
-        TransformPriorityPipe
+        TransformPriorityPipe,
+        DecimalPipe
     ],
     selector: 'app-order-page',
     standalone: true,
@@ -24,11 +26,11 @@ export class OrderPageComponent implements OnInit{
 
     ngOnInit(): void {
         this.orderService.getOrders().subscribe((orders): void => {
-            this.orders = orders as OrderDatapoint[];  // safe because fetchOrders WITHOUT ID always returns an array, even having one element
+            this.orders = orders;  // safe because fetchOrders WITHOUT ID always returns an array, even having one element
         });
     }
     handleOrderClick(id: string): void {
-        void this.router.navigate(['/orders', id]);  // relative to the previous route, add /id
+        void this.router.navigate(['/orders', id]);  // relative to the previous route + /id
     }
 }
 

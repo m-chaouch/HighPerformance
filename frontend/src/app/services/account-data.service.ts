@@ -11,7 +11,7 @@ export class AccountDataService {
 
     constructor(private http: HttpClient){}
 
-    public getAccounts(): Observable<AccountDatapoint[]> {
-        return this.http.get<AccountDatapoint[]>(environment.apiEndpoint + '/api/accounts');
+    public getAccounts(UID= ''): Observable<AccountDatapoint[]> {
+        return this.http.get<AccountDatapoint[]>(environment.apiEndpoint + `/api/accounts/${UID}`);
     }
 }
