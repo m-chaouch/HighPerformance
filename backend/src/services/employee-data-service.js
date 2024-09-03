@@ -41,12 +41,14 @@ async function employeeDataService() {
         const employees = response.data.data;
 
         // Filtern der benötigten Felder der Mitarbeiterdaten
-        const filteredEmployees = employees.map(employee => ({
-            firstName: employee.firstName,
-            lastName: employee.lastName,
-            employeeId: employee.employeeId,
-            unit: employee.unit
-        }));
+        const filteredEmployees = employees
+            .filter(employee => employee.jobTitle === 'Senior Salesman')
+            .map(employee => ({
+                firstName: employee.firstName,
+                lastName: employee.lastName,
+                employeeId: employee.employeeId,
+                unit: employee.unit
+            }));
 
         // Ausgabe der gefilterten Mitarbeiterdaten in der Konsole
         console.log('Employee data:', filteredEmployees);
