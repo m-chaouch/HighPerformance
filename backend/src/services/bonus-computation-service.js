@@ -166,6 +166,12 @@ async function updateSocialCriteria(db, salesManId, date, criterias=[], values=[
     // Update the performance report with the new values
     return await updatePerformanceReport(db, salesManId, date, updateFields);
 }
+async function deletePeformanceReport(db, salesManId, date) {
+    const collection = db.collection(collectionName);
+    const query = {salesManId, date};
+    await collection.deleteOne(query);
+
+}
 
 module.exports = {
     bonusComputation,
