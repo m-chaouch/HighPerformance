@@ -29,10 +29,11 @@ async function fetchAccounts(UID="") {
  *
  * @returns {Array} - An array of objects, each containing the following properties:
  *   - {string} UID - The last segment of the `identity` property of the account.
- *   - {string} industry - The industry of the account.
+ *   - {string} industry - The industry of the account. - ONLY Clients have this attribute
  *   - {string} fullName - The full name of the account.
  *   - {string} name - The name of the account.
  *   - {number} numberOfEmployeesCategory - The category of the number of employees.
+ *   - {number} ratomg - The accountRating from the Client
  *   - {Object} vcard - The processed vcard information, as returned by the `vcardFilter` function.
  */
 function filterAccounts(accounts) {
@@ -47,6 +48,7 @@ function filterAccounts(accounts) {
         industry: account.industry,
         name: account.name? account.name : '',
         numberOfEmployeesCategory: account.numberOfEmployeesCategory? account.numberOfEmployeesCategory : '',
+        rating: account.accountRating,
         vcard: vcardFilter(account.vcard)
     }));
 }
