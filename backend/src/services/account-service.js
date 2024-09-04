@@ -45,8 +45,8 @@ function filterAccounts(accounts) {
         UID: getLastSegment(account.identity),
         fullName: account.fullName,
         industry: account.industry,
-        name: account.name,
-        numberOfEmployeesCategory: account.numberOfEmployeesCategory,
+        name: account.name? account.name : '',
+        numberOfEmployeesCategory: account.numberOfEmployeesCategory? account.numberOfEmployeesCategory : '',
         vcard: vcardFilter(account.vcard)
     }));
 }
@@ -74,6 +74,8 @@ function vcardFilter(vcard) {
     })
     if(extractedData.ADR){  // not every User has an Adress!
         extractedData.ADR = vcardAdressFilter(extractedData.ADR);
+    } else {
+        extractedData.ADR = vcardAdressFilter(";;;;;;")     // = no adress
     }
     return extractedData;
 }
@@ -88,8 +90,8 @@ function vcardFilter(vcard) {
  * @param {string} addressString
  * @returns {Object}
  */
-function vcardAdressFilter(adressString) {
-    const adressAr = adressString.split(';')     // by this i get an array with the length 7 and the adresscomponents
+function vcardAdressFilter(addressString) {
+    const adressAr = addressString.split(';')     // by this i get an array with the length 7 and the addresscomponents
     return {
         STREET: adressAr[2],
         CITY: adressAr[3],

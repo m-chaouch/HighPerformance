@@ -17,7 +17,6 @@ export class DetailedOrderPageComponent implements OnInit{
     order: OrderDatapoint;
     position: PositionDatapoint[];
     clientAccount: AccountDatapoint;
-    sellerAccount: AccountDatapoint;
     overallAmount: number;
     private sub: any;
 

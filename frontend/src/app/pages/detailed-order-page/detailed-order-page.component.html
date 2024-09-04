@@ -1,4 +1,4 @@
-<h2>Details to Contract "{{order.name}}"</h2>
+<h2>Details to Contract "{{order?.name}}"</h2>
 <br>
 <br>
 
@@ -6,7 +6,7 @@
 
     <mat-card appearance="outlined">
         <mat-card-header>
-            <mat-card-title><h1 style="margin-bottom: 0">{{order.name}}</h1></mat-card-title>
+            <mat-card-title><h1 style="margin-bottom: 0">{{order?.name}}</h1></mat-card-title>
         </mat-card-header>
         <mat-card-subtitle>Contract</mat-card-subtitle>
         <br>
@@ -15,45 +15,45 @@
         <mat-card-content>
             <div>
                 <div class="columnLeft">Order number:</div>
-                <div class="columnRight">{{order.contractID}}</div>
+                <div class="columnRight">{{order?.contractID}}</div>
             </div>
             <div>
                 <div class="columnLeft">Seller:</div>
-                <div class="columnRight">{{order.sellerName}}</div>
+                <div class="columnRight">{{order?.sellerName}}</div>
             </div>
 
             <div>
                 <div class="columnLeft">Priority:</div>
-                <div class="columnRight">{{order.priority | transformPriority}}</div>
+                <div class="columnRight">{{order?.priority | transformPriority}}</div>
             </div>
             <div>
                 <div class="columnLeft">State:</div>
-                <div class="columnRight">{{order.state}}</div>
+                <div class="columnRight">{{order?.state}}</div>
             </div>
             <div>
                 <div class="columnLeft">Active from:</div>
-                <div class="columnRight">{{order.activeOn  | date:'yyyy-MM-dd HH:mm:ss' }}</div>
+                <div class="columnRight">{{order?.activeOn  | date:'yyyy-MM-dd HH:mm:ss' }}</div>
             </div>
             <div>
                 <div class="columnLeft">Expires on:</div>
-                <div class="columnRight">{{order.expiresOn  | date:'yyyy-MM-dd HH:mm:ss'}}</div>
+                <div class="columnRight">{{order?.expiresOn  | date:'yyyy-MM-dd HH:mm:ss'}}</div>
             </div>
             <div>
                 <div class="columnLeft">Currency</div>
-                <div class="columnRight">{{order.contractCurrency}}</div>
+                <div class="columnRight">{{order?.contractCurrency}}</div>
             </div>
             <h3 style="margin-top: 15px; margin-bottom: 5px">Pricing</h3>
             <div>
                 <div class="columnLeft">Pricingrule</div>
-                <div class="columnRight">{{order.pricingRule}}</div>
+                <div class="columnRight">{{order?.pricingRule}}</div>
             </div>
             <div>
                 <div class="columnLeft">Pricingstate</div>
-                <div class="columnRight">{{order.pricingState}}</div>
+                <div class="columnRight">{{order?.pricingState}}</div>
             </div>
             <div>
                 <div class="columnLeft">Calculationrule</div>
-                <div class="columnRight">{{order.calcRule}}</div>
+                <div class="columnRight">{{order?.calcRule}}</div>
             </div>
         </mat-card-content>
     </mat-card>
@@ -89,7 +89,7 @@
     </mat-card>
     <mat-card appearance="outlined">
         <mat-card-header>
-        <mat-card-title><h1 style="margin-bottom: 0">{{order.clientName}}</h1></mat-card-title>
+        <mat-card-title><h1 style="margin-bottom: 0">{{order?.clientName}}</h1></mat-card-title>
         </mat-card-header>
         <mat-card-subtitle>Clientname</mat-card-subtitle>
         <br>
@@ -98,31 +98,31 @@
         <mat-card-content>
         <div>
             <div class="columnLeft">ClientID:</div>
-            <div class="columnRight">{{order.clientID}}</div>
+            <div class="columnRight">{{order?.clientID}}</div>
         </div>
         <div>
             <div class="columnLeft">Number of Employee Category:</div>
-            <div class="columnRight">{{clientAccount.numberOfEmployeesCategory}}</div>
+            <div class="columnRight">{{clientAccount?.numberOfEmployeesCategory}}</div>
         </div>
         <div>
             <div class="columnLeft">Street: </div>
-            <div class="columnRight">{{clientAccount.vcard.ADR.STREET}}</div>
+            <div class="columnRight">{{clientAccount?.vcard?.ADR.STREET}}</div>
         </div>
         <div>
             <div class="columnLeft">City: </div>
-            <div class="columnRight">{{clientAccount.vcard.ADR.CITY}}</div>
+            <div class="columnRight">{{clientAccount?.vcard?.ADR.CITY}}</div>
         </div>
         <div>
             <div class="columnLeft">Kanton: </div>
-            <div class="columnRight">{{clientAccount.vcard.ADR.KANTON}}</div>
+            <div class="columnRight">{{clientAccount?.vcard?.ADR.KANTON}}</div>
         </div>
         <div>
             <div class="columnLeft">Postalcode: </div>
-            <div class="columnRight">{{clientAccount.vcard.ADR.POSTALCODE}}</div>
+            <div class="columnRight">{{clientAccount?.vcard?.ADR.POSTALCODE}}</div>
         </div>
         <div>
             <div class="columnLeft">Country: </div>
-            <div class="columnRight">{{clientAccount.vcard.ADR.COUNTRY}}</div>
+            <div class="columnRight">{{clientAccount?.vcard?.ADR.COUNTRY}}</div>
         </div>
         </mat-card-content>
     </mat-card>
