@@ -20,6 +20,7 @@ import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.com
 import {MatTableModule} from '@angular/material/table';
 import { TransformPriorityPipe } from './services/transform-priority.pipe';
 import { DetailedOrderPageComponent } from './pages/detailed-order-page/detailed-order-page.component';
+import { TransformRatingPipe } from './services/transform-rating.pipe';
 
 @NgModule({
     declarations: [
@@ -30,7 +31,8 @@ import { DetailedOrderPageComponent } from './pages/detailed-order-page/detailed
         MenuBarComponent,
         ExamplePageComponent,
         NotFoundPageComponent,
-        DetailedOrderPageComponent
+        DetailedOrderPageComponent,
+        TransformRatingPipe
     ],
     imports: [
         BrowserModule,
