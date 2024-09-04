@@ -179,5 +179,6 @@ module.exports = {
     getPerformanceReport,
     storePerformanceRecord,
     defaultCalculation,
-    updatePerformanceReport
+    updatePerformanceReport,
+    deletePeformanceReport
 };
