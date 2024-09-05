@@ -109,6 +109,7 @@ async function getPerformanceReport(db, salesManId, date) {
 
 /**
  * Updates a performance report for a given salesperson and date.
+ * This method is a general way to update somthing of an peformance report
  * 
  * @param {Object} db - The database connection object.
  * @param {string} salesManId - The ID of the salesperson.
@@ -155,14 +156,13 @@ async function updatePerformanceReport(db, salesManId, date, updateFields, optio
  * @param {number[]} newValues.values - Array of new values corresponding to the criteria.
  * @returns {Promise<Object>} - Resolves with the result of the update operation.
  */
-async function updateSocialCriteria(db, salesManId, date, criterias=[], values=[]) {
+async function updateSocialCriteria(db, salesManId, date, update) {
 
     const updateFields = {};
 
-    // Prepare the update object for nested fields
-    criterias.forEach((criteria, index) => {
-        updateFields[`socialPerformance.${criteria}.actual`] = values[index];
-    });
+    for (const [key, value] of Object.entries(update)) {
+        updateFields[`socialPerformance.${criteria}.actual`] = value;
+    }
 
     // Update the performance report with the new values
     return await updatePerformanceReport(db, salesManId, date, updateFields);
