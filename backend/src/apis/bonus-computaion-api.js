@@ -1,4 +1,4 @@
-const { getPerformanceReport, storePerformanceRecord, updatePerformanceReport, bonusComputation} = require("../services/bonus-computation-service");
+const { getPerformanceReport, storePerformanceRecord, updateSocialCriteria, bonusComputation} = require("../services/bonus-computation-service");
 const { SocialPerformance } = require('../models/SocialPerformance'); //TODO remove this
 const { PerformanceRecord } = require('../models/PerformanceRecord'); 
 const {createDB, deleteDB} = require('../../unit-tests/support/mockdb-new') //TODO remove after testing this and insert the real db into function
@@ -6,6 +6,13 @@ const {createDB, deleteDB} = require('../../unit-tests/support/mockdb-new') //TO
 var db;//TODO needs to be removed onece there is an actual db
 createDB().then(res => db = res).then(() => console.log("db is has started running") );
 
+
+convert = (input) => {
+    return {
+            "salesManId": input.salesManId,
+            "date": Number(input.date) 
+        }
+}
 //TODO implement the api for by using the bonus compution service
 exports.saveSocialPerformance = async function (req, res) {
     const performance = req.body;
@@ -29,8 +36,7 @@ exports.saveSocialPerformance = async function (req, res) {
 
 
 exports.getPerformanceReport = async (req, res) => {
-    const salesManId= req.query.salesManId; // thus accessing the qurey params form the http request from the url
-    const date = Number(req.query.date) // as the date is a stirng, it needs to be converted first
+    const {salesManId, date} = convert(req.query);
     try {
         const result = await getPerformanceReport(db, salesManId, date);
         res.status(200).json(result);
@@ -47,13 +53,14 @@ exports.getPerformanceReport = async (req, res) => {
 
 
 exports.updatePerformanceReport = async (req, res) => {
-    const { salesManId, date } = req.params;
+    const { salesManId, date } = convert(req.params);
+    console.log("salesManId", salesManId);
     const updatedData = req.body;
 
     try {
-        const result = await updatePerformanceReport(db, salesManId, date, updatedData);
+        const result = await updateSocialCriteria(db, salesManId, date, updatedData);
         if (!result) {
-            return res.status(404).json({ error: 'Performance report not found or not updated' });
+            res.status(404).json({ error: 'Performance report not found or not updated' });
         }
         res.status(200).json({ message: 'Performance report updated successfully', result });
     } catch (error) {
@@ -64,7 +71,7 @@ exports.updatePerformanceReport = async (req, res) => {
 
 
 exports.deletePerformanceReport = async (req, res) => {
-    const { salesManId, date } = req.params;
+    const { salesManId, date } = convert(req.params);
 
     try {
         const result = await deletePerformanceReport(db, salesManId, date);
