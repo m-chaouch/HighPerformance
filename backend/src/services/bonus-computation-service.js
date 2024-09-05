@@ -161,7 +161,7 @@ async function updateSocialCriteria(db, salesManId, date, update) {
     const updateFields = {};
 
     for (const [key, value] of Object.entries(update)) {
-        updateFields[`socialPerformance.${criteria}.actual`] = value;
+        updateFields[`socialPerformance.${key}.actual`] = value;
     }
 
     // Update the performance report with the new values
