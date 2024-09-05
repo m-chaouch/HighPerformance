@@ -40,6 +40,20 @@ export class LoginComponent implements OnInit {
         );
     }
 
+
+    goToRegister(): void {
+        /**
+         * The `void` operator is used here to explicitly ignore the Promise
+         * returned by `this.router.navigate()`. This ensures that the return
+         * value (a Promise) is not used or handled further.
+         *
+         * Normally, you could use the returned Promise to wait for the navigation
+         * to complete or to handle errors, but in this case, it is intentionally
+         * ignored as the result of the navigation is not required.
+         */
+        void this.router.navigate(['/register']);
+    }
+
     /**
      * resets login form
      */
