@@ -89,7 +89,8 @@ async function storePerformanceRecord(db, performanceRecord) {
 async function getPerformanceReport(db, salesManId, date) {
     try {
         const collection = db.collection(collectionName);
-        const query = { salesManId, date };
+        const query = {salesManId, date };
+        console.log("id: ",salesManId); // TODO remove after testing
         const report = await collection.findOne(query);
 
         if (!report) {
