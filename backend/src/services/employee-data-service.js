@@ -50,6 +50,7 @@ async function employeeDataService() {
                 unit: employee.unit
             }));
 
+        console.log('Employee data:', employees);
         // Ausgabe der gefilterten Mitarbeiterdaten in der Konsole
         console.log('Employee data:', filteredEmployees);
 
@@ -62,5 +63,6 @@ async function employeeDataService() {
     }
 }
 
+//employeeDataService();
 // Export der employeeDataService-Funktion zur Verwendung in anderen Modulen
 exports.getEmployeeService = employeeDataService;
