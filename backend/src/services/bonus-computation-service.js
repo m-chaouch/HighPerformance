@@ -47,7 +47,7 @@ function bonusComputation(socialPerformance, calculation = defaultCalculation) {
     let totalBonus = 0;
 
     for (const key in socialPerformance) {
-        if (Object.prototype.hasOwnProperty.call(socialPerformance, key)) {
+        if (SocialPerformance.prototype.hasOwnProperty.call(socialPerformance, key)) {
             bonus[key] = calculation(socialPerformance[key]);
             totalBonus += bonus[key];
         }
