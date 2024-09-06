@@ -30,4 +30,23 @@ router.get('/performance-report', bonusApi.getPerformanceReport);
 router.put('/performance-report/:salesManId/:date', bonusApi.updatePerformanceReport);
 router.delete('/performance-report/:salesManId/:date', bonusApi.deletePerformanceReport);
 
+const orderApi = require ('../apis/order-data-api');
+router.get('/orders', orderApi.getOrderData);
+router.get('/orders/:id', orderApi.getOrderData);
+
+const accountApi = require('../apis/account-data-api');
+router.get('/accounts', accountApi.getAccountData);
+router.get('/accounts/:id', accountApi.getAccountData);
+
+const productApi = require('../apis/product-data-api');
+router.get('/products', productApi.getProductData);
+router.get('/products/:id', productApi.getProductData);
+
+const positionApi = require('../apis/position-api');
+router.get('/positions/:id', positionApi.getPositionData);  // works only with SOID
+
+
+
+
+
 module.exports = router;

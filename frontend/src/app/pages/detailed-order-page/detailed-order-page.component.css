@@ -1,0 +1,59 @@
+.mat-mdc-card{
+    border-radius: 25px;
+    width: 25vw;
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+
+.mat-mdc-card-subtitle{
+    margin-top: 0;
+    padding-left: 25px;
+}
+mat-card-content{
+    width: 100%;
+}
+
+
+h1{
+    font-size: 30px;
+}
+
+h2{
+    font-size: 20px;
+}
+
+h3{
+    font-size: 18px;
+    font-weight: 500;
+}
+
+p{
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.orderDetails{
+    display: flex;
+    width: max-content;
+}
+
+.columnLeft{
+    display: inline-block;
+    text-align: left;
+    vertical-align: top;
+    margin-top: 10px;
+    margin-right: 15px;
+    width: 25%;
+}
+
+.columnRight{
+    display: inline-block;
+    text-align: left;
+    margin-top: 10px;
+    width: 70%;
+    font-weight: 500;
+}
+
+div{
+    all:unset;
+}

@@ -18,6 +18,9 @@ import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
 import { ExamplePageComponent } from './pages/example-page/example-page.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import {MatTableModule} from '@angular/material/table';
+import { TransformPriorityPipe } from './services/transform-priority.pipe';
+import { DetailedOrderPageComponent } from './pages/detailed-order-page/detailed-order-page.component';
+import { TransformRatingPipe } from './services/transform-rating.pipe';
 
 @NgModule({
     declarations: [
@@ -27,7 +30,9 @@ import {MatTableModule} from '@angular/material/table';
         LandingPageComponent,
         MenuBarComponent,
         ExamplePageComponent,
-        NotFoundPageComponent
+        NotFoundPageComponent,
+        DetailedOrderPageComponent,
+        TransformRatingPipe
     ],
     imports: [
         BrowserModule,
@@ -40,7 +45,8 @@ import {MatTableModule} from '@angular/material/table';
         MatCardModule,
         MatToolbarModule,
         MatIconModule,
-        MatTableModule
+        MatTableModule,
+        TransformPriorityPipe
     ],
     providers: [],
     bootstrap: [AppComponent]
