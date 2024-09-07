@@ -50,14 +50,4 @@ class SalesPerformance {
     }
 }
 
-// Example usage of the SalesPerformance class
-const salesPerformance = new SalesPerformance();
 
-// Add a new company with default details
-salesPerformance.addCompanyToList({company: "Example Company", rating: "High"});
-
-// Adding sales to a company, handling case where company might not exist
-salesPerformance.addSales("Example Company", 33);
-
-// Output the details of a specific company
-console.log(salesPerformance.getEntry("Example Company"));
