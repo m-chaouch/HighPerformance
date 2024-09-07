@@ -1,6 +1,6 @@
-const { getPerformanceReport, storePerformanceRecord, updateSocialCriteria, bonusComputation, deletePeformanceReport} = require("../services/bonus-computation-service");
+const { getPerformanceReport, storePerformanceRecord, updateSocialCriteria, deletePeformanceReport} = require("../services/performance-report-service");
 const { SocialPerformance } = require('../models/SocialPerformance'); //TODO remove this
-const { PerformanceRecord } = require('../models/PerformanceRecord'); 
+const { PerformanceRecord } = require('../models/PerformanceRecord');
 const {createDB, deleteDB} = require('../../unit-tests/support/mockdb-new') //TODO remove after testing this and insert the real db into function
 
 var db;//TODO needs to be removed onece there is an actual db
@@ -92,5 +92,5 @@ const socialPerformance = new SocialPerformance({
     integrityToCompany: { actual: 7, target: 4 } // Exceeds target
 });
 
-const calculatedBonuses = bonusComputation(socialPerformance);
-console.log('Calculated Bonuses:', calculatedBonuses);
+//const calculatedBonuses = bonusComputation(socialPerformance); //TODO fix
+//console.log('Calculated Bonuses:', calculatedBonuses);
