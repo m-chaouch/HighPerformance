@@ -1,0 +1,8 @@
+{
+  "leadershipCompetence": { "actual": 0, "target": 4 },
+  "opennessToEmployee": { "actual": 0, "target": 4 },
+  "socialBehaviourToEmployee": { "actual": 0, "target": 4 },
+  "attitudeTowardsClients": { "actual": 0, "target": 4 },
+  "communicationSkills": { "actual": 0, "target": 4 },
+  "integrityToCompany": { "actual": 0, "target": 4 }
+}
