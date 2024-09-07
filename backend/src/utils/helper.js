@@ -4,6 +4,7 @@ const path = require('path');
 // Define paths to JSON files
 const pathToRating = './ratingToNumber.json';
 const pathToSocialFactors ='./socialScoreFactors.json';
+const pathSocialPer = './defualtsForSocialPerformance.json';
 
 
 /**
@@ -15,12 +16,11 @@ const pathToSocialFactors ='./socialScoreFactors.json';
 function getLastSegment(URL) {     // gets the last segment of the URL of the salesRep attribute (= UID = "SellerID").
     return URL.substring(URL.lastIndexOf('/')+1);
 }
-
 /**
- * Reads and optionally filters JSON data from a file.
- * @param {string} filterForAttribute - Specific attribute to filter from JSON object.
- * @param {string} pathToJson - Path to the JSON file.
- * @returns {Object|any} The entire JSON object or a filtered attribute.
+ * Reads JSON data from a file and optionally filters for a specific attribute.
+ * @param {string} filterForAttribute - The attribute to filter, if any.
+ * @param {string} pathToJson - The file path to the JSON file.
+ * @returns {Object|any} - The entire JSON object or a filtered attribute.
  */
 function readJson(filterForAttribute, pathToJson) {
     const filePath = path.join(__dirname, pathToJson);
@@ -30,14 +30,12 @@ function readJson(filterForAttribute, pathToJson) {
 }
 
 /**
- * Updates JSON data in a file with new values.
- * @param {Object} newValues - The new values to update in the JSON file.
- * @param {string} pathToJson - Path to the JSON file.
+ * Updates JSON data in a file with new values for existing keys.
+ * @param {Object} newValues - New values to update in the JSON file.
+ * @param {string} pathToJson - The file path to the JSON file.
  */
 function updateJson(newValues, pathToJson) {
-    if (!newValues) {
-        throw new Error("No update object given");
-    }
+    if (!newValues) throw new Error("No update object given");
 
     const filePath = path.join(__dirname, pathToJson);
     const jsonData = readJson(null, pathToJson);
@@ -53,33 +51,33 @@ function updateJson(newValues, pathToJson) {
 }
 
 /**
- * Reads rating conversion data, optionally filtering for a specific rating.
- * @param {string} specificRating - Specific rating to retrieve.
- * @returns {any} The rating conversion data, either filtered or whole.
+ * Reads and optionally filters rating conversion data from JSON.
+ * @param {string} specificRating - Specific rating to filter, if any.
+ * @returns {any} - The rating conversion data, either filtered or whole.
  */
 function readRatingConversion(specificRating) {
     return readJson(specificRating, pathToRating);
 }
 
 /**
- * Updates the rating-to-number JSON data.
- * @param {Object} newValues - New values to update in the rating JSON.
+ * Updates the rating-to-number data in the JSON file.
+ * @param {Object} newValues - New values for the rating data.
  */
 function updateRatingToNumber(newValues) {
     updateJson(newValues, pathToRating);
 }
 
 /**
- * Reads the social scores from the JSON file.
- * @returns {Object} The entire social score data.
+ * Reads social scores from a JSON file.
+ * @returns {Object} - Social score data.
  */
 function readSocialScores() {
     return readJson(null, pathToSocialFactors);
 }
 
 /**
- * Updates the social factors in the JSON file after filtering out null and undefined values.
- * @param {Object} newValue - New values to update, provided as an object.
+ * Updates social factors in the JSON file, filtering out null and undefined values first.
+ * @param {Object} newValue - New values to update.
  */
 function updateSocialFactors(newValue = {bonusFactor, additionalBonus}) {
     const filteredValues = copyNonNullUndefined(newValue);
@@ -87,9 +85,9 @@ function updateSocialFactors(newValue = {bonusFactor, additionalBonus}) {
 }
 
 /**
- * Filters an object by removing any properties that are null or undefined.
+ * Filters an object, removing any properties that are null or undefined.
  * @param {Object} obj - The object to filter.
- * @returns {Object} A new object containing only non-null and non-undefined properties.
+ * @returns {Object} - A new object with only non-null, non-undefined properties.
  */
 const copyNonNullUndefined = (obj) => {
     let result = {};
@@ -101,16 +99,26 @@ const copyNonNullUndefined = (obj) => {
     return result;
 };
 
-// Export functions
+/**
+ * Reads default values for social performance from a JSON file.
+ * @returns {Object} - Default values for social performance.
+ */
+function defaultValueSocialPer() {
+    return readJson(null, pathSocialPer);
+}
+
+/**
+ * Updates default values for social performance in the JSON file.
+ * @param {Object} newValues - New values to update.
+ */
+function updateValuesSocialPer(newValues) {
+    updateJson(newValues, pathSocialPer);
+}
+
+// Export functions for use in other modules.
 module.exports = {
     getLastSegment,
-    readRatingConversion,
-    updateRatingToNumber,
-    readSocialScores,
-    updateSocialFactors
+    readRatingConversion, updateRatingToNumber,
+    readSocialScores, updateSocialFactors,
+    defaultValueSocialPer, updateValuesSocialPer
 };
-// Example usage
-console.log(readRatingConversion()); // Reading and printing conversion ratings
-console.log(readSocialScores()); // Reading and printing social scores
-updateSocialFactors({bonusFactor: 25}); // Updating social factors
-console.log(readSocialScores()); // Reading and printing updated social score
