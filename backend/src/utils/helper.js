@@ -68,11 +68,11 @@ function updateRatingToNumber(newValues) {
 }
 
 /**
- * Reads social scores from a JSON file.
+ * Reads social scores from a JSON file for calculating bonus.
  * @returns {Object} - Social score data.
  */
-function readSocialScores() {
-    return readJson(null, pathToSocialFactors);
+function readSocialScores(attribute) {
+    return readJson(attribute, pathToSocialFactors);
 }
 
 /**
@@ -103,8 +103,8 @@ const copyNonNullUndefined = (obj) => {
  * Reads default values for social performance from a JSON file.
  * @returns {Object} - Default values for social performance.
  */
-function defaultValueSocialPer() {
-    return readJson(null, pathSocialPer);
+function defaultValueSocialPer(attribute) {
+    return readJson(attribute , pathSocialPer);
 }
 
 /**
