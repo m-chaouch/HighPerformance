@@ -1,3 +1,5 @@
+const {SocialPerformance} = require("./SocialPerformance");
+
 /**
  * Class representing sales performance for various companies.
  * Tracks each company's rating and the total quantity of items sold.
@@ -48,6 +50,34 @@ class SalesPerformance {
     getEntry(company) {
         return this.list[company];
     }
+    getSalesList() {
+        return JSON.parse(JSON.stringify(this.list));
+    }
 }
 
+exports.SalesPerformance = SalesPerformance;
+
+const salesPerf = new SalesPerformance();
+
+
+// Adding sales data
+salesPerf.addCompanyToList({ company: "Innovative Tech", rating: "none" });
+salesPerf.addSales("Innovative Tech", 200);
+salesPerf.addCompanyToList({ company: "Eco Solutions", rating: "good" });
+salesPerf.addSales("Eco Solutions", 150);
+salesPerf.addCompanyToList({ company: "Green Energy", rating: "good" });
+salesPerf.addSales("Green Energy", 180);
+salesPerf.addCompanyToList({ company: "Tech Dynamics", rating: "excellent" });
+salesPerf.addSales("Tech Dynamics", 100);
+
+console.log(salesPerf.getSalesList())
+
+// Correct usage based on your script
+console.log(salesPerf.getSalesList());
+// Correct usage based on your script
+console.log(salesPerf.getSalesList());
+
+Object.keys(salesPerf.getSalesList()).forEach(key => {
+    console.log(key); // This should correctly log each company name
+});
 
