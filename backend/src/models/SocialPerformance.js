@@ -1,15 +1,9 @@
 /**
  * This class is used as a template for frontend and MongoDB to save the SocialPerformance.
  */
+const {defaultValueSocialPer} = require('../utils/helper')
 class SocialPerformance {
-    constructor(defaults = {
-        leadershipCompetence: { actual: 0, target: 4 },
-        opennessToEmployee: { actual: 0, target: 4 },
-        socialBehaviourToEmployee: { actual: 0, target: 4 },
-        attitudeTowardsClients: { actual: 0, target: 4 },
-        communicationSkills: { actual: 0, target: 4 },
-        integrityToCompany: { actual: 0, target: 4 }
-    }) {
+    constructor(defaults = defaultValueSocialPer()) {
         // Initialize properties with default values and frezzes the object
         this.leadershipCompetence = defaults.leadershipCompetence;
         this.opennessToEmployee = defaults.opennessToEmployee;
@@ -51,6 +45,7 @@ class SocialPerformance {
         };
     }
 }
+console.log(new SocialPerformance())
 
 // Export the SocialPerformance class for use in other modules
 exports.SocialPerformance = SocialPerformance;
