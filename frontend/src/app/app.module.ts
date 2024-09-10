@@ -21,7 +21,8 @@ import {MatTableModule} from '@angular/material/table';
 import { TransformPriorityPipe } from './services/transform-priority.pipe';
 import { DetailedOrderPageComponent } from './pages/detailed-order-page/detailed-order-page.component';
 import { TransformRatingPipe } from './services/transform-rating.pipe';
-import { BonusComputationPageComponent } from './pages/bonus-computation-page/bonus-computation-page.component';
+import { OrdersEvaluationComponent } from './components/orders-evaluation/orders-evaluation.component';
+import { PerformanceReportPageComponent } from './pages/performance-report-page/performance-report-page.component';
 
 @NgModule({
     declarations: [
@@ -34,7 +35,8 @@ import { BonusComputationPageComponent } from './pages/bonus-computation-page/bo
         NotFoundPageComponent,
         DetailedOrderPageComponent,
         TransformRatingPipe,
-        BonusComputationPageComponent
+        OrdersEvaluationComponent,
+        PerformanceReportPageComponent
     ],
     imports: [
         BrowserModule,
