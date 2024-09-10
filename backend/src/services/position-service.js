@@ -1,6 +1,7 @@
 const {getLastSegment} = require('../utils/helper');
 const {loginService} = require("./login-service");
 const {fetchProducts} = require('./product-service');
+const {CRX_URL} = require("../utils/SaaSURLs");
 
 
 /**
@@ -17,7 +18,7 @@ const {fetchProducts} = require('./product-service');
  *
  */
 async function fetchPositions(SOID){
-    const responseData = await loginService(`https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX/org.opencrx.kernel.contract1/provider/CRX/segment/Standard/salesOrder/${SOID}/position`)
+    const responseData = await loginService(CRX_URL + `opencrx-rest-CRX/org.opencrx.kernel.contract1/provider/CRX/segment/Standard/salesOrder/${SOID}/position`)
     return filterPositions(responseData);
 }
 

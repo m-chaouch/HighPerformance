@@ -1,5 +1,8 @@
 const {loginService} = require('./login-service');
 const {getLastSegment} = require("../utils/helper");
+const {CRX_URL} = require("../utils/SaaSURLs");
+
+
 
 
 /**
@@ -17,7 +20,7 @@ const {getLastSegment} = require("../utils/helper");
  *   - An empty array if no account is found with the specified UID.
  */
 async function fetchAccounts(UID="") {
-    const accounts = await loginService(`https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX/org.opencrx.kernel.account1/provider/CRX/segment/Standard/account/${UID}`);
+    const accounts = await loginService(CRX_URL + `opencrx-rest-CRX/org.opencrx.kernel.account1/provider/CRX/segment/Standard/account/${UID}`);
     return filterAccounts(accounts);        // returns an array of objects
 }
 

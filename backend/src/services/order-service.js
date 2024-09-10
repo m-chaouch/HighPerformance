@@ -1,6 +1,7 @@
 const {loginService} = require('./login-service');
 const{getLastSegment} = require('../utils/helper');
 const {getAccountName} = require("./account-service");
+const {CRX_URL} = require("../utils/SaaSURLs");
 
 
 /**
@@ -13,7 +14,7 @@ const {getAccountName} = require("./account-service");
  * @returns {Promise<Object[]>} A promise that resolves to an object containing the orders.
  */
 async function fetchOrders(SOID = ""){
-    const responseData = await loginService(`https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX/org.opencrx.kernel.contract1/provider/CRX/segment/Standard/salesOrder/${SOID}`);
+    const responseData = await loginService(CRX_URL + `opencrx-rest-CRX/org.opencrx.kernel.contract1/provider/CRX/segment/Standard/salesOrder/${SOID}`);
     return await filterOrders(responseData);
 }
 
