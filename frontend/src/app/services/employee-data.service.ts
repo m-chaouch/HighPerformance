@@ -48,30 +48,9 @@ import {environment} from '../../../environments/environment';
 })
 
 export class EmployeeDataService {
-    employee: EmployeeDatapoint[] = [];
     constructor(private http: HttpClient) { }
 
     getEmployeeData(): Observable<HttpResponse<EmployeeDatapoint[]>> {
         return this.http.get<EmployeeDatapoint[]>(environment.apiEndpoint + '/api/employee', {observe: 'response', withCredentials: true});
-    }
-
-    /**
-     * Ruft Mitarbeiterdaten vom Backend ab, indem der EmployeeDataService verwendet wird.
-     * Die abgerufenen Daten werden im `employee`-Array gespeichert.
-     * Fehler werden durch eine Ausgabe in der Konsole behandelt.
-     */
-    fetchEmployee(): EmployeeDatapoint[] {
-        if (this.employee.length === 0) {
-            this.getEmployeeData().subscribe((response): EmployeeDatapoint[] => {
-                if (response.status === 200) {
-                    this.employee = response.body || [];
-                    return this.employee;
-                }
-            }, error => {
-                console.error('Fehler beim Abrufen der Mitarbeiterdaten:', error);
-            });
-        } else {
-            return this.employee;
-        }
     }
 }

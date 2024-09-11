@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EmployeeDataService } from '../../services/employee-data.service';
-import { EmployeeDatapoint } from '../../interfaces/employee-datapoint';
-import { MatTableModule } from '@angular/material/table';
+import { EmployeeDatapoint } from "../../interfaces/employee-datapoint";
+import { MatTableModule } from "@angular/material/table";
 
 /**
  * EmployeePageComponent
@@ -48,6 +48,21 @@ export class EmployeePageComponent implements OnInit {
      * Diese Methode ruft die fetchEmployee()-Methode auf, um die Mitarbeiterdaten beim Erstellen der Komponente zu laden.
      */
     ngOnInit(): void {
-        this.employee = this.employeeDataService.fetchEmployee();
+        this.fetchEmployee();
+    }
+
+    /**
+     * Ruft Mitarbeiterdaten vom Backend ab, indem der EmployeeDataService verwendet wird.
+     * Die abgerufenen Daten werden im `employee`-Array gespeichert.
+     * Fehler werden durch eine Ausgabe in der Konsole behandelt.
+     */
+    fetchEmployee(): void {
+        this.employeeDataService.getEmployeeData().subscribe((response): void => {
+            if (response.status === 200) {
+                this.employee = response.body || [];
+            }
+        }, error => {
+            console.error('Fehler beim Abrufen der Mitarbeiterdaten:', error);
+        });
     }
 }
