@@ -48,7 +48,7 @@ async function getPerformanceReport(db, salesManId) {
         const collection = db.collection(collectionName);
 
         console.log("id: ",salesManId); // TODO remove after testing
-        const report = await collection.findOne(salesManId);
+        const report = await collection.find(salesManId).toArray();   // a salesman can have multiple performance reports (different years)
 
         if (!report) {
             throw new Error('Performance report not found.');
@@ -145,9 +145,9 @@ async function deletePeformanceReport(db, salesManId, date) {
 
 }
 
-async function getAllPerformanceReports(db) {
-    return await db.collection(collectionName).find({}).toArray();
-}
+// async function getAllPerformanceReports(db) {
+//     return await db.collection(collectionName).find({}).toArray();
+// }
 
 
 module.exports = {
@@ -155,7 +155,7 @@ module.exports = {
     getPerformanceReport,
     updatePerformanceReport,
     updateSocialCriteria,
-    getAllPerformanceReports
+    // getAllPerformanceReports
 }
 
 

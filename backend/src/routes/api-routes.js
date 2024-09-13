@@ -30,7 +30,7 @@ router.post('/performance-record', bonusApi.saveSocialPerformance);
 router.get('/performance-report/:salesManId', bonusApi.getPerformanceReport);
 router.put('/performance-report/:salesManId/:date', bonusApi.updatePerformanceReport);
 router.delete('/performance-report/:salesManId/:date', bonusApi.deletePerformanceReport);
-router.get('/performance-reports', bonusApi.getAllPerformanceReports)
+// router.get('/performance-reports', bonusApi.getAllPerformanceReports)
 
 const orderApi = require ('../apis/order-data-api');
 router.get('/orders', orderApi.getOrderData);

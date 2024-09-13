@@ -95,15 +95,15 @@ exports.deletePerformanceReport = async (req, res) => {
     }
 };
 
-exports.getAllPerformanceReports = async (req, res) => {
-    try{
-        const db = req.app.get('db');
-        const result = await getAllPerformanceReports(db);
-        res.status(200).send(result)
-    } catch (error) {
-        console.error('Error deleting performance report:', error);
-    }
-}
+// exports.getAllPerformanceReports = async (req, res) => {
+//     try{
+//         const db = req.app.get('db');
+//         const result = await getAllPerformanceReports(db);
+//         res.status(200).send(result)
+//     } catch (error) {
+//         console.error('Error deleting performance report:', error);
+//     }
+// }
 
 //TODO remove this
 const socialPerformance = new SocialPerformance({
