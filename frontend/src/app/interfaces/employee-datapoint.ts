@@ -5,7 +5,8 @@
  */
 
 export interface EmployeeDatapoint {
-    employeeId: string;
+    employeeCode: string;
+    employeeId: number;
     firstName: string;
     lastName: string;
     unit: string | null; // unit can be null, so it's good to handle it

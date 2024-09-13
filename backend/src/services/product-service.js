@@ -17,7 +17,7 @@ const {CRX_URL} = require("../utils/SaaSURLs");
  *   - An array of product objects if no PID is provided.
  *   - An empty array if no products are found and no PID is specified.
  */
-async function fetchProducts(PID = "") {
+async function fetchProducts(PID) {
     const products = await loginService(CRX_URL + `/opencrx-rest-CRX/org.opencrx.kernel.product1/provider/CRX/segment/Standard/product/${PID}`);
     return filterProducts(products);
      // Return an array of all product objects if no PID is provided

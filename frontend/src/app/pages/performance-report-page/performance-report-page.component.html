@@ -1,1 +1,31 @@
-<p>performance-report-page works!</p>
+<h1>All Performance Reports</h1>
+
+<div class="order-list">
+    <table mat-table [dataSource]="salesmen" class="mat-elevation-z8 demo-table">
+
+        <ng-container matColumnDef="salesmanName">
+            <th mat-header-cell *matHeaderCellDef>Employee Name</th>
+            <td mat-cell *matCellDef="let salesmen">{{salesmen.firstName +' '+ salesmen.lastName}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="salesmanId">
+            <th mat-header-cell *matHeaderCellDef>Government ID</th>
+            <td mat-cell *matCellDef="let salesmen">{{salesmen.employeeCode}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="department">
+            <th mat-header-cell *matHeaderCellDef>Department</th>
+            <td mat-cell *matCellDef="let salesmen">{{salesmen.unit}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="totalBonus">
+            <th mat-header-cell *matHeaderCellDef>totalBonus</th>
+            <td mat-cell *matCellDef="let salesmen"></td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let salesmen; columns: displayedColumns" (click)=handleSalesmanClick(salesmen.employeeId)></tr>
+    </table>
+</div>
+

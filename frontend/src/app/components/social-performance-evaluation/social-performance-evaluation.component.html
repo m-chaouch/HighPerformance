@@ -1,21 +1,16 @@
 <table mat-table [dataSource]="" class="mat-elevation-z8">
     <!-- Name Column -->
-    <ng-container matColumnDef="productName">
+    <ng-container matColumnDef="Criteria">
         <th mat-header-cell *matHeaderCellDef> Product Name </th>
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="Client">
+    <ng-container matColumnDef="Target Value">
         <th mat-header-cell *matHeaderCellDef> Product Name </th>
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="Client Ranking">
-        <th mat-header-cell *matHeaderCellDef> Product Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="Items">
+    <ng-container matColumnDef="Actual Value">
         <th mat-header-cell *matHeaderCellDef> Product Name </th>
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>
     </ng-container>

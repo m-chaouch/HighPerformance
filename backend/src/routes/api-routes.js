@@ -23,12 +23,14 @@ router.get('/people', checkAuthorization(), peopleDemoApi.getPeople);
 
 const employeeApi = require('../apis/employee-data-api');
 router.get('/employee', checkAuthorization(), employeeApi.getEmployeeData);
+router.get('/employee/:id', checkAuthorization(), employeeApi.getOneEmployee); //needs employeeID not code
 
 const bonusApi = require('../apis/bonus-computaion-api');
 router.post('/performance-record', bonusApi.saveSocialPerformance);
-router.get('/performance-report', bonusApi.getPerformanceReport);
+router.get('/performance-report/:salesManId', bonusApi.getPerformanceReport);
 router.put('/performance-report/:salesManId/:date', bonusApi.updatePerformanceReport);
 router.delete('/performance-report/:salesManId/:date', bonusApi.deletePerformanceReport);
+router.get('/performance-reports', bonusApi.getAllPerformanceReports)
 
 const orderApi = require ('../apis/order-data-api');
 router.get('/orders', orderApi.getOrderData);

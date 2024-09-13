@@ -1,6 +1,6 @@
 const {loginService} = require('./login-service');
 const{getLastSegment} = require('../utils/helper');
-const {getAccountName} = require("./account-service");
+const {getAccountName, fetchAccounts} = require("./account-service");
 const {CRX_URL} = require("../utils/SaaSURLs");
 
 
@@ -62,6 +62,7 @@ async function filterOrders(responseData) {
         clientName: await getAccountName(getLastSegment(order.customer['@href'])),
         totalAmount: Number(order.totalAmount),
         totalAmountIncludingTax: Number(order.totalAmountIncludingTax),
+        createdAt: order.createdAt,
         activeOn: order.activeOn,
         expiresOn: order.expiresOn,
         contractCurrency: getCurrency(order.contractCurrency),
@@ -110,6 +111,27 @@ function getPricingState(pricingState) {
     const PricingStateObject = {0: 'none', 10: 'Recalculation necessary', 20: 'Ok'};        // add missing pricingstates here
     return PricingStateObject[pricingState];
 }
+
+/**
+ *
+ * @param governmentId
+ * @param orders
+ * @param accounts
+ * @returns {Promise<*>}
+ */
+async function getOrdersOfEmployee(governmentId, orders, accounts) {
+    const UID = GovIDtoUID(governmentId,accounts)
+
+    const ordersOfSalesman = orders.filter(item => {
+        return item.sellerID === UID    //erstmal zum testen UID benutzen
+    })
+    return ordersOfSalesman
+}
+
+function GovIDtoUID(GovID, accounts){
+    return (accounts.find(item => item.governmentId === GovID)).UID
+}
 module.exports = {
-    fetchOrders
+    fetchOrders,
+    getOrdersOfEmployee
 }

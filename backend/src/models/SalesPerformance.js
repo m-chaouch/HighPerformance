@@ -25,7 +25,7 @@ class SalesPerformance {
      */
     addCompanyToList({company = "not defined", rating = "not defined"} = {}) {
         if (this.list.hasOwnProperty(company)) {
-            throw new Error("Company already exists in sales performance");
+            throw new Error(company + " already exists in sales performance");
         }
         this.list[company] = { rating, soldQuantity: 0 };
     }
@@ -70,14 +70,14 @@ salesPerf.addSales("Green Energy", 180);
 salesPerf.addCompanyToList({ company: "Tech Dynamics", rating: "excellent" });
 salesPerf.addSales("Tech Dynamics", 100);
 
-console.log(salesPerf.getSalesList())
-
-// Correct usage based on your script
-console.log(salesPerf.getSalesList());
-// Correct usage based on your script
-console.log(salesPerf.getSalesList());
+// console.log(salesPerf.getSalesList())
+//
+// // Correct usage based on your script
+// console.log(salesPerf.getSalesList());
+// // Correct usage based on your script
+// console.log(salesPerf.getSalesList());
 
 Object.keys(salesPerf.getSalesList()).forEach(key => {
-    console.log(key); // This should correctly log each company name
+    // console.log(key); // This should correctly log each company name
 });
 

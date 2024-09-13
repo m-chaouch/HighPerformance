@@ -23,6 +23,8 @@ import { DetailedOrderPageComponent } from './pages/detailed-order-page/detailed
 import { TransformRatingPipe } from './services/transform-rating.pipe';
 import { OrdersEvaluationComponent } from './components/orders-evaluation/orders-evaluation.component';
 import { PerformanceReportPageComponent } from './pages/performance-report-page/performance-report-page.component';
+import { PerformanceReviewPageComponent } from './pages/performance-review-page/performance-review-page.component';
+import { SocialPerformanceEvaluationComponent } from './components/social-performance-evaluation/social-performance-evaluation.component';
 
 @NgModule({
     declarations: [
@@ -36,7 +38,9 @@ import { PerformanceReportPageComponent } from './pages/performance-report-page/
         DetailedOrderPageComponent,
         TransformRatingPipe,
         OrdersEvaluationComponent,
-        PerformanceReportPageComponent
+        PerformanceReportPageComponent,
+        PerformanceReviewPageComponent,
+        SocialPerformanceEvaluationComponent
     ],
     imports: [
         BrowserModule,

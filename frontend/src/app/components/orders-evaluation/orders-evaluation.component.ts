@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import {PerformanceReportDatapoint} from '../../interfaces/performance-report-datapoint';
 
 @Component({
     selector: 'app-orders-evaluation',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
     styleUrls: ['./orders-evaluation.component.css']
 })
 export class OrdersEvaluationComponent {
-
+    @Input() performanceReport: PerformanceReportDatapoint;
 }

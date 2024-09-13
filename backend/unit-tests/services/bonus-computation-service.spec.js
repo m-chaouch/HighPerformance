@@ -52,7 +52,7 @@ async function test() {
     await closeDB(db);
 }
 
-test();
-
-
-test();
+// test();
+//
+//
+// test();

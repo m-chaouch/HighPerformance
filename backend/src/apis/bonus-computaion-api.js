@@ -1,20 +1,29 @@
-const { getPerformanceReport, storePerformanceRecord, updateSocialCriteria, deletePeformanceReport} = require("../services/performance-report-service");
+const { getPerformanceReport, storePerformanceRecord, updateSocialCriteria, deletePeformanceReport, getAllPerformanceReports} = require("../services/performance-report-service");
 const { SocialPerformance } = require('../models/SocialPerformance'); //TODO remove this
 const { PerformanceRecord } = require('../models/PerformanceRecord');
 const {createDB, deleteDB} = require('../../unit-tests/support/mockdb-new') //TODO remove after testing this and insert the real db into function
-
-var db;//TODO needs to be removed onece there is an actual db
-createDB().then(res => db = res).then(() => console.log("db is has started running") );
+const express = require('express');
+const app = express();
+// var db = req.app.get('db');//TODO needs to be removed onece there is an actual db
+// createDB().then(res => db = res).then(() => console.log("db is has started running") );
 
 
 convert = (input) => {
-    return {
+    if(input.date){
+        return {
             "salesManId": input.salesManId,
-            "date": Number(input.date) 
+            "date": input.date
         }
+    } else {
+        return {
+            "salesManId": input.salesManId,
+        }
+    }
+
 }
 //TODO implement the api for by using the bonus compution service
 exports.saveSocialPerformance = async function (req, res) {
+    const db = req.app.get('db');
     const performance = req.body;
     try {
         if (!performance instanceof PerformanceRecord || performance === null)
@@ -36,9 +45,11 @@ exports.saveSocialPerformance = async function (req, res) {
 
 
 exports.getPerformanceReport = async (req, res) => {
-    const {salesManId, date} = convert(req.query);
+    const db = req.app.get('db');
+    // console.log(db)
+    const salesManId = req.params;
     try {
-        const result = await getPerformanceReport(db, salesManId, date);
+        const result = await getPerformanceReport(db, salesManId);
         res.status(200).json(result);
     } catch (error) {
         console.error('Error fetching performance report:', error);
@@ -53,6 +64,7 @@ exports.getPerformanceReport = async (req, res) => {
 
 
 exports.updatePerformanceReport = async (req, res) => {
+    const db = req.app.get('db');
     const { salesManId, date } = convert(req.params);
     console.log("salesManId", salesManId);
     const updatedData = req.body;
@@ -71,6 +83,7 @@ exports.updatePerformanceReport = async (req, res) => {
 
 
 exports.deletePerformanceReport = async (req, res) => {
+    const db = req.app.get('db');
     const { salesManId, date } = convert(req.params);
 
     try {
@@ -81,6 +94,16 @@ exports.deletePerformanceReport = async (req, res) => {
         res.status(500).json({ error: 'An unexpected error occurred' });
     }
 };
+
+exports.getAllPerformanceReports = async (req, res) => {
+    try{
+        const db = req.app.get('db');
+        const result = await getAllPerformanceReports(db);
+        res.status(200).send(result)
+    } catch (error) {
+        console.error('Error deleting performance report:', error);
+    }
+}
 
 //TODO remove this
 const socialPerformance = new SocialPerformance({

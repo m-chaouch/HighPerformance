@@ -34,3 +34,12 @@ exports.getEmployeeData = function (req, res) {
         res.status(500).send()
     })
 }
+
+exports.getOneEmployee = function (req, res) {
+    const id = req.params.id;
+    employeeDataService.getOneEmployeeService(id).then(employeeData => {
+        res.send(employeeData);
+    }).catch( _ => {
+        res.status(500).send()
+    })
+}

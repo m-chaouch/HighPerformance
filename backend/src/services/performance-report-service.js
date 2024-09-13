@@ -11,7 +11,7 @@ const {bonusComputation} = require('../../src/services/bonus-computation-service
 
 
 
-const collectionName = 'sales_man'; // Consider using snake_case for consistency
+const collectionName = 'Performance_Reports'; // Consider using snake_case for consistency
 /**
  * Stores a performance record in the database.
  *
@@ -43,12 +43,12 @@ async function storePerformanceRecord(db, performanceRecord) {
  * @returns {Promise<PerformanceRecord>} - Resolves with the performance report.
  * @throws {Error} - Throws an error if there is an issue with retrieving the report.
  */
-async function getPerformanceReport(db, salesManId, date) {
+async function getPerformanceReport(db, salesManId) {
     try {
         const collection = db.collection(collectionName);
-        const query = {salesManId, date };
+
         console.log("id: ",salesManId); // TODO remove after testing
-        const report = await collection.findOne(query);
+        const report = await collection.findOne(salesManId);
 
         if (!report) {
             throw new Error('Performance report not found.');
@@ -100,7 +100,7 @@ async function updatePerformanceReport(db, salesManId, date, updateFields, optio
     try {
         const collection = db.collection(collectionName);
 
-        var report = await getPerformanceReport(db, salesManId, date);
+        var report = await getPerformanceReport(db, salesManId);
         for( key in updateFields){
             report = updateObject(key, updateFields[key], report)
         }
@@ -145,13 +145,17 @@ async function deletePeformanceReport(db, salesManId, date) {
 
 }
 
+async function getAllPerformanceReports(db) {
+    return await db.collection(collectionName).find({}).toArray();
+}
+
 
 module.exports = {
     storePerformanceRecord,
     getPerformanceReport,
     updatePerformanceReport,
-    updateSocialCriteria
-
+    updateSocialCriteria,
+    getAllPerformanceReports
 }
 
 

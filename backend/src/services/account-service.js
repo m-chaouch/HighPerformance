@@ -52,6 +52,7 @@ function filterAccounts(accounts) {
         name: account.name? account.name : '',
         numberOfEmployeesCategory: account.numberOfEmployeesCategory? account.numberOfEmployeesCategory : '',
         rating: account.accountRating,
+        governmentId: account.governmentId,
         vcard: vcardFilter(account.vcard)
     }));
 }

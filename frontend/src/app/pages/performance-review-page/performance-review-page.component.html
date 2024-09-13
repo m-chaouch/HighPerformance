@@ -1,0 +1,28 @@
+<h1>Bonus Computation Sheet of </h1>
+<div class="bonus-sheet">
+    <div class="container">
+        <div class="salesman-data">
+            <div class="columnLeft">Name:</div>
+            <div class="columnRight">{{salesman.firstName +' '+ salesman.lastName}}</div>
+            <div class="columnLeft">Government ID:</div>
+            <div class="columnRight">{{salesman.employeeCode}}</div>
+            <div class="columnLeft">Department:</div>
+            <div class="columnRight">{{salesman.unit}}</div>
+            <div class="columnLeft">Year of Performance:</div>
+            <div class="columnRight">{{performanceReport.date}}</div>
+        </div>
+
+        <div class="orders-evaluation">
+            <h3>A.) Orders Evaluation</h3>
+            <app-orders-evaluation [performanceReport]="performanceReport" ></app-orders-evaluation>
+        </div>
+
+        <div class="social-performance-evaluation">
+            <h3>B.) Social Performance Evaluation</h3>
+            <app-social-performance-evaluation [performanceReport]="performanceReport"></app-social-performance-evaluation>
+        </div>
+    </div>
+</div>
+
+
+
