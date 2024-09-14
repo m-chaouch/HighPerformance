@@ -26,9 +26,9 @@ export class PerformanceReviewPageComponent implements OnInit {
             this.employeeDataService.getEmployeeByID(this.employeeID).subscribe(response => {
                 this.salesman = response.body;
             });
-            this.performanceReportService.getPerformanceReport(this.salesman.employeeCode).subscribe(response => {
-                this.performanceReport = response;
-            });
+            // this.performanceReportService.getPerformanceReport(this.salesman.employeeCode).subscribe(response => {
+            //     this.performanceReport = response;
+            // });
         });
     }
 

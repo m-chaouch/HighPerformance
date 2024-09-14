@@ -13,11 +13,11 @@ export class PerformanceReportService{
     calculatedBonus: CalculatedBonusDatapoint;
 
     constructor(private http: HttpClient) {}
-    getPerformanceReport(SID: string): Observable<PerformanceReportDatapoint>{
-        return this.http.get<PerformanceReportDatapoint>(environment.apiEndpoint + `/api/performance-report/${SID}`);
+    getPerformanceReport(SID: string): Observable<PerformanceReportDatapoint[]>{
+        return this.http.get<PerformanceReportDatapoint[]>(environment.apiEndpoint + `/api/performance-report/${SID}`);
     }
 
-    getAllPerformanceReports(): Observable<PerformanceReportDatapoint[]>{
-        return this.http.get<PerformanceReportDatapoint[]>(environment.apiEndpoint + '/api/performance-reports');
-    }
+    // getAllPerformanceReports(): Observable<PerformanceReportDatapoint[]>{
+    //     return this.http.get<PerformanceReportDatapoint[]>(environment.apiEndpoint + '/api/performance-reports');
+    // }
 }
