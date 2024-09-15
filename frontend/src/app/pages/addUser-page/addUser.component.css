@@ -3,6 +3,8 @@ mat-form-field{
 }
 
 span.error{
+    font-size: large;
+    margin-left: 50px;
     color: red;
 }
 
