@@ -1,5 +1,6 @@
 const userService = require('../services/user-service')
 const authService = require('../services/auth-service');
+const User = require("../models/User");
 
 /**
  * endpoint, which handles login
@@ -42,3 +43,25 @@ exports.isLoggedIn = function (req, res){
         res.send({loggedIn: false});
     }
 }
+
+/**
+ * endpoint, which handles user registration (Fake)
+ * @param req express request
+ * @param res express response
+ * @return {Promise<void>}
+ */
+exports.register = async function (req, res) {
+    const db = req.app.get('db');
+    const { username, password, firstname, lastname, email, jobTitle } = req.body;
+
+    // Check if the user already exists
+    const existingUser = await userService.get(db, username);
+    if (existingUser) {
+        res.status(400).send('User already exists! Please login');
+    }
+
+    const user = new User(username, firstname, lastname, email, jobTitle, password, false);
+
+    // authService.authenticate(req.session, user) brauchen wir nicht, da es in login gemacht wird.
+    await userService.add(db, user).then(res.send('register successful')).catch((err)=>{res.status(401).send('register failed');});
+};
