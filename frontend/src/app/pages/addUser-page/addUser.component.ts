@@ -1,7 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {AuthService} from "../../services/auth.service";
 import {CredentialsRegister} from "../../models/Credentials";
-import {Router} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
@@ -29,7 +28,7 @@ export class AddUserComponent implements OnInit {
     credentialsRegister: CredentialsRegister;
     registerError: string;
 
-    constructor(private authService: AuthService, private router: Router) { }
+    constructor(private authService: AuthService) { }
 
     /**
      * Initialisiert das Formular, indem die Credentials zurückgesetzt werden.
