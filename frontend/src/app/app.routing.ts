@@ -6,6 +6,8 @@ import {AuthGuardService} from './services/auth-guard.service';
 import {ExamplePageComponent} from './pages/example-page/example-page.component';
 import {NotFoundPageComponent} from './pages/not-found-page/not-found-page.component';
 import {EmployeePageComponent} from './pages/employee-page/employee-page.component';
+import {OrderPageComponent} from './pages/order-page/order-page.component';
+import {DetailedOrderPageComponent} from './pages/detailed-order-page/detailed-order-page.component';
 import {AddUserComponent} from "./pages/addUser-page/addUser.component";
 import {AdminGuardService} from "./services/admin-auth-guard.service";
 
@@ -23,7 +25,9 @@ const routes: Routes = [
     {path: 'login', component: LoginPageComponent},
     {path : 'addUser', component: AddUserComponent, canActivate: [AuthGuardService, AdminGuardService]},
     {path: 'example', component: ExamplePageComponent, canActivate: [AuthGuardService]},
-    {path: 'employee', component: EmployeePageComponent, canActivate: [AuthGuardService]},
+    {path: 'employee', component: EmployeePageComponent},
+    {path: 'orders', component: OrderPageComponent},
+    {path: 'orders/:id', component: DetailedOrderPageComponent},
     {path: '', component: LandingPageComponent, canActivate: [AuthGuardService]},
     {path: '**', component: NotFoundPageComponent} // these entries are matched from top to bottom => not found should be the last entry
 ];
