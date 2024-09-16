@@ -1,6 +1,7 @@
 const {getLastSegment} = require('../utils/helper');
 const {loginService} = require("./login-service");
 const {fetchProducts} = require('./product-service');
+const {CRX_URL} = require("../utils/SaaSURLs");
 
 
 /**
@@ -17,8 +18,8 @@ const {fetchProducts} = require('./product-service');
  *
  */
 async function fetchPositions(SOID){
-    const responseData = await loginService(`https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX/org.opencrx.kernel.contract1/provider/CRX/segment/Standard/salesOrder/${SOID}/position`)
-    return filterPositions(responseData);
+    const responseData = await loginService(CRX_URL + `opencrx-rest-CRX/org.opencrx.kernel.contract1/provider/CRX/segment/Standard/salesOrder/${SOID}/position`)
+    return await filterPositions(responseData)
 }
 
 /**
@@ -29,7 +30,7 @@ async function fetchPositions(SOID){
  * asynchronously for each position.
  *
  * @param {object} responseData - The raw response data containing position information.
- * @returns {object[]}  an array of formatted position objects, each containing:
+ * @returns {Promise<object[]>}  an array of formatted position objects, each containing:
  *   - positionID
  *   - positionNumber
  *   - productID
@@ -41,25 +42,26 @@ async function fetchPositions(SOID){
  *   - taxAmount
  *   - amount
  */
-async function filterPositions(responseData){
-    if(!responseData){
-        throw new Error("Object doesn't exist")
+async function filterPositions(responseData) {
+    if (!responseData || !responseData.objects) {
+        return [];
+    } else {
+        const positionPromises = responseData.objects.map(async position => ({
+            positionID: getLastSegment(position.identity),
+            positionNumber: position.positionNumber,
+            productID: getLastSegment(position.product['@href']),
+            products: await fetchProducts(getLastSegment(position.product['@href'])),
+            productDescription: position.productDescription,
+            quantity: Number(position.quantity),
+            pricePerUnit: Number(position.pricePerUnit),
+            baseAmount: Number(position.baseAmount),
+            taxAmount: Number(position.taxAmount),
+            amount: Number(position.amount)
+        }));
+        return await Promise.all(positionPromises);     // wait for all promises. Bc of the "(async position =>..." map returns an array of promises we have to wait for.
     }
-    const positionPromises = responseData.objects.map(async position => ({
-        positionID: getLastSegment(position.identity),
-        positionNumber: position.positionNumber,
-        productID: getLastSegment(position.product['@href']),
-        products: await fetchProducts(getLastSegment(position.product['@href'])),
-        productDescription: position.productDescription,
-        quantity: Number(position.quantity),
-        pricePerUnit: Number(position.pricePerUnit),
-        baseAmount: Number(position.baseAmount),
-        taxAmount: Number(position.taxAmount),
-        amount: Number(position.amount)
-    }));
-    return await Promise.all(positionPromises);     // wait for all promises. Bc of the "(async position =>..." map returns an array of promises we have to wait for.
-}
 
+}
 
 module.exports = {
     fetchPositions

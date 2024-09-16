@@ -3,10 +3,13 @@
  * Es definiert die Eigenschaften, die ein Mitarbeiterobjekt besitzen muss, wenn es
  * vom Backend empfangen oder innerhalb der Anwendung verwendet wird.
  */
+import {PerformanceReportDatapoint} from './performance-report-datapoint';
 
 export interface EmployeeDatapoint {
-    employeeId: string;
+    employeeCode: string;
+    employeeId: number;
     firstName: string;
     lastName: string;
     unit: string | null; // unit can be null, so it's good to handle it
+    performanceReport: PerformanceReportDatapoint[];
 }

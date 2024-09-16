@@ -53,4 +53,8 @@ export class EmployeeDataService {
     getEmployeeData(): Observable<HttpResponse<EmployeeDatapoint[]>> {
         return this.http.get<EmployeeDatapoint[]>(environment.apiEndpoint + '/api/employee', {observe: 'response', withCredentials: true});
     }
+
+    getEmployeeByID(id: number): Observable<HttpResponse<EmployeeDatapoint>> {
+        return this.http.get<EmployeeDatapoint>(environment.apiEndpoint + `/api/employee/${id}`, {observe: 'response', withCredentials: true});
+    }
 }

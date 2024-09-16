@@ -20,6 +20,13 @@ import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.com
 import {MatTableModule} from '@angular/material/table';
 import { TransformPriorityPipe } from './services/transform-priority.pipe';
 import { DetailedOrderPageComponent } from './pages/detailed-order-page/detailed-order-page.component';
+import { TransformRatingPipe } from './services/transform-rating.pipe';
+import { OrdersEvaluationComponent } from './components/orders-evaluation/orders-evaluation.component';
+import { PerformanceReportPageComponent } from './pages/performance-report-page/performance-report-page.component';
+import { PerformanceReviewPageComponent } from './pages/performance-review-page/performance-review-page.component';
+import { SocialPerformanceEvaluationComponent } from './components/social-performance-evaluation/social-performance-evaluation.component';
+import {ApprovalPipe} from './services/approval.pipe';
+
 
 @NgModule({
     declarations: [
@@ -30,7 +37,13 @@ import { DetailedOrderPageComponent } from './pages/detailed-order-page/detailed
         MenuBarComponent,
         ExamplePageComponent,
         NotFoundPageComponent,
-        DetailedOrderPageComponent
+        DetailedOrderPageComponent,
+        TransformRatingPipe,
+        OrdersEvaluationComponent,
+        PerformanceReportPageComponent,
+        PerformanceReviewPageComponent,
+        SocialPerformanceEvaluationComponent,
+        ApprovalPipe
     ],
     imports: [
         BrowserModule,
