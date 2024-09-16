@@ -5,15 +5,15 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ApprovalPipe implements PipeTransform {
 
-    transform(approvalByCEO: boolean, approvalByHR: boolean ): unknown {
+    transform(approvalByHR: boolean, approvalByCEO: boolean ): string {
         if (approvalByCEO && approvalByHR){
-            return 'accepted';
+            return '✅ approved';
         }
         if (approvalByCEO) {
-            return 'HR approval needed';
+            return '❗ HR approval needed';
         }
         else {
-            return 'not approved';
+            return '❌ not approved';
         }
     }
 

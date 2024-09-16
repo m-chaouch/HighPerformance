@@ -9,10 +9,10 @@
             <div class="columnLeft">Department:</div>
             <div class="columnRight">{{salesman.unit}}</div>
             <div class="columnLeft">Year of Performance:</div>
-            <div class="columnRight">{{performanceReport.date}}</div>
+            <div class="columnRight">{{performanceDate | date:'yyyy'}}</div>
         </div>
 
-        <div class="orders-evaluation">
+        <div *ngIf="performanceReport" class="orders-evaluation">
             <h3>A.) Orders Evaluation</h3>
             <app-orders-evaluation [performanceReport]="performanceReport" ></app-orders-evaluation>
         </div>

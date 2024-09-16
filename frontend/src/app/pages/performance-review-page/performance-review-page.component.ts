@@ -16,19 +16,21 @@ export class PerformanceReviewPageComponent implements OnInit {
     salesman: EmployeeDatapoint;
     employeeID: number;
     performanceReport: PerformanceReportDatapoint;
+    performanceDate: string;
 
 
     constructor(private employeeDataService: EmployeeDataService, private orderService: OrderService,
                 private performanceReportService: PerformanceReportService, private route: ActivatedRoute) {}
     ngOnInit(): void {
         this.route.params.subscribe((params): void => {
-            this.employeeID = params.id;
-            this.employeeDataService.getEmployeeByID(this.employeeID).subscribe(response => {
+            this.employeeID = Number(params.id);
+            this.performanceDate = String(params.date);
+            this.employeeDataService.getEmployeeByID(this.employeeID).subscribe((response): void => {
                 this.salesman = response.body;
             });
-            // this.performanceReportService.getPerformanceReport(this.salesman.employeeCode).subscribe(response => {
-            //     this.performanceReport = response;
-            // });
+            this.performanceReportService.getPerformanceReport(this.salesman.employeeCode).subscribe((response): void => {
+                this.performanceReport = response.find((report): boolean => report.date === this.performanceDate);
+            });
         });
     }
 

@@ -25,7 +25,8 @@ import { OrdersEvaluationComponent } from './components/orders-evaluation/orders
 import { PerformanceReportPageComponent } from './pages/performance-report-page/performance-report-page.component';
 import { PerformanceReviewPageComponent } from './pages/performance-review-page/performance-review-page.component';
 import { SocialPerformanceEvaluationComponent } from './components/social-performance-evaluation/social-performance-evaluation.component';
-import { ApprovalPipe } from './services/approval.pipe';
+import {ApprovalPipe} from './services/approval.pipe';
+
 
 @NgModule({
     declarations: [

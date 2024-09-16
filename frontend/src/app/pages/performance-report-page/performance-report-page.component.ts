@@ -3,10 +3,6 @@ import {EmployeeDatapoint} from '../../interfaces/employee-datapoint';
 import {EmployeeDataService} from '../../services/employee-data.service';
 import {Router} from '@angular/router';
 import {PerformanceReportService} from '../../services/performance-report.service';
-import {PerformanceReportDatapoint} from '../../interfaces/performance-report-datapoint';
-import {SalesmanDatapoint} from '../../interfaces/salesman-datapoint';
-import {ApprovalPipe} from '../../services/approval.pipe';
-
 
 
 @Component({
@@ -28,12 +24,11 @@ export class PerformanceReportPageComponent implements OnInit{
                 this.salesmen.forEach(salesMan => {
                     this.performanceReportService.getPerformanceReport(salesMan.employeeCode).subscribe(response => {
                         salesMan.performanceReport = response;
-                        console.log(this.salesmen)
                         this.flattenData();
                     });
                 });
             }
-        }), error => {
+        }); error => {
             console.error('Fehler beim Abrufen der Mitarbeiterdaten und Performance Reports:', error);
         };
     }
@@ -50,11 +45,8 @@ export class PerformanceReportPageComponent implements OnInit{
         }, []);
     }
 
-    // toDO beide Daten bündeln und dann anzeigen lassen
 
-    handleSalesmanClick(id: string): void {
-        void this.router.navigate(['/performance-review', id]);  // relative to the previous route + /id
+    handleSalesmanClick(id: string, date: string): void {
+        void this.router.navigate(['/performance-review', id, date]);  // relative to the previous route + /id
     }
-
-
 }
