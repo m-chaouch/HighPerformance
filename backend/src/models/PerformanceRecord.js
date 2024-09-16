@@ -2,7 +2,7 @@ const { SocialPerformance } = require('./SocialPerformance'); // Correct import 
 const { SalesPerformance } = require('./SalesPerformance')
 
 class PerformanceRecord {
-    constructor(salesManId, performance = {socialPerformance: new SocialPerformance(), salesPerformance: new SalesPerformance()}) {
+    constructor(salesManId, performance = {socialPerformance: new SocialPerformance(), salesPerformance: new SalesPerformance()}, date = new Date().getFullYear()) {
         const {socialPerformance, salesPerformance} = performance;
         this.salesManId = salesManId;
         if (!(socialPerformance instanceof SocialPerformance)) {
@@ -15,6 +15,8 @@ class PerformanceRecord {
         this.socialPerformance = socialPerformance;
         this.date = new Date().getFullYear(); // when was this created
         this.calculatedBonus = {};
+        this.isAcceptedByCEO = false;
+        this.isAccepted = false;
     }
 }
 
