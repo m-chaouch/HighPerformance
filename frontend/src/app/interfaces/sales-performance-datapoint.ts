@@ -2,6 +2,7 @@
  * This interface defines the structure of an individual company's sales performance.
  */
 export interface CompanySales {
+    clientName: string;
     rating: string;
     soldQuantity: number;
 }

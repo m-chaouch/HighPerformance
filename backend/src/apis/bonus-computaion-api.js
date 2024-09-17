@@ -1,4 +1,4 @@
-const { getPerformanceReport, storePerformanceRecord, updateSocialCriteria, deletePeformanceReport, getAllPerformanceReports} = require("../services/performance-report-service");
+const { getPerformanceReport, storePerformanceRecord, updateSocialCriteria, deletePeformanceReport, getPerformanceRecord} = require("../services/performance-report-service");
 const { SocialPerformance } = require('../models/SocialPerformance'); //TODO remove this
 const { PerformanceRecord } = require('../models/PerformanceRecord');
 const {createDB, deleteDB} = require('../../unit-tests/support/mockdb-new') //TODO remove after testing this and insert the real db into function
@@ -47,9 +47,9 @@ exports.saveSocialPerformance = async function (req, res) {
 exports.getPerformanceReport = async (req, res) => {
     const db = req.app.get('db');
     // console.log(db)
-    const salesManId = req.params;
+    const {salesManId , date} = req.params
     try {
-        const result = await getPerformanceReport(db, salesManId);
+        const result = await getPerformanceReport(db, salesManId, date);
         res.status(200).json(result);
     } catch (error) {
         console.error('Error fetching performance report:', error);
@@ -95,15 +95,16 @@ exports.deletePerformanceReport = async (req, res) => {
     }
 };
 
-// exports.getAllPerformanceReports = async (req, res) => {
-//     try{
-//         const db = req.app.get('db');
-//         const result = await getAllPerformanceReports(db);
-//         res.status(200).send(result)
-//     } catch (error) {
-//         console.error('Error deleting performance report:', error);
-//     }
-// }
+exports.getPerformanceRecord = async (req, res) => {
+    const salesManId = req.params.salesManId;
+    try{
+        const db = req.app.get('db');
+        const result = await getPerformanceRecord(db, salesManId);
+        res.status(200).send(result)
+    } catch (error) {
+        console.error('Error deleting performance report:', error);
+    }
+}
 
 //TODO remove this
 const socialPerformance = new SocialPerformance({

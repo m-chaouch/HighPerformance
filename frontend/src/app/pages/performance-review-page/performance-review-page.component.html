@@ -1,27 +1,115 @@
-<h1>Bonus Computation Sheet of </h1>
+<h1>Bonus Computation Sheet of {{salesman?.firstName +' '+ salesman?.lastName}}</h1>
 <div class="bonus-sheet">
     <div class="container">
         <div class="salesman-data">
             <div class="columnLeft">Name:</div>
-            <div class="columnRight">{{salesman.firstName +' '+ salesman.lastName}}</div>
+            <div class="columnRight">{{salesman?.firstName +' '+ salesman?.lastName}}</div>
             <div class="columnLeft">Government ID:</div>
-            <div class="columnRight">{{salesman.employeeCode}}</div>
+            <div class="columnRight">{{salesman?.employeeCode}}</div>
             <div class="columnLeft">Department:</div>
-            <div class="columnRight">{{salesman.unit}}</div>
+            <div class="columnRight">{{salesman?.unit}}</div>
             <div class="columnLeft">Year of Performance:</div>
             <div class="columnRight">{{performanceDate | date:'yyyy'}}</div>
         </div>
 
-        <div *ngIf="performanceReport" class="orders-evaluation">
+        <div class="orders-evaluation">
             <h3>A.) Orders Evaluation</h3>
-            <app-orders-evaluation [performanceReport]="performanceReport" ></app-orders-evaluation>
+            <table mat-table [dataSource]="salesPerformanceArray" class="mat-elevation-z8">
+                <!-- Product Name Column -->
+                <ng-container matColumnDef="productName">
+                    <th mat-header-cell *matHeaderCellDef> Product Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.productName}} </td>
+                </ng-container>
+
+                <!-- Client Name Column -->
+                <ng-container matColumnDef="clientName">
+                    <th mat-header-cell *matHeaderCellDef> Client Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.clientName}} </td>
+                </ng-container>
+
+                <!-- Rating Column -->
+                <ng-container matColumnDef="rating">
+                    <th mat-header-cell *matHeaderCellDef> Rating </th>
+                    <td mat-cell *matCellDef="let element"> {{element.rating}} </td>
+                </ng-container>
+
+                <!-- Sold Quantity Column -->
+                <ng-container matColumnDef="soldQuantity">
+                    <th mat-header-cell *matHeaderCellDef> Sold Quantity </th>
+                    <td mat-cell *matCellDef="let element"> {{element.soldQuantity}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="bonus">
+                    <th mat-header-cell *matHeaderCellDef> Bonus </th>
+                    <td mat-cell *matCellDef="let element"> {{element?.bonus}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef='displayedColumnsOrders'></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsOrders;"></tr>
+            </table>
+
+            <div class="bonus-container">
+                <div class="totalBonus">
+                    <div class="left-block"><p>Total Bonus for part A):</p></div>
+                    <div class="right-block" style="width: 45%; text-align: center; font-weight: bold"><p>{{performanceReport?.calculatedBonus?.salesBonus?.total ||  ''}}</p></div>
+                </div>
+            </div>
         </div>
+
 
         <div class="social-performance-evaluation">
             <h3>B.) Social Performance Evaluation</h3>
-            <app-social-performance-evaluation [performanceReport]="performanceReport"></app-social-performance-evaluation>
+            <table mat-table [dataSource]="socialPerformanceArray" class="mat-elevation-z8">
+                <!-- Product Name Column -->
+                <ng-container matColumnDef="criteria">
+                    <th mat-header-cell *matHeaderCellDef> Criteria </th>
+                    <td mat-cell *matCellDef="let element"> {{element.criteria | criteria}} </td>
+                </ng-container>
+
+                <!-- Client Name Column -->
+                <ng-container matColumnDef="targetValue">
+                    <th mat-header-cell *matHeaderCellDef> Target Value </th>
+                    <td mat-cell *matCellDef="let element"> {{element.target}} </td>
+                </ng-container>
+
+                <!-- Rating Column -->
+                <ng-container matColumnDef="actualValue">
+                    <th mat-header-cell *matHeaderCellDef> Actual Value </th>
+                    <td mat-cell *matCellDef="let element"> {{element.actual}} </td>
+                </ng-container>
+
+                <!-- Sold Quantity Column -->
+                <ng-container matColumnDef="bonus">
+                    <th mat-header-cell *matHeaderCellDef> Bonus </th>
+                    <td mat-cell *matCellDef="let element"> {{element?.bonus}}</td>
+                </ng-container>
+
+
+                <tr mat-header-row *matHeaderRowDef='displayedColumnsSocial'></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsSocial;"></tr>
+            </table>
+            <div class="bonus-container">
+                <div class="totalBonus">
+                    <div class="left-block"><p>Total Bonus for part B):</p></div>
+                    <div class="right-block" style="width: 45%; text-align: center; font-weight: bold"><p>{{performanceReport?.calculatedBonus?.socialBonus?.total || ''}}</p></div>
+                </div>
+            </div>
         </div>
+
+        <hr *ngIf="performanceReport?.calculatedBonus">
+        <div class="overall-bonus">
+            <div class="left-block" style="width: 70%;">
+                <p style="font-weight: 500; " *ngIf="performanceReport?.calculatedBonus"> Overall Bonus:</p>
+            </div>
+            <div class="right-block" style="font-weight: bolder; width: 30%; text-align: center;">
+                {{performanceReport?.calculatedBonus?.totalBonus?.sum||''}}
+            </div>
+
+
+        </div>
+
     </div>
+    <button mat-fab extended class='button-container' (click)='handleButtonClick()' *ngIf="!performanceReport?.calculatedBonus">calculate bonus</button>
 </div>
 
 

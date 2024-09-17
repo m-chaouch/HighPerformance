@@ -1,5 +1,10 @@
+import {SocialBonusDatapoint} from './social-bonus-datapoint';
+import {TotalBonusDatapoint} from './total-bonus-datapoint';
+
+
+
 export interface CalculatedBonusDatapoint {
-    socialBonus: object;
+    socialBonus: SocialBonusDatapoint;
     salesBonus: object;
-    totalBonus: object;
+    totalBonus: TotalBonusDatapoint;
 }
