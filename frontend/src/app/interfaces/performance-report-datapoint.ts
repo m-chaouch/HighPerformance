@@ -1,5 +1,6 @@
 import {SocialPerformance} from './social-performacne-datapoint';
 import {SalesPerformance} from './sales-performance-datapoint';
+import {CalculatedBonusDatapoint} from './calculated-bonus-datapoint';
 
 export interface PerformanceReportDatapoint {
     salesmanID: string;
@@ -9,5 +10,5 @@ export interface PerformanceReportDatapoint {
     salesPerformance: SalesPerformance;
     socialPerformance: SocialPerformance;
     date: string;
-    calculatedBonus: object;
+    calculatedBonus: CalculatedBonusDatapoint;
 }

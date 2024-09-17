@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {PerformanceReportDatapoint} from '../../interfaces/performance-report-datapoint';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
     selector: 'app-orders-evaluation',
@@ -8,13 +9,17 @@ import {PerformanceReportDatapoint} from '../../interfaces/performance-report-da
 })
 export class OrdersEvaluationComponent implements OnInit{
     private clients = [];
-    @Input() performanceReport: PerformanceReportDatapoint;
-    salesPerformance = [];
-    constructor() {}
+
+    @Input() performanceReport: BehaviorSubject<PerformanceReportDatapoint>;
+
+    performanceReports: PerformanceReportDatapoint ;
 
     ngOnInit(): void {
-        this.salesPerformance = Object.values(this.performanceReport.salesPerformance);
-        console.log(this.performanceReport);
+        this.performanceReport.subscribe((report): void => {
+            if (report) {
+                console.log('PerformanceReport received:', report);
+                this.performanceReports = report;
+            }
+        });
     }
-
 }

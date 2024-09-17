@@ -21,9 +21,9 @@ export class PerformanceReportPageComponent implements OnInit{
         this.employeeService.getEmployeeData().subscribe((response): void => {
             if (response.status === 200) {
                 this.salesmen = response.body || [];
-                this.salesmen.forEach(salesMan => {
-                    this.performanceReportService.getPerformanceReport(salesMan.employeeCode).subscribe(response => {
-                        salesMan.performanceReport = response;
+                this.salesmen.forEach((salesMan): void => {
+                    this.performanceReportService.getPerformanceReport(salesMan.employeeCode).subscribe((performanceResponse): void => {
+                        salesMan.performanceReport = performanceResponse;
                         this.flattenData();
                     });
                 });
