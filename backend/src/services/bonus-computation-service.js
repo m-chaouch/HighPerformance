@@ -60,9 +60,9 @@ function bonusComputation(socialPerformance, salesPerformance, calculation = { s
     }
 
     if (salesPerformance) {
-        const salesList = salesPerformance.getSalesList(); // Properly reference the sales list
-        Object.keys(salesList).forEach(key => {
-            let tmp = salesCal(salesList[key]); // Correct data access
+        // const salesList = salesPerformance.getSalesList(); // Properly reference the sales list
+        Object.keys(salesPerformance).forEach(key => {
+            let tmp = salesCal(salesPerformance[key]); // Correct data access
             salesBonus[key] = tmp;
             salesTotal += tmp;
         });

@@ -23,7 +23,8 @@ const collectionName = 'Performance_Reports'; // Consider using snake_case for c
 async function storePerformanceRecord(db, performanceRecord) {
     try {
         const collection = db.collection(collectionName);
-        performanceRecord.calculatedBonus = bonusComputation(performanceRecord.socialPerformance, performanceRecord.salesPerformance);
+        const performanceRecordClone = JSON.parse(JSON.stringify(performanceRecord));   // clone the performanceReport, so the original record doesn't change
+        performanceRecord.calculatedBonus = bonusComputation(performanceRecordClone.socialPerformance, performanceRecordClone.salesPerformance);
         console.log(performanceRecord.calculatedBonus);
         const result = await collection.insertOne(performanceRecord);
         console.log('Performance record stored successfully.');
@@ -46,12 +47,17 @@ async function storePerformanceRecord(db, performanceRecord) {
 async function getPerformanceReport(db, salesManId) {
     try {
         const collection = db.collection(collectionName);
-
+        const recordCollection = db.collection('Performance_Records');
         console.log("id: ",salesManId); // TODO remove after testing
         const report = await collection.find(salesManId).toArray();   // a salesman can have multiple performance reports (different years)
 
-        if (!report) {
-            throw new Error('Performance report not found.');
+        if (report.length === 0) {
+            const record = await recordCollection.find(salesManId).toArray(); // when a report is not found, search for a record
+            if(!record){
+                throw new Error(`Performance record not found in ${recordCollection.collectionName}`)
+            }
+            console.log(record)
+            return record;
         }
         return report;
     } catch (error) {
@@ -144,10 +150,6 @@ async function deletePeformanceReport(db, salesManId, date) {
     await collection.deleteOne(query);
 
 }
-
-// async function getAllPerformanceReports(db) {
-//     return await db.collection(collectionName).find({}).toArray();
-// }
 
 
 module.exports = {
