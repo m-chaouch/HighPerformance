@@ -57,12 +57,12 @@ h3 {
 .button-container{
     display: flex;
     justify-content: center;
+    background-color: orangered;
 }
 
 .bonus-container{
     display: flex;
     justify-content: right;
-    background-color: orangered;
 }
 
 .totalBonus{
