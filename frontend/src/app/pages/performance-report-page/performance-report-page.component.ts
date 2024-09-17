@@ -18,15 +18,13 @@ export class PerformanceReportPageComponent implements OnInit{
                 private performanceReportService: PerformanceReportService) {}
 
     ngOnInit(): void {
-        this.employeeService.getEmployeeData().subscribe((response): void => {
+        this.employeeService.getEmployeeData().subscribe(async (response): Promise<void> => {
             if (response.status === 200) {
                 this.salesmen = response.body || [];
-                this.salesmen.forEach((salesMan): void => {
-                    this.performanceReportService.getPerformanceReport(salesMan.employeeCode).subscribe((performanceResponse): void => {
-                        salesMan.performanceReport = performanceResponse;
-                        this.flattenData();
-                    });
-                });
+                for (const salesMan of this.salesmen) {
+                    salesMan.performanceReport = await this.performanceReportService.getPerformanceRecord(salesMan.employeeCode);
+                }
+                this.flattenData();
             }
         }); error => {
             console.error('Fehler beim Abrufen der Mitarbeiterdaten und Performance Reports:', error);

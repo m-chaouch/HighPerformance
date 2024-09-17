@@ -26,6 +26,7 @@ import { PerformanceReportPageComponent } from './pages/performance-report-page/
 import { PerformanceReviewPageComponent } from './pages/performance-review-page/performance-review-page.component';
 import { SocialPerformanceEvaluationComponent } from './components/social-performance-evaluation/social-performance-evaluation.component';
 import {ApprovalPipe} from './services/approval.pipe';
+import { CriteriaPipe } from './services/criteria.pipe';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import {ApprovalPipe} from './services/approval.pipe';
         PerformanceReportPageComponent,
         PerformanceReviewPageComponent,
         SocialPerformanceEvaluationComponent,
-        ApprovalPipe
+        ApprovalPipe,
+        CriteriaPipe
     ],
     imports: [
         BrowserModule,

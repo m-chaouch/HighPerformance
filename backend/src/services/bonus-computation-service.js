@@ -1,6 +1,5 @@
 // Imports only necessary utilities
 const { readRatingConversion } = require('../utils/helper');
-const{ PerformanceRecord } = require('../models/PerformanceRecord')
 const { SocialPerformance } = require('../models/SocialPerformance'); // Correct import statement
 const { SalesPerformance } = require('../models/SalesPerformance')
 
@@ -58,11 +57,13 @@ function bonusComputation(socialPerformance, salesPerformance, calculation = { s
         });
         socialBonus.total = socialTotal;
     }
-
+    console.log('salesPerformance: ' + salesPerformance);
     if (salesPerformance) {
         // const salesList = salesPerformance.getSalesList(); // Properly reference the sales list
         Object.keys(salesPerformance).forEach(key => {
+            console.log(key)
             let tmp = salesCal(salesPerformance[key]); // Correct data access
+            console.log('tmp:  ' + tmp);
             salesBonus[key] = tmp;
             salesTotal += tmp;
         });

@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Define paths to JSON files
-const pathToRating = './ratingToNumber.json';
+const pathToRating = './RatingToNumber.json';
 const pathToSocialFactors ='./socialScoreFactors.json';
 const pathSocialPer = './defualtsForSocialPerformance.json';
 

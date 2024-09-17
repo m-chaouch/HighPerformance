@@ -38,28 +38,22 @@ async function storePerformanceRecord(db, performanceRecord) {
 /**
  * Retrieves a performance report for a given salesperson and date.
  *
- * @param {mongoDb} db - The database connection object.
+ * @param {Object} db - The database connection object.
  * @param {string} salesManId - The ID of the salesperson.
  * @param {number} date - The year for the report.
  * @returns {Promise<PerformanceRecord>} - Resolves with the performance report.
  * @throws {Error} - Throws an error if there is an issue with retrieving the report.
  */
-async function getPerformanceReport(db, salesManId) {
+async function getPerformanceReport(db, salesManId, date) {
     try {
         const collection = db.collection(collectionName);
-        const recordCollection = db.collection('Performance_Records');
-        console.log("id: ",salesManId); // TODO remove after testing
-        const report = await collection.find(salesManId).toArray();   // a salesman can have multiple performance reports (different years)
-
-        if (report.length === 0) {
-            const record = await recordCollection.find(salesManId).toArray(); // when a report is not found, search for a record
-            if(!record){
-                throw new Error(`Performance record not found in ${recordCollection.collectionName}`)
-            }
-            console.log(record)
-            return record;
+        const query= {'salesManId': salesManId, 'date': date}
+        const report = await collection.find(query).toArray();
+        if (!report || report.length === 0) {
+            throw new Error('Performance report not found');
         }
-        return report;
+
+        return report[0];   // a salesman can have just one performance report (different years)
     } catch (error) {
         console.error('Error retrieving performance report:', error);
         throw error;
@@ -151,13 +145,29 @@ async function deletePeformanceReport(db, salesManId, date) {
 
 }
 
+async function getPerformanceRecord(db, salesManId){
+    try {
+        const recordCollection = db.collection('Performance_Records');
+        console.log(salesManId)
+        const record = await recordCollection.find({'salesManId': salesManId}).toArray();   // a salesman can have multiple performance reports (different years)
+        console.log(record)
+        if (!record) {
+            throw new Error('Performance report not found');
+        }
+        return record;
+    } catch (error) {
+        console.error('Error retrieving performance report:', error);
+        throw error;
+    }
+}
+
 
 module.exports = {
     storePerformanceRecord,
     getPerformanceReport,
     updatePerformanceReport,
     updateSocialCriteria,
-    // getAllPerformanceReports
+    getPerformanceRecord
 }
 
 

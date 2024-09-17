@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {PerformanceReportDatapoint} from '../interfaces/performance-report-datapoint';
 import {HttpClient} from '@angular/common/http';
@@ -11,8 +10,8 @@ import {HttpClient} from '@angular/common/http';
 export class PerformanceReportService{
     constructor(private http: HttpClient) {}
 
-    public getPerformanceReport(SID: string): Observable<PerformanceReportDatapoint[]>{
-        return this.http.get<PerformanceReportDatapoint[]>(environment.apiEndpoint + `/api/performance-report/${SID}`);
+    public getPerformanceReport(SID: string, date: string): Promise<PerformanceReportDatapoint>{
+        return this.http.get<PerformanceReportDatapoint>(environment.apiEndpoint + `/api/performance-report/${SID}/${date}`).toPromise();
     }
     public savePerformanceRecord(performanceRecord: PerformanceReportDatapoint):
     Promise<PerformanceReportDatapoint>{    // change later to PerformanceRecord
@@ -20,4 +19,7 @@ export class PerformanceReportService{
             performanceRecord).toPromise();
     }
 
+    public getPerformanceRecord(employeeCode: string): Promise<PerformanceReportDatapoint[]> {
+        return this.http.get<PerformanceReportDatapoint[]>(environment.apiEndpoint + `/api/performance-record/${employeeCode}`).toPromise();
+    }
 }
