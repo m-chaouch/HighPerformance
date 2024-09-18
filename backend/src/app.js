@@ -50,7 +50,7 @@ if(environment.db.username){
 }
 
 // MongoClient.connect('mongodb://' + db_credentials + environment.db.host + ':' + environment.db.port + '/?authSource='+environment.db.authSource).then(async dbo =>{ //connect to MongoDb
-MongoClient.connect('mongodb://localhost:27017/HighPerformance').then(async dbo =>{ //connect to MongoDb
+MongoClient.connect('mongodb+srv://oemersuezen:NDomyAOEOujuh2Cd@cluster0.in2cw.mongodb.net/').then(async dbo =>{ //connect to MongoDb
 
     // const db = dbo.db(environment.db.name);
     const db = dbo.db('HighPerformance');
