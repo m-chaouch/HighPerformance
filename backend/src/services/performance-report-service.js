@@ -47,13 +47,15 @@ async function storePerformanceRecord(db, performanceRecord) {
 async function getPerformanceReport(db, salesManId, date) {
     try {
         const collection = db.collection(collectionName);
-        const query= {'salesManId': salesManId, 'date': date}
+        const query= {'salesManId': salesManId}
+        if(date){
+            query.date = date;
+        }
         const report = await collection.find(query).toArray();
         if (!report || report.length === 0) {
-            throw new Error('Performance report not found');
+            //throw new Error('Performance report not found');
         }
-
-        return report[0];   // a salesman can have just one performance report (different years)
+        return report;   // a salesman can have just one performance report (different years)
     } catch (error) {
         console.error('Error retrieving performance report:', error);
         throw error;
@@ -145,29 +147,12 @@ async function deletePeformanceReport(db, salesManId, date) {
 
 }
 
-async function getPerformanceRecord(db, salesManId){
-    try {
-        const recordCollection = db.collection('Performance_Records');
-        console.log(salesManId)
-        const record = await recordCollection.find({'salesManId': salesManId}).toArray();   // a salesman can have multiple performance reports (different years)
-        console.log(record)
-        if (!record) {
-            throw new Error('Performance report not found');
-        }
-        return record;
-    } catch (error) {
-        console.error('Error retrieving performance report:', error);
-        throw error;
-    }
-}
-
 
 module.exports = {
     storePerformanceRecord,
     getPerformanceReport,
     updatePerformanceReport,
-    updateSocialCriteria,
-    getPerformanceRecord
+    updateSocialCriteria
 }
 
 

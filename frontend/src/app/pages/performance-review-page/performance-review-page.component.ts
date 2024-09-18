@@ -31,43 +31,37 @@ export class PerformanceReviewPageComponent implements OnInit {
             this.employeeID = Number(params.id);
             this.performanceDate = String(params.date);
 
-            this.employeeDataService.getEmployeeByID(this.employeeID).subscribe(async (response): Promise<void> => {
-                this.salesman = response.body;
-                try {
+            this.employeeDataService.getEmployeeByID(this.employeeID).subscribe( (response): void => {
+                void (async (): Promise<void> => {
+                    this.salesman = response.body;
                     this.performanceReport = (await this.performanceReportService.getPerformanceReport(
-                        this.salesman.employeeCode, this.performanceDate));
-                } catch (error) {
-                    this.performanceReport = (await this.performanceReportService.getPerformanceRecord(this.salesman.employeeCode))
-                        .find((report): boolean => report.date === this.performanceDate);
-                }
-                this.parsePerformanceReport(this.performanceReport);
+                        this.salesman.employeeCode, this.performanceDate))[0]; // a Salesman can only have one performance report per date
+                    this.parsePerformanceReport(this.performanceReport);
+                })();
             });
 
         });
     }
     async handleButtonClick(): Promise<void> {
         await this.performanceReportService.savePerformanceRecord(this.performanceReport);
-        this.performanceReport = await this.performanceReportService.getPerformanceReport(this.salesman.employeeCode, this.performanceDate);
+        this.performanceReport = (await this.performanceReportService.getPerformanceReport(this.salesman.employeeCode,
+            this.performanceDate))[0];
         this.parsePerformanceReport(this.performanceReport);
     }
 
     parsePerformanceReport(performanceReport: PerformanceReportDatapoint): void{
-        this.salesPerformanceArray = Object.keys(performanceReport.salesPerformance).map(key => {
-            return {
-                productName: key,
-                clientName: performanceReport.salesPerformance[key].clientName,
-                rating: performanceReport.salesPerformance[key].rating,
-                soldQuantity: performanceReport.salesPerformance[key].soldQuantity,
-                bonus: Number(performanceReport.calculatedBonus?.salesBonus?.[key]) || ''
-            };
-        });
-        this.socialPerformanceArray = Object.keys(performanceReport.socialPerformance).map(key => {
-            return {
-                criteria: key,
-                target: Number(performanceReport.socialPerformance[key].target),
-                actual: Number(performanceReport.socialPerformance[key].actual),
-                bonus: Number(performanceReport.calculatedBonus?.socialBonus?.[key]) || ''
-            };
-        });
+        this.salesPerformanceArray = Object.keys(performanceReport.salesPerformance.list).map((key): object => ({
+            clientName: key,
+           // clientName: performanceReport.salesPerformance.list[key].clientName,  // use when clientname implemented
+            rating: performanceReport.salesPerformance.list[key].rating,
+            soldQuantity: performanceReport.salesPerformance.list[key].soldQuantity,
+            bonus: Number(performanceReport.calculatedBonus?.salesBonus?.[key]) || ''
+        }));
+        this.socialPerformanceArray = Object.keys(performanceReport.socialPerformance).map((key): object => ({
+            criteria: key,
+            target: performanceReport.socialPerformance[key].target,
+            actual: performanceReport.socialPerformance[key].actual,
+            bonus: performanceReport.calculatedBonus?.socialBonus?.[key] || ''
+        }));
     }
 }

@@ -53,7 +53,7 @@ if(environment.db.username){
 MongoClient.connect('mongodb+srv://oemersuezen:NDomyAOEOujuh2Cd@cluster0.in2cw.mongodb.net/').then(async dbo =>{ //connect to MongoDb
 
     // const db = dbo.db(environment.db.name);
-    const db = dbo.db('HighPerformance');
+    const db = dbo.db('performanceDB');
     await initDb(db); //run initialization function
     app.set('db',db); //register database in the express app
 
