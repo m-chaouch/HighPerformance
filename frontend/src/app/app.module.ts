@@ -27,6 +27,7 @@ import { PerformanceReviewPageComponent } from './pages/performance-review-page/
 import { SocialPerformanceEvaluationComponent } from './components/social-performance-evaluation/social-performance-evaluation.component';
 import {ApprovalPipe} from './services/approval.pipe';
 import { CriteriaPipe } from './services/criteria.pipe';
+import { RemarkEnterFieldComponent } from './components/remark-enter-field/remark-enter-field.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { CriteriaPipe } from './services/criteria.pipe';
         PerformanceReviewPageComponent,
         SocialPerformanceEvaluationComponent,
         ApprovalPipe,
-        CriteriaPipe
+        CriteriaPipe,
+        RemarkEnterFieldComponent
     ],
     imports: [
         BrowserModule,
