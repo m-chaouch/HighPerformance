@@ -4,7 +4,7 @@ import {OrderService} from '../../services/order.service';
 import { MatTableModule } from '@angular/material/table';
 import { TransformPriorityPipe } from '../../services/transform-priority.pipe';
 import { Router } from '@angular/router';
-import {DecimalPipe} from "@angular/common";
+import {DecimalPipe} from '@angular/common';
 
 
 @Component({

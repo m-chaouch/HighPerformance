@@ -49,9 +49,11 @@ if(environment.db.username){
     db_credentials = environment.db.username+':'+environment.db.password+'@';
 }
 
-MongoClient.connect('mongodb://' + db_credentials + environment.db.host + ':' + environment.db.port + '/?authSource='+environment.db.authSource).then(async dbo =>{ //connect to MongoDb
+// MongoClient.connect('mongodb://' + db_credentials + environment.db.host + ':' + environment.db.port + '/?authSource='+environment.db.authSource).then(async dbo =>{ //connect to MongoDb
+MongoClient.connect('mongodb://localhost:27017/HighPerformance').then(async dbo =>{ //connect to MongoDb
 
-    const db = dbo.db(environment.db.name);
+    // const db = dbo.db(environment.db.name);
+    const db = dbo.db('HighPerformance');
     await initDb(db); //run initialization function
     app.set('db',db); //register database in the express app
 
@@ -70,4 +72,8 @@ async function initDb(db){
 
         console.log('created admin user with password: '+adminPassword);
     }
+    // const {perfReportBuilder} = require('../src/utils/performance-report-builder')
+    // await perfReportBuilder(db,90124);
+
+    // console.log('successfully created Performance Reports');
 }

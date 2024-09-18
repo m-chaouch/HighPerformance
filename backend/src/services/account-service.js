@@ -1,5 +1,8 @@
 const {loginService} = require('./login-service');
 const {getLastSegment} = require("../utils/helper");
+const {CRX_URL} = require("../utils/SaaSURLs");
+
+
 
 
 /**
@@ -17,7 +20,7 @@ const {getLastSegment} = require("../utils/helper");
  *   - An empty array if no account is found with the specified UID.
  */
 async function fetchAccounts(UID="") {
-    const accounts = await loginService(`https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX/org.opencrx.kernel.account1/provider/CRX/segment/Standard/account/${UID}`);
+    const accounts = await loginService(CRX_URL + `opencrx-rest-CRX/org.opencrx.kernel.account1/provider/CRX/segment/Standard/account/${UID}`);
     return filterAccounts(accounts);        // returns an array of objects
 }
 
@@ -29,10 +32,11 @@ async function fetchAccounts(UID="") {
  *
  * @returns {Array} - An array of objects, each containing the following properties:
  *   - {string} UID - The last segment of the `identity` property of the account.
- *   - {string} industry - The industry of the account.
+ *   - {string} industry - The industry of the account. - ONLY Clients have this attribute
  *   - {string} fullName - The full name of the account.
  *   - {string} name - The name of the account.
  *   - {number} numberOfEmployeesCategory - The category of the number of employees.
+ *   - {number} ratomg - The accountRating from the Client
  *   - {Object} vcard - The processed vcard information, as returned by the `vcardFilter` function.
  */
 function filterAccounts(accounts) {
@@ -47,6 +51,8 @@ function filterAccounts(accounts) {
         industry: account.industry,
         name: account.name? account.name : '',
         numberOfEmployeesCategory: account.numberOfEmployeesCategory? account.numberOfEmployeesCategory : '',
+        rating: account.accountRating,
+        governmentId: account.governmentId,
         vcard: vcardFilter(account.vcard)
     }));
 }

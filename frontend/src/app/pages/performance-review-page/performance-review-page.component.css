@@ -1,0 +1,106 @@
+.bonus-sheet{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.salesman-data{
+    width: 17vw;
+    height: 10vh;
+    border: 2px solid black;
+    border-radius: 6px;
+    margin: 15px;
+    display: flex; /* Flexbox verwenden */
+    flex-wrap: wrap; /* Elemente umbrechen lassen */
+}
+
+.orders-evaluation{
+    width: 60vw;
+    border: 2px solid black;
+    border-radius: 6px;
+    margin: 15px;
+}
+
+.social-performance-evaluation{
+    width: 60vw;
+    border: 2px solid black;
+    border-radius: 6px;
+    margin: 15px;
+}
+
+h3 {
+    margin: 10px;
+    font-weight: 500;
+}
+
+.columnLeft, .columnRight {
+    display: flex;
+    align-items: center;
+    height: 25%;
+}
+
+.columnLeft {
+    width: 60%;
+    font-weight: 500;
+    margin-left: 3px;
+}
+
+.columnRight {
+    width: 30%;
+}
+
+.mat-elevation-z8{
+    box-shadow: none;
+}
+
+.button-container{
+    display: flex;
+    justify-content: center;
+    background-color: orangered;
+}
+
+.bonus-container{
+    display: flex;
+    justify-content: right;
+}
+
+.totalBonus{
+    width: 20vw;
+    border: 2px solid black;
+    border-radius: 6px;
+    margin: 20px;
+    height: 3vh;
+    display: flex;
+    align-items: center;
+
+}
+
+p {
+    margin: 0 5px 0 !important;
+
+}
+
+.overall-bonus{
+    width: 100%;
+    margin-top: 20px;
+    font-weight: 400;
+    font-size: 20px;
+    display: flex;
+    justify-content: right;
+}
+
+.left-block{
+    display: inline-block;
+    width: 50%;
+    text-align: right;
+}
+
+right-block{
+    display: inline-block;
+    width: 50%;
+}
+
+
+
+

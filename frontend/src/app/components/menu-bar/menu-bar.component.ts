@@ -22,7 +22,9 @@ export class MenuBarComponent implements OnInit {
         {title: 'Employee', routerLink: 'employee'},
         {title: 'Add User', routerLink: 'addUser'},
         {title: 'Employee', routerLink: 'employee'},
-        {title: 'Orders', routerLink: 'orders'}
+        {title: 'Orders', routerLink: 'orders'},
+        {title: 'Orders', routerLink: 'orders'},
+        {title: 'Performance Reports', routerLink: 'performance-report'}
     ];
 
     /**
