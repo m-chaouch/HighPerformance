@@ -48,6 +48,7 @@ async function getPerformanceReport(db, salesManId, date) {
     try {
         const collection = db.collection(collectionName);
         const query= {'salesManId': salesManId}
+
         if(date){
             query.date = date;
         }
@@ -87,31 +88,37 @@ function updateObject(keyName, newVal, object) {
 
 
 /**
- * Updates a performance report for a given salesperson and date.
- * This method is a general way to update somthing of an peformance report
- *
  * @param {Object} db - The database connection object.
- * @param {string} salesManId - The ID of the salesperson.
- * @param {number} date - The year for the report.
- * @param {Object} updateFields - The fields to update.
- * @param {Object} [options={ upsert: false }] - Additional options for the update operation. Defaults to `{ upsert: false }`.
- * @returns {Promise<Reply>} - An object containing details about the execution of the updateOne operation.
- * @throws {Error} - Throws an error if there is an issue with updating the report.
+ *     @param {string} salesManId - The ID of the salesperson.
+ *     @param {number} date - The date for the report.
+ *     @param {number} date - The year for the report.
+ *     @param {Object} updateFields - The fields to update.
+ *     @param {Object} [options] - Additional options for the update operation.
+ *     @param {Object} [options={ upsert: false }] - Additional options for the update operation. Defaults to { upsert: false }.
+ * @returns {Promise<Object>} - Resolves with the result of the update operation.
+ *     @throws {Error} - Throws an error if there is an issue with updating the report.
  */
+
 async function updatePerformanceReport(db, salesManId, date, updateFields, options = { upsert: false }) {
     try {
         const collection = db.collection(collectionName);
 
-        var report = await getPerformanceReport(db, salesManId);
-        for( key in updateFields){
-            report = updateObject(key, updateFields[key], report)
+        // Prepare the update object
+        const update = { $set:{} };
+        // Iterate over the keys in updateFields and populate the $set object
+        for (const [key, value] of Object.entries(updateFields)) {
+            update.$set[key] = value;
         }
-        report.calculatedBonus = bonusComputation(report.socialPerformance, report.salesPerformance);
-        update = { $set:{} }
-        update.$set = report;
+        // Perform the update operation
+        const result = await collection.updateOne({ salesManId, date }, update, options);
 
+        if (result.matchedCount > 0) {
+            console.log('Document updated successfully.');
+        } else {
+            console.log('No document matched the query.');
+        }
 
-        return  collection.updateOne({salesManId, date}, update, { upsert: true });
+        return result;
     } catch (error) {
         console.error('Error updating performance report:', error);
         throw error;

@@ -1,1 +1,43 @@
-<p>date oder so: {{performanceReport}}</p>
+<div class="orders-evaluation">
+    <h3>A.) Orders Evaluation</h3>
+    <table mat-table [dataSource]="salesPerformanceArray" class="mat-elevation-z8">
+        <!-- Product Name Column -->
+        <ng-container matColumnDef="productName">
+            <th mat-header-cell *matHeaderCellDef> Product Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.productName}} </td>
+        </ng-container>
+
+        <!-- Client Name Column -->
+        <ng-container matColumnDef="clientName">
+            <th mat-header-cell *matHeaderCellDef> Client Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.clientName}} </td>
+        </ng-container>
+
+        <!-- Rating Column -->
+        <ng-container matColumnDef="rating">
+            <th mat-header-cell *matHeaderCellDef> Rating </th>
+            <td mat-cell *matCellDef="let element"> {{element.rating}} </td>
+        </ng-container>
+
+        <!-- Sold Quantity Column -->
+        <ng-container matColumnDef="soldQuantity">
+            <th mat-header-cell *matHeaderCellDef> Sold Quantity </th>
+            <td mat-cell *matCellDef="let element"> {{element.soldQuantity}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="bonus">
+            <th mat-header-cell *matHeaderCellDef> Bonus </th>
+            <td mat-cell *matCellDef="let element"> {{element?.bonus}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef='displayedColumnsOrders'></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsOrders;"></tr>
+    </table>
+
+    <div class="bonus-container">
+        <div class="totalBonus">
+            <div class="left-block"><p>Total Bonus for part A):</p></div>
+            <div class="right-block" style="width: 45%; text-align: center; font-weight: bold"><p>{{performanceReport?.calculatedBonus?.salesBonus?.total ||  ''}}</p></div>
+        </div>
+    </div>
+</div>
