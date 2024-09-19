@@ -14,7 +14,7 @@ class PerformanceRecord {
         this.salesPerformance = salesPerformance;
         this.socialPerformance = socialPerformance;
         this.date = new Date().getFullYear(); // when was this created
-        this.calculatedBonus = {};
+        this.calculatedBonus = null;
         this.isAcceptedByCEO = false;
         this.isAccepted = false;
     }
