@@ -10,8 +10,8 @@ import {HttpClient} from '@angular/common/http';
 export class PerformanceReportService{
     constructor(private http: HttpClient) {}
 
-    public getPerformanceReport(SID: string, date: string): Promise<PerformanceReportDatapoint>{
-        return this.http.get<PerformanceReportDatapoint>(environment.apiEndpoint + `/api/performance-report/${SID}/${date}`).toPromise();
+    public getPerformanceReport(SID: string, date: string = ''): Promise<PerformanceReportDatapoint[]>{
+        return this.http.get<PerformanceReportDatapoint[]>(environment.apiEndpoint + `/api/performance-report/${SID}/${date}`).toPromise();
     }
     public savePerformanceRecord(performanceRecord: PerformanceReportDatapoint):
     Promise<PerformanceReportDatapoint>{    // change later to PerformanceRecord
@@ -19,7 +19,4 @@ export class PerformanceReportService{
             performanceRecord).toPromise();
     }
 
-    public getPerformanceRecord(employeeCode: string): Promise<PerformanceReportDatapoint[]> {
-        return this.http.get<PerformanceReportDatapoint[]>(environment.apiEndpoint + `/api/performance-record/${employeeCode}`).toPromise();
-    }
 }

@@ -3,7 +3,7 @@
  */
 export interface CompanySales {
     clientName: string;
-    rating: string;
+    rating: number;
     soldQuantity: number;
 }
 
