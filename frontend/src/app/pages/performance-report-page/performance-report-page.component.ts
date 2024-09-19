@@ -18,26 +18,31 @@ export class PerformanceReportPageComponent implements OnInit{
                 private performanceReportService: PerformanceReportService) {}
 
     ngOnInit(): void {
-        this.employeeService.getEmployeeData().subscribe(async (response): Promise<void> => {
+        this.employeeService.getEmployeeData().subscribe(async (response): Promise<void> => {  // subscribe expects a return
             if (response.status === 200) {
                 this.salesmen = response.body || [];
                 for (const salesMan of this.salesmen) {
-                    salesMan.performanceReport = await this.performanceReportService.getPerformanceRecord(salesMan.employeeCode);
+                    try {
+                        salesMan.performanceReport = await this.performanceReportService.getPerformanceReport(salesMan.employeeCode);
+                    } catch (error) {
+                        console.log(`couldn't find performancereport to ${salesMan.employeeCode}`);
+                    }
+                    console.log(salesMan.employeeCode, salesMan.performanceReport);
                 }
                 this.flattenData();
             }
-        }); error => {
+        }, ((error): void => {
             console.error('Fehler beim Abrufen der Mitarbeiterdaten und Performance Reports:', error);
-        };
+        }) );
     }
 
     // flattening the data, so if a salesman has two reports, he will appear twice in the table
     flattenData(): void {
-        this.flattenedSalesmenReports = this.salesmen.reduce((acc, salesman) => {
+        this.flattenedSalesmenReports = this.salesmen.reduce((acc, salesman): object[] => {
             // Füge für jeden Performance Report des Salesman eine neue Zeile hinzu
-            const reports = salesman.performanceReport.map(report => ({
-                salesman: salesman,
-                report: report
+            const reports = salesman.performanceReport.map((report): object => ({
+                salesman,
+                report
             }));
             return acc.concat(reports); // Array "flatten"
         }, []);
