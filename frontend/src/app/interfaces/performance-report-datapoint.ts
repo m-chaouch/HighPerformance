@@ -3,7 +3,7 @@ import {SalesPerformance} from './sales-performance-datapoint';
 import {CalculatedBonusDatapoint} from './calculated-bonus-datapoint';
 
 export interface PerformanceReportDatapoint {
-    salesmanID: string;
+    salesManId: string;
     clientName: string;
     rating: number;
     soldQuantity: number;
@@ -11,6 +11,7 @@ export interface PerformanceReportDatapoint {
     socialPerformance: SocialPerformance;
     date: string;
     calculatedBonus: CalculatedBonusDatapoint;
+    remark: string;
     isAcceptedByHR: boolean;
     isAcceptedByCEO: boolean;
 }

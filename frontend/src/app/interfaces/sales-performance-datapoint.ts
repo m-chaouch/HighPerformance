@@ -7,10 +7,14 @@ export interface CompanySales {
     soldQuantity: number;
 }
 
+class list {
+    [company: string]: CompanySales;
+}
+
 /**
  * This interface represents the sales performance list.
  * The keys are company names, and the values are CompanySales objects.
  */
 export interface SalesPerformance {
-    [company: string]: CompanySales;
+    list: list;
 }

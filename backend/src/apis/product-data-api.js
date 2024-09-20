@@ -1,12 +1,21 @@
 const { fetchProducts } = require('../services/product-service');
 
-const getProductData = function (req, res) {
+/**
+ * Fetches product data by ID and sends it in the response.
+ *
+ * @param {Request} req - Request object containing the product ID in req.params.id.
+ * @param {Response} res - Response object to send the fetched data or error.
+ */
+
+const getProductData = async function (req, res) {
     const id = req.params.id;
-    fetchProducts(id).then(productData => {
-        res.send(productData);
-    }).catch(() => {
-        res.status(400).send();
-    })
+    try {
+        const fetchedProducts = await fetchProducts(id);
+        res.send(fetchedProducts);
+    } catch(error) {
+        return res.status(404).send({ success: false, error: { message: "Couldn't find product with this ID." } });
+    }
+
 }
 
 module.exports = {

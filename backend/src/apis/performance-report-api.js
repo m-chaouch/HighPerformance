@@ -63,39 +63,52 @@ exports.getPerformanceReport = async (req, res) => {
     }
 };
 
-
-exports.updatePerformanceReport = async (req, res) => {
+/**
+ * calculates the bonus for a performace report
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+exports.updatePerformanceReportBonus = async (req, res) => {
+    const performanceReport = req.body;
     const db = req.app.get('db');
-    const { salesManId, date } = convert(req.params);
+    const { salesManId, date } = convert(performanceReport);
     console.log("addBonus", salesManId);
-    const updatedData = req.body;
-    const updateBonusOnly = req.header('updateBonusOnly') === 'true';
-    if(updateBonusOnly) {
-        try {
-            const calculatedBonus = bonusComputation(updatedData.socialPerformance, updatedData.salesPerformance);
+
+    try {
+            const calculatedBonus = bonusComputation(performanceReport.socialPerformance, performanceReport.salesPerformance);
             const fieldToUpdate = {'calculatedBonus': calculatedBonus};
             const result = await updatePerformanceReport(db, salesManId, date, fieldToUpdate);
-            if(!result){
-                res.status(404).json({ error: 'Performance report not found or not updated' });
-            }
-            res.status(200).json({ message: 'Performance report updated successfully', result });
-        } catch (error) {
-            console.error('Error updating performance report:', error);
-            res.status(500).json({ error: 'An unexpected error occurred' });
-        }
-    }else {
-        try {
-            const result = await updateSocialCriteria(db, salesManId, date, updatedData);
             if (!result) {
-                res.status(404).json({ error: 'Performance report not found or not updated' });
+                res.status(404).json({error: 'Performance report not found or not updated'});
             }
-            res.status(200).json({ message: 'Performance report updated successfully', result });
+            res.status(200).json({message: 'Performance report updated successfully', result});
         } catch (error) {
             console.error('Error updating performance report:', error);
-            res.status(500).json({ error: 'An unexpected error occurred' });
+            res.status(500).json({error: 'An unexpected error occurred'});
         }
-    }
 };
+
+/**
+ * can be used to update field of a performance report in general
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+exports.updatePerformanceReport= async (req, res) => {
+    const db = req.app.get('db');
+    const { salesManId, date } = convert(req.params);
+    const fieldToUpdate = req.body;
+    try {
+        const result = await updatePerformanceReport(db, salesManId, date, fieldToUpdate);
+        if (!result) {
+            res.status(404).json({error: 'Performance report not found or not updated'});
+        }
+    }catch(error){
+        console.log("updating a performance report went wrong", error);
+    }
+}
+
 
 
 exports.deletePerformanceReport = async (req, res) => {

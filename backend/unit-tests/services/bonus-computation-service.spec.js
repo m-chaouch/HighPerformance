@@ -4,7 +4,7 @@ const { SocialPerformance } = require('../../src/models/SocialPerformance');
 const { SalesPerformance } = require('../../src/models/SalesPerformance');
 const { PerformanceRecord } = require('../../src/models/PerformanceRecord');
 //const { bonusComputation} = require('../../src/services/bonus-computation-service');
-const {saveSocialPerformance} = require("../../src/apis/bonus-computaion-api");
+const {saveSocialPerformance} = require("../../src/apis/performance-report-api");
 const {bonusComputation} = require("../../src/services/bonus-computation-service");
 
 async function test() {

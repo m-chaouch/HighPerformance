@@ -20,13 +20,19 @@ export class PerformanceReportService{
             performanceRecord).toPromise();
     }
 
-    public updatePerformanceReportBonus(SID: string, date: string, performanceReport: PerformanceReportDatapoint):
-    Promise<PerformanceReportDatapoint>{
-        const headers = {updateBonusOnly: 'true'};
-        return this.http.put<PerformanceReportDatapoint>(
-            environment.apiEndpoint + `/api/performance-report/${SID}/${date}`,
+    public updatePerformanceReportBonus( performanceReport: PerformanceReportDatapoint,
+        headers = {updateBonusOnly: 'false'}):
+    Promise<void>{
+        return this.http.put<void>(
+            environment.apiEndpoint + `/api/performance-report`,
             performanceReport,
             {headers}
+        ).toPromise();
+    }
+    public updatePerformanceReport(SID: string, date: string, updateField: Record<string, any>): Promise<void>{
+        return this.http.put<void>(
+            environment.apiEndpoint + `/api/performance-report/${SID}/${date}`,
+            updateField
         ).toPromise();
     }
 }

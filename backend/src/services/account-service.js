@@ -20,7 +20,22 @@ const {CRX_URL} = require("../utils/SaaSURLs");
  *   - An empty array if no account is found with the specified UID.
  */
 async function fetchAccounts(UID="") {
-    const accounts = await loginService(CRX_URL + `opencrx-rest-CRX/org.opencrx.kernel.account1/provider/CRX/segment/Standard/account/${UID}`);
+    let accounts;
+    try{
+        accounts = await loginService(CRX_URL +
+            `opencrx-rest-CRX/org.opencrx.kernel.account1/provider/CRX/segment/Standard/account/${UID}`
+        );
+    } catch (error) {
+        if (error.response) {
+            if (error.response.status === 500) {
+                throw new Error('Something went wrong on the server.');
+            } else {
+                throw new Error(`Request failed with status ${error.response.status}`);
+            }
+        } else {
+            throw new Error('Network or unknown error occurred.');
+        }
+    }
     return filterAccounts(accounts);        // returns an array of objects
 }
 

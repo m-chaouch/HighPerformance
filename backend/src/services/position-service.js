@@ -18,7 +18,22 @@ const {CRX_URL} = require("../utils/SaaSURLs");
  *
  */
 async function fetchPositions(SOID){
-    const responseData = await loginService(CRX_URL + `opencrx-rest-CRX/org.opencrx.kernel.contract1/provider/CRX/segment/Standard/salesOrder/${SOID}/position`)
+    let responseData;
+    try{
+        responseData = await loginService(CRX_URL +
+            `opencrx-rest-CRX/org.opencrx.kernel.contract1/provider/CRX/segment/Standard/salesOrder/${SOID}/position`
+        );
+    } catch (error) {
+        if (error.response) {
+            if (error.response.status === 500) {
+                throw new Error('Something went wrong on the server.');
+            } else {
+                throw new Error(`Request failed with status ${error.response.status}`);
+            }
+        } else {
+            throw new Error('Network or unknown error occurred.');
+        }
+    }
     return await filterPositions(responseData)
 }
 
