@@ -7,11 +7,10 @@
 
 .salesman-data{
     width: 17vw;
-    height: 10vh;
     border: 2px solid black;
     border-radius: 6px;
     margin: 15px;
-    display: flex; /* Flexbox verwenden */
+    display: flex;
     flex-wrap: wrap; /* Elemente umbrechen lassen */
 }
 
@@ -57,7 +56,6 @@ h3 {
     border: 2px solid black;
     border-radius: 6px;
     margin: 20px;
-    height: 3vh;
     display: flex;
     align-items: center;
 

@@ -42,7 +42,6 @@ router.get('/accounts', accountApi.getAccountData);
 router.get('/accounts/:id', accountApi.getAccountData);
 
 const productApi = require('../apis/product-data-api');
-router.get('/products', productApi.getProductData);
 router.get('/products/:id', productApi.getProductData);
 
 const positionApi = require('../apis/position-api');

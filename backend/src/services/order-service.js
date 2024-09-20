@@ -1,6 +1,6 @@
 const {loginService} = require('./login-service');
 const{getLastSegment} = require('../utils/helper');
-const {getAccountName, fetchAccounts} = require("./account-service");
+const {getAccountName} = require("./account-service");
 const {CRX_URL} = require("../utils/SaaSURLs");
 
 
@@ -14,7 +14,18 @@ const {CRX_URL} = require("../utils/SaaSURLs");
  * @returns {Promise<Object[]>} A promise that resolves to an object containing the orders.
  */
 async function fetchOrders(SOID = ""){
-    const responseData = await loginService(CRX_URL + `opencrx-rest-CRX/org.opencrx.kernel.contract1/provider/CRX/segment/Standard/salesOrder/${SOID}`);
+    let responseData;
+    try {
+        responseData = await loginService(CRX_URL +
+            `opencrx-rest-CRX/org.opencrx.kernel.contract1/provider/CRX/segment/Standard/salesOrder/${SOID}`
+        );
+    } catch(error){
+        if(error.response.status === 400){
+            throw new Error('OrderNotFound');
+        } else {
+            throw new Error('RequestFailed');
+        }
+    }
     return await filterOrders(responseData);
 }
 
@@ -122,10 +133,9 @@ function getPricingState(pricingState) {
 async function getOrdersOfEmployee(governmentId, orders, accounts) {
     const UID = GovIDtoUID(governmentId,accounts)
 
-    const ordersOfSalesman = orders.filter(item => {
+    return orders.filter(item => {
         return item.sellerID === UID    //erstmal zum testen UID benutzen
     })
-    return ordersOfSalesman
 }
 
 function GovIDtoUID(GovID, accounts){
