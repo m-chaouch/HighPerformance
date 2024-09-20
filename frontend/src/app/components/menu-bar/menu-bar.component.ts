@@ -20,6 +20,9 @@ export class MenuBarComponent implements OnInit {
         {title: 'Welcome', routerLink: ''}, // the tile is the text on the button, the routerLink specifies, where it will navigate
         {title: 'Example', routerLink: 'example'},
         {title: 'Employee', routerLink: 'employee'},
+        {title: 'Add User', routerLink: 'addUser'},
+        {title: 'Employee', routerLink: 'employee'},
+        {title: 'Orders', routerLink: 'orders'},
         {title: 'Orders', routerLink: 'orders'},
         {title: 'Performance Reports', routerLink: 'performance-report'}
     ];
@@ -42,6 +45,7 @@ export class MenuBarComponent implements OnInit {
      */
     handleLogout(): void{
         this.authService.logout().subscribe();
+        this.user = null;
         void this.router.navigate(['login']); // after logout go back to the login-page
     }
 

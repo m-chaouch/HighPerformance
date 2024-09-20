@@ -1,0 +1,13 @@
+mat-form-field{
+    width: 100%;
+}
+
+span.error{
+    font-size: large;
+    margin-left: 50px;
+    color: red;
+}
+
+button.login{
+    float: right;
+}

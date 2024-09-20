@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Credentials} from '../models/Credentials';
+import {CredentialsRegister} from '../models/Credentials'
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable, Observer} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
@@ -89,6 +90,48 @@ export class AuthService {
                     }
                 })
             );
+    }
+
+    /**
+     * register a new user
+     *
+     * @param credentialsRegister consisting of username, password, and additional registration details
+     */
+    register(credentialsRegister: CredentialsRegister): Observable<HttpResponse<any>> {
+        return this.http.post(environment.apiEndpoint + '/api/register', credentialsRegister, {
+            withCredentials: true,
+            observe: 'response',
+            responseType: 'text'
+        }).pipe(
+            tap((response): void => {
+                if (response.status === 200) { // if registration was successful
+                    alert("Registration successfully");
+                }
+            })
+        );
+    }
+
+
+    validateRegister(credentials: CredentialsRegister): string | null {
+        // Check if any field is empty
+        if (!credentials.username || !credentials.firstname || !credentials.lastname || !credentials.email || !credentials.password || !credentials.passwordConfirm) {
+            return 'Please fill in all fields.';
+        }
+
+        // Check if email format is valid
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailPattern.test(credentials.email)) {
+            return 'Please enter a valid email address.';
+        }
+
+        // Check if passwords match
+        if (credentials.password !== credentials.passwordConfirm) {
+            return 'Passwords do not match.';
+        }
+        // Check password strength (example: minimum 8 characters)
+
+        // If all checks pass, return null (no error)
+        return null;
     }
 
     /**
