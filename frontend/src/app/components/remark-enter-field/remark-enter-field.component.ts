@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnChanges, SimpleChange, SimpleChanges} from '@angular/core';
+import {Component, Input, OnInit, OnChanges, SimpleChanges} from '@angular/core';
 import {PerformanceReportService} from '../../services/performance-report.service';
 import {PerformanceReportDatapoint} from '../../interfaces/performance-report-datapoint';
 @Component({
@@ -6,18 +6,21 @@ import {PerformanceReportDatapoint} from '../../interfaces/performance-report-da
     templateUrl: './remark-enter-field.component.html',
     styleUrls: ['./remark-enter-field.component.css']
 })
-export class RemarkEnterFieldComponent implements OnInit {
+export class RemarkEnterFieldComponent implements OnInit, OnChanges {
     remark: string ;  // Property to bind to input field
     @Input() performanceReport: PerformanceReportDatapoint;
     constructor(private reportService: PerformanceReportService, ) {}
     ngOnInit(): void {
-        this.remark = this.performanceReport.remark;
+    }
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.performanceReport) {
+            this.remark = this.performanceReport.remark;
+        }
     }
 
     async saveRemark(): Promise<void>{
-        const {salesmanID, date} = this.performanceReport;
-        this.performanceReport.remark = this.remark;
-        await this.reportService.updatePerformanceReport(salesmanID, date, {remark: this.remark});
+        const {salesManId, date} = this.performanceReport;
+        await this.reportService.updatePerformanceReport(salesManId, date, {remark: this.remark});
     }
 
 

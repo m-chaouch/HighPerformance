@@ -102,7 +102,7 @@ function updateObject(keyName, newVal, object) {
 async function updatePerformanceReport(db, salesManId, date, updateFields, options = { upsert: false }) {
     try {
         const collection = db.collection(collectionName);
-
+        console.log({ salesManId, date });
         // Prepare the update object
         const update = { $set:{} };
         // Iterate over the keys in updateFields and populate the $set object
