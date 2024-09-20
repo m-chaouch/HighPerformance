@@ -12,4 +12,6 @@ export interface PerformanceReportDatapoint {
     date: string;
     calculatedBonus: CalculatedBonusDatapoint;
     remark: string;
+    isAcceptedByHR: boolean;
+    isAcceptedByCEO: boolean;
 }

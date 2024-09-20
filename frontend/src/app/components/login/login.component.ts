@@ -30,13 +30,21 @@ export class LoginComponent implements OnInit {
                 this.resetCredentials();
                 this.enterApplication();
             }else{
-                this.loginError = response.body as string;
+                this.setLoginError(response.body as string);
             }
         },
         (error: HttpErrorResponse): void => {
-            this.loginError = error.error as string;
+            this.setLoginError(error.error as string);
         }
         );
+    }
+
+    setLoginError(message : string): void{
+        this.loginError = message;
+
+        setTimeout(() => {
+            this.loginError = '';
+        }, 3000);
     }
 
     /**

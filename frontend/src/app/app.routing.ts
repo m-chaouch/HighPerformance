@@ -27,11 +27,11 @@ const routes: Routes = [
     {path: 'login', component: LoginPageComponent},
     {path : 'addUser', component: AddUserComponent, canActivate: [AuthGuardService, AdminGuardService]},
     {path: 'example', component: ExamplePageComponent, canActivate: [AuthGuardService]},
-    {path: 'employee', component: EmployeePageComponent},
-    {path: 'orders', component: OrderPageComponent},
-    {path: 'orders/:id', component: DetailedOrderPageComponent},
-    {path: 'performance-report', component: PerformanceReportPageComponent},
-    {path: 'performance-review/:id/:date', component: PerformanceReviewPageComponent},
+    {path: 'employee', component: EmployeePageComponent, canActivate: [AuthGuardService]},
+    {path: 'orders', component: OrderPageComponent, canActivate: [AuthGuardService]},
+    {path: 'orders/:id', component: DetailedOrderPageComponent, canActivate: [AuthGuardService]},
+    {path: 'performance-report', component: PerformanceReportPageComponent, canActivate: [AuthGuardService]},
+    {path: 'performance-review/:id/:date', component: PerformanceReviewPageComponent, canActivate: [AuthGuardService]},
     {path: '', component: LandingPageComponent, canActivate: [AuthGuardService]},
     {path: '**', component: NotFoundPageComponent} // these entries are matched from top to bottom => not found should be the last entry
 ];

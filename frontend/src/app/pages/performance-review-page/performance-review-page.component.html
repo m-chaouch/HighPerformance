@@ -28,8 +28,13 @@
         <app-remark-enter-field [performanceReport]=performanceReport> </app-remark-enter-field>
 
     </div>
-    <button mat-fab extended class='button-container' (click)='handleButtonClick()' *ngIf="!performanceReport?.calculatedBonus">calculate bonus</button>
-</div>
-
-
-
+    <!--
+    Das Rendering des Buttons in Angular (z. B. mit {{ getButtonText() }}, Property Binding ([property] und [ngClass]) erfolgt während des Change Detection-Zyklus von Angular.
+     Das bedeutet, dass das Template neu gerendert wird, wenn Angular Änderungen in der Komponente oder ihren Daten feststellt.
+     -->
+    <div class="button-container">
+        <button mat-fab extended class='button-style' [disabled]="disableButtonForCEO" (click)='handleButtonCEO()'> {{ getButtonTextCEO() }} </button>
+        <button mat-fab extended class='button-style' [disabled]="disableButtonForHR" (click)='handleButtonHR()' > {{ getButtonTextHR() }} </button>
+        <button mat-fab extended class='button-style' (click)='handleButtonClick()' *ngIf="!performanceReport?.calculatedBonus">calculate bonus</button>
+    </div>
+    </div>

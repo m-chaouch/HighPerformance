@@ -16,7 +16,7 @@ class PerformanceRecord {
         this.date = new Date().getFullYear(); // when was this created
         this.calculatedBonus = null;
         this.isAcceptedByCEO = false;
-        this.isAccepted = false;
+        this.isAcceptedByHR = false;
         this.remark = "";
     }
 }
