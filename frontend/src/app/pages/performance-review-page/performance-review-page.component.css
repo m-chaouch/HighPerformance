@@ -15,19 +15,6 @@
     flex-wrap: wrap; /* Elemente umbrechen lassen */
 }
 
-.orders-evaluation{
-    width: 60vw;
-    border: 2px solid black;
-    border-radius: 6px;
-    margin: 15px;
-}
-
-.social-performance-evaluation{
-    width: 60vw;
-    border: 2px solid black;
-    border-radius: 6px;
-    margin: 15px;
-}
 
 h3 {
     margin: 10px;
@@ -101,7 +88,7 @@ p {
     text-align: right;
 }
 
-right-block{
+.right-block{
     display: inline-block;
     width: 50%;
 }

@@ -14,8 +14,7 @@ import {PerformanceReportService} from '../../services/performance-report.servic
 })
 export class PerformanceReviewPageComponent implements OnInit {
 
-    displayedColumnsOrders = ['productName', 'clientName', 'rating', 'soldQuantity', 'bonus'];
-    displayedColumnsSocial = ['criteria', 'targetValue', 'actualValue', 'bonus'];
+
     salesman: EmployeeDatapoint;
     employeeID: number;
     performanceReport: PerformanceReportDatapoint;
@@ -48,7 +47,11 @@ export class PerformanceReviewPageComponent implements OnInit {
         this.disableButtonForHR = this.performanceReport.isAcceptedByHR;
     }
     async handleButtonClick(): Promise<void> {
-        await this.performanceReportService.savePerformanceRecord(this.performanceReport);
+        await this.performanceReportService.updatePerformanceReportBonus(
+            this.salesman.employeeCode,
+            this.performanceDate,
+            this.performanceReport
+        );
         this.performanceReport = (await this.performanceReportService.getPerformanceReport(this.salesman.employeeCode,
             this.performanceDate))[0];
         this.parsePerformanceReport(this.performanceReport);
