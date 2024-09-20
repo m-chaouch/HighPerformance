@@ -64,6 +64,9 @@ export class PerformanceReviewPageComponent implements OnInit {
                     this.performanceDate))[0];
                 this.parsePerformanceReport(this.performanceReport);
             }
+            else {
+                alert('Only CEO can Calculate the Bonus'); // alert for HR
+            }
         })
     }
 
@@ -79,7 +82,6 @@ export class PerformanceReviewPageComponent implements OnInit {
      * button click ist nur möglich, falls der button nicht "disabled" ist,
      * somit keine interne status überprüfung notwendig
      */
-    // TODO was wäre wenn die accept buttons erst kommen nachdem calculatedBonus da ist ???
     handleButtonCEO(): void {
 
         this.userService.getOwnUser().subscribe((user) => {
@@ -88,20 +90,19 @@ export class PerformanceReviewPageComponent implements OnInit {
                 alert('Access denied!');
                 return;
             }
-            if (!!this.performanceReport?.calculatedBonus) {
+            if ( !(!!this.performanceReport?.calculatedBonus)) {
                 alert('fetch Bonus first');
                 return;
             }
             this.disableButtonForCEO = true;
             alert('successfully accepted!');
         })
-        // TODO set isAcceptedByCEO auf true, auch in der db also innerhalb des performanceReports.
 
-        //this.performanceReportService.savePerformanceRecord(this.performanceReport);
-        // TODO feedback bei erfolgreichem akzeptieren -> alert oder string
     }
-    handleButtonHR(): void {
 
+    // TODO update performacePeport in db => konstruktor nochmal aufrufen um aktuellen report zu haben der accepted wurde ???
+    handleButtonHR(): void {
+        //TODO remark hinzufügen, darf nicht leer sein beim bestätigen des reports
         this.userService.getOwnUser().subscribe((user) => {
             let userIsHR = user.jobTitle === 'HR';
             if (!userIsHR) {
