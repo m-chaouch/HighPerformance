@@ -17,8 +17,8 @@ export class AdminGuardService {
             .pipe(
                 map((isLoggedIn): boolean => {
                     this.userService.getOwnUser().subscribe((user): boolean => {
-                        if (!isLoggedIn || user.isAdmin !== true) {
-                            alert("access only for admin")
+                        if (user.isAdmin !== true || user.jobTitle !== 'CEO') {
+                            alert("access only for admin/CEO")
                             void this.router.navigate(['']); // Optional: Redirect to unauthorized page
                             return false;
                         }
