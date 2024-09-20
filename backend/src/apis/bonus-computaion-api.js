@@ -64,38 +64,30 @@ exports.getPerformanceReport = async (req, res) => {
 };
 
 
-exports.updatePerformanceReport = async (req, res) => {
+exports.updatePerformanceReportBonus = async (req, res) => {
     const db = req.app.get('db');
     const { salesManId, date } = convert(req.params);
     console.log("addBonus", salesManId);
     const updatedData = req.body;
-    const updateBonusOnly = req.header('updateBonusOnly') === 'true';
-    if(updateBonusOnly) {
         try {
             const calculatedBonus = bonusComputation(updatedData.socialPerformance, updatedData.salesPerformance);
             const fieldToUpdate = {'calculatedBonus': calculatedBonus};
             const result = await updatePerformanceReport(db, salesManId, date, fieldToUpdate);
-            if(!result){
-                res.status(404).json({ error: 'Performance report not found or not updated' });
-            }
-            res.status(200).json({ message: 'Performance report updated successfully', result });
-        } catch (error) {
-            console.error('Error updating performance report:', error);
-            res.status(500).json({ error: 'An unexpected error occurred' });
-        }
-    }else {
-        try {
-            const result = await updateSocialCriteria(db, salesManId, date, updatedData);
             if (!result) {
-                res.status(404).json({ error: 'Performance report not found or not updated' });
+                res.status(404).json({error: 'Performance report not found or not updated'});
             }
-            res.status(200).json({ message: 'Performance report updated successfully', result });
+            res.status(200).json({message: 'Performance report updated successfully', result});
         } catch (error) {
             console.error('Error updating performance report:', error);
-            res.status(500).json({ error: 'An unexpected error occurred' });
+            res.status(500).json({error: 'An unexpected error occurred'});
         }
-    }
 };
+
+exports.updatePerformanceReportBonus = async (req, res) => {
+
+}
+
+
 
 
 exports.deletePerformanceReport = async (req, res) => {

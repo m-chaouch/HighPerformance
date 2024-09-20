@@ -43,8 +43,6 @@ export class PerformanceReviewPageComponent implements OnInit {
     }
     async handleButtonClick(): Promise<void> {
         await this.performanceReportService.updatePerformanceReportBonus(
-            this.salesman.employeeCode,
-            this.performanceDate,
             this.performanceReport
         );
         this.performanceReport = (await this.performanceReportService.getPerformanceReport(this.salesman.employeeCode,
