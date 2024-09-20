@@ -107,7 +107,7 @@
 
 
         </div>
-        <app-remark-enter-field  [tmp]=performanceReport.date > </app-remark-enter-field>
+        <app-remark-enter-field [performanceReport]=performanceReport> </app-remark-enter-field>
 
     </div>
     <button mat-fab extended class='button-container' (click)='handleButtonClick()' *ngIf="!performanceReport?.calculatedBonus">calculate bonus</button>

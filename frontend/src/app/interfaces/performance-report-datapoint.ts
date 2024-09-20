@@ -11,4 +11,5 @@ export interface PerformanceReportDatapoint {
     socialPerformance: SocialPerformance;
     date: string;
     calculatedBonus: CalculatedBonusDatapoint;
+    remark: string;
 }

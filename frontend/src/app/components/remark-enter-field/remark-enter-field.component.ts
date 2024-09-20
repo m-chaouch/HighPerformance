@@ -11,6 +11,11 @@ export class RemarkEnterFieldComponent implements OnInit {
     @Input() performanceReport: PerformanceReportDatapoint;
     constructor(private reportService: PerformanceReportService, ) {}
     ngOnInit(): void {
+        this.remark = this.performanceReport.remark;
+    }
+
+    saveRemark(): void{
+
     }
 
 
