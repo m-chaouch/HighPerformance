@@ -2,10 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {EmployeeDatapoint} from '../../interfaces/employee-datapoint';
 import {EmployeeDataService} from '../../services/employee-data.service';
 import {ActivatedRoute} from '@angular/router';
-import {OrderService} from '../../services/order.service';
 import {PerformanceReportDatapoint} from '../../interfaces/performance-report-datapoint';
 import {PerformanceReportService} from '../../services/performance-report.service';
-import {UserService} from "../../services/user.service";
+import {UserService} from '../../services/user.service';
 import {SocialPerformance} from '../../interfaces/social-performacne-datapoint';
 
 /* eslint-disable no-console */
@@ -56,9 +55,8 @@ export class PerformanceReviewPageComponent implements OnInit {
         this.userService.getOwnUser().subscribe( async (user) => {
             if (user.isAdmin || user.jobTitle === 'CEO') {
                 await this.performanceReportService.updatePerformanceReportBonus(
-                    this.salesman.employeeCode,
-                    this.performanceDate,
-                    this.performanceReport
+                    this.performanceReport,
+                    {updateBonusOnly: 'true'}
                 );
                 this.performanceReport = (await this.performanceReportService.getPerformanceReport(
                     this.salesman.employeeCode,
@@ -68,7 +66,7 @@ export class PerformanceReviewPageComponent implements OnInit {
             else {
                 alert('Only CEO can Calculate the Bonus'); // alert for HR
             }
-        })
+        });
     }
 
     // set button text via data
@@ -116,13 +114,13 @@ export class PerformanceReviewPageComponent implements OnInit {
             }
             this.disableButtonForHR = true;
             alert('successfully accepted!');
-        })
+        });
     }
 
     parsePerformanceReport(performanceReport: PerformanceReportDatapoint): void{
         this.salesPerformanceArray = Object.keys(performanceReport.salesPerformance.list).map((key): object => ({
             clientName: key,
-           // clientName: performanceReport.salesPerformance.list[key].clientName,  // use when clientname implemented
+            // clientName: performanceReport.salesPerformance.list[key].clientName,  // use when clientname implemented
             rating: performanceReport.salesPerformance.list[key].rating,
             soldQuantity: performanceReport.salesPerformance.list[key].soldQuantity,
             bonus: Number(performanceReport.calculatedBonus?.salesBonus?.[key]) || ''
