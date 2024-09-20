@@ -55,8 +55,13 @@ h3 {
 }
 
 .button-container{
-    display: flex;
-    justify-content: center;
+    display: flex; /* Ändert die Display-Eigenschaft zu Flexbox */
+    justify-content: center; /* Zentriert die Buttons horizontal */
+    align-items: center; /* Zentriert die Buttons vertikal */
+    gap: 10px;
+    margin-top: 20px;
+}
+.button-style{
     background-color: orangered;
 }
 
