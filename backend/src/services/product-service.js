@@ -18,8 +18,24 @@ const {CRX_URL} = require("../utils/SaaSURLs");
  *   - An empty array if no products are found and no PID is specified.
  */
 async function fetchProducts(PID) {
-    const products = await loginService(CRX_URL + `/opencrx-rest-CRX/org.opencrx.kernel.product1/provider/CRX/segment/Standard/product/${PID}`);
-    return filterProducts(products);
+    let products;
+    try {
+        products = await loginService(CRX_URL +
+            `/opencrx-rest-CRX/org.opencrx.kernel.product1/provider/CRX/segment/Standard/product/${PID}`
+        );
+    } catch (error) {
+        if (error.response) {
+            if (error.response.status === 500) {
+                throw new Error('Something went wrong on the server.');
+            } else {
+                throw new Error(`Request failed with status ${error.response.status}`);
+            }
+        } else {
+            throw new Error('Network or unknown error occurred.');
+        }
+    }
+
+        return filterProducts(products);
      // Return an array of all product objects if no PID is provided
 }
 
