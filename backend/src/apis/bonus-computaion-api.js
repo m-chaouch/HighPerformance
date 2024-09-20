@@ -1,8 +1,9 @@
-const { getPerformanceReport, storePerformanceRecord, updateSocialCriteria, deletePeformanceReport} = require("../services/performance-report-service");
+const { getPerformanceReport, storePerformanceRecord, updateSocialCriteria, deletePeformanceReport, updatePerformanceReport} = require("../services/performance-report-service");
 const { SocialPerformance } = require('../models/SocialPerformance'); //TODO remove this
 const { PerformanceRecord } = require('../models/PerformanceRecord');
 const {createDB, deleteDB} = require('../../unit-tests/support/mockdb-new') //TODO remove after testing this and insert the real db into function
 const express = require('express');
+const {bonusComputation} = require("../services/bonus-computation-service");
 const app = express();
 // var db = req.app.get('db');//TODO needs to be removed onece there is an actual db
 // createDB().then(res => db = res).then(() => console.log("db is has started running") );
@@ -66,18 +67,33 @@ exports.getPerformanceReport = async (req, res) => {
 exports.updatePerformanceReport = async (req, res) => {
     const db = req.app.get('db');
     const { salesManId, date } = convert(req.params);
-    console.log("salesManId", salesManId);
+    console.log("addBonus", salesManId);
     const updatedData = req.body;
-
-    try {
-        const result = await updateSocialCriteria(db, salesManId, date, updatedData);
-        if (!result) {
-            res.status(404).json({ error: 'Performance report not found or not updated' });
+    const updateBonusOnly = req.header('updateBonusOnly') === 'true';
+    if(updateBonusOnly) {
+        try {
+            const calculatedBonus = bonusComputation(updatedData.socialPerformance, updatedData.salesPerformance);
+            const fieldToUpdate = {'calculatedBonus': calculatedBonus};
+            const result = await updatePerformanceReport(db, salesManId, date, fieldToUpdate);
+            if(!result){
+                res.status(404).json({ error: 'Performance report not found or not updated' });
+            }
+            res.status(200).json({ message: 'Performance report updated successfully', result });
+        } catch (error) {
+            console.error('Error updating performance report:', error);
+            res.status(500).json({ error: 'An unexpected error occurred' });
         }
-        res.status(200).json({ message: 'Performance report updated successfully', result });
-    } catch (error) {
-        console.error('Error updating performance report:', error);
-        res.status(500).json({ error: 'An unexpected error occurred' });
+    }else {
+        try {
+            const result = await updateSocialCriteria(db, salesManId, date, updatedData);
+            if (!result) {
+                res.status(404).json({ error: 'Performance report not found or not updated' });
+            }
+            res.status(200).json({ message: 'Performance report updated successfully', result });
+        } catch (error) {
+            console.error('Error updating performance report:', error);
+            res.status(500).json({ error: 'An unexpected error occurred' });
+        }
     }
 };
 
