@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 import {EmployeeDatapoint} from '../../interfaces/employee-datapoint';
 import {EmployeeDataService} from '../../services/employee-data.service';
 import {ActivatedRoute} from '@angular/router';
@@ -22,6 +22,9 @@ export class PerformanceReviewPageComponent implements OnInit {
     performanceDate: string;
     salesPerformanceArray: any[] = [];
     socialPerformanceArray: any[] = [];
+    protected disableButtonForCEO: boolean;
+    protected disableButtonForHR: boolean;
+    protected bonusIsCalculated: boolean;
 
 
     constructor(private employeeDataService: EmployeeDataService, private orderService: OrderService,
@@ -41,6 +44,8 @@ export class PerformanceReviewPageComponent implements OnInit {
             });
 
         });
+        this.disableButtonForCEO = this.performanceReport.isAcceptedByCEO;
+        this.disableButtonForHR = this.performanceReport.isAcceptedByHR;
     }
     async handleButtonClick(): Promise<void> {
         await this.performanceReportService.savePerformanceRecord(this.performanceReport);
@@ -48,6 +53,39 @@ export class PerformanceReviewPageComponent implements OnInit {
             this.performanceDate))[0];
         this.parsePerformanceReport(this.performanceReport);
     }
+
+    // set button text via data
+    getButtonTextCEO(): string {
+        return this.disableButtonForCEO === true ? 'Is Accepted By CEO' : 'Accept As CEO';
+    }
+    getButtonTextHR(): string {
+        return this.disableButtonForHR === true ? 'Is Accepted By HR' : 'Accept As HR';
+    }
+
+    /**
+     * button click ist nur möglich, falls der button nicht "disabled" ist,
+     * somit keine interne status überprüfung notwendig
+     */
+    // TODO was wäre wenn die accept buttons erst kommen nachdem calculatetBonus da ist ???
+    handleButtonCEO(): boolean {
+        // ist der calculatedBonus schon da?
+        if (this.performanceReport.calculatedBonus){ // TODO check ob klappt
+            alert("Bonus ist da");
+            return false;
+        }
+        // TODO set isAcceptedByCEO auf true, auch in der db also innerhalb des performanceReports.
+        this.disableButtonForCEO = true;
+        //this.performanceReportService.savePerformanceRecord(this.performanceReport);
+        // TODO feedback bei erfolgreichem akzeptieren -> alert oder string
+        return true;
+    }
+    handleButtonHR(): boolean {
+        this.disableButtonForHR= true
+        // TODO set isAcceptedByHR auf true, auch in der db also innerhalb des performanceReports.
+        return true;
+    }
+
+
 
     parsePerformanceReport(performanceReport: PerformanceReportDatapoint): void{
         this.salesPerformanceArray = Object.keys(performanceReport.salesPerformance.list).map((key): object => ({
