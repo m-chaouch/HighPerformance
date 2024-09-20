@@ -63,14 +63,20 @@ exports.getPerformanceReport = async (req, res) => {
     }
 };
 
-
+/**
+ * calculates the bonus for a performace report
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
 exports.updatePerformanceReportBonus = async (req, res) => {
+    const performanceReport = req.body;
     const db = req.app.get('db');
-    const { salesManId, date } = convert(req.params);
+    const { salesManId, date } = convert(performanceReport);
     console.log("addBonus", salesManId);
-    const updatedData = req.body;
-        try {
-            const calculatedBonus = bonusComputation(updatedData.socialPerformance, updatedData.salesPerformance);
+
+    try {
+            const calculatedBonus = bonusComputation(performanceReport.socialPerformance, performanceReport.salesPerformance);
             const fieldToUpdate = {'calculatedBonus': calculatedBonus};
             const result = await updatePerformanceReport(db, salesManId, date, fieldToUpdate);
             if (!result) {
@@ -83,10 +89,25 @@ exports.updatePerformanceReportBonus = async (req, res) => {
         }
 };
 
-exports.updatePerformanceReportBonus = async (req, res) => {
-
+/**
+ * can be used to update field of a performance report in general
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+exports.updatePerformanceReport= async (req, res) => {
+    const db = req.app.get('db');
+    const { salesManId, date } = convert(req.params);
+    const fieldToUpdate = req.body;
+    try {
+        const result = await updatePerformanceReport(db, salesManId, date, fieldToUpdate);
+        if (!result) {
+            res.status(404).json({error: 'Performance report not found or not updated'});
+        }
+    }catch(error){
+        console.log("updating a performance report went wrong", error);
+    }
 }
-
 
 
 

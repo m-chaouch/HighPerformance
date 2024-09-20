@@ -25,11 +25,12 @@ const employeeApi = require('../apis/employee-data-api');
 router.get('/employee', checkAuthorization(), employeeApi.getEmployeeData);
 router.get('/employee/:id', checkAuthorization(), employeeApi.getOneEmployee); //needs employeeID not code
 
-const bonusApi = require('../apis/bonus-computaion-api');
+const bonusApi = require('../apis/performance-report-service');
 router.post('/performance-record', bonusApi.saveSocialPerformance);
 router.get('/performance-report/:salesManId/:date', bonusApi.getPerformanceReport);
 router.get('/performance-report/:salesManId', bonusApi.getPerformanceReport);
-router.put('/performance-report/:salesManId/:date', bonusApi.updatePerformanceReportBonus);
+router.put('/performance-report', bonusApi.updatePerformanceReportBonus);
+router.put('/performance-report/:salesManId/:date', bonusApi.updatePerformanceReport);
 router.delete('/performance-report/:salesManId/:date', bonusApi.deletePerformanceReport);
 
 

@@ -14,8 +14,10 @@ export class RemarkEnterFieldComponent implements OnInit {
         this.remark = this.performanceReport.remark;
     }
 
-    saveRemark(): void{
-
+    async saveRemark(): Promise<void>{
+        const {salesmanID, date} = this.performanceReport;
+        this.performanceReport.remark = this.remark;
+        await this.reportService.updatePerformanceReport(salesmanID, date, {remark: this.remark});
     }
 
 
