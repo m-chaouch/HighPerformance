@@ -1,0 +1,40 @@
+
+<h2> Register </h2>
+
+<mat-form-field appearance="fill">
+    <mat-label>username</mat-label>
+    <input type="text" [(ngModel)]="credentialsRegister.username" name="username" matInput>
+</mat-form-field>
+
+<mat-form-field appearance="fill">
+    <mat-label>firstname</mat-label>
+    <input type="text" [(ngModel)]="credentialsRegister.firstname" name="firstname" matInput>
+</mat-form-field>
+
+<mat-form-field appearance="fill">
+    <mat-label>lastname</mat-label>
+    <input type="text" [(ngModel)]="credentialsRegister.lastname" name="lastname" matInput>
+</mat-form-field>
+
+<mat-form-field appearance="fill">
+    <mat-label>email</mat-label>
+    <input type="text" [(ngModel)]="credentialsRegister.email" name="email" matInput>
+</mat-form-field>
+
+<mat-form-field appearance="fill">
+    <mat-label>Job Title</mat-label>
+    <input type="text" [(ngModel)]="credentialsRegister.jobTitle" name="Job Title" placeholder="CEO, HR, Salesman" matInput> <!-- [(ngModel)] creates a two-way binding between input & variable -->
+</mat-form-field>
+
+<mat-form-field appearance="fill">
+    <mat-label>password</mat-label>
+    <input type="password" [(ngModel)]="credentialsRegister.password" name="password" matInput>
+</mat-form-field>
+
+<mat-form-field appearance="fill">
+    <mat-label>confirm password</mat-label>
+    <input type="password" name="confirm password" [(ngModel)]="credentialsRegister.passwordConfirm" (keydown.enter)="validateInput()" matInput>
+</mat-form-field>
+
+<button (click)="validateInput()" mat-raised-button color="primary">Confirm</button>
+<span class="error" *ngIf="registerError">{{registerError}}</span>
