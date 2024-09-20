@@ -3,14 +3,12 @@
     width: 25vw;
     margin-left: 1vw;
     margin-right: 1vw;
+    position: unset ;
 }
 
 .mat-mdc-card-subtitle{
     margin-top: 0;
     padding-left: 25px;
-}
-mat-card-content{
-    width: 100%;
 }
 
 
@@ -57,3 +55,4 @@ p{
 div{
     all:unset;
 }
+

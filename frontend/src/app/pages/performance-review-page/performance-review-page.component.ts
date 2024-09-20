@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {EmployeeDatapoint} from '../../interfaces/employee-datapoint';
 import {EmployeeDataService} from '../../services/employee-data.service';
 import {ActivatedRoute} from '@angular/router';
-import {OrderService} from '../../services/order.service';
 import {PerformanceReportDatapoint} from '../../interfaces/performance-report-datapoint';
 import {PerformanceReportService} from '../../services/performance-report.service';
 import {SocialPerformance} from '../../interfaces/social-performacne-datapoint';
@@ -24,7 +23,7 @@ export class PerformanceReviewPageComponent implements OnInit {
     socialPerformanceArray: any[] = [];
 
 
-    constructor(private employeeDataService: EmployeeDataService, private orderService: OrderService,
+    constructor(private employeeDataService: EmployeeDataService,
                 private performanceReportService: PerformanceReportService, private route: ActivatedRoute) {}
     ngOnInit(): void {
         this.route.params.subscribe((params): void => {
