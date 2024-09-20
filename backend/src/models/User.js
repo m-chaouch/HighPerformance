@@ -4,16 +4,18 @@
  * @param {string} firstname
  * @param {string} lastname
  * @param {string} email
+ * @param {string} jobTitle
  * @param {string} password
  * @param {boolean} isAdmin
  */
 class User{
-    constructor(username, firstname, lastname, email, password, isAdmin) {
+    constructor(username, firstname, lastname, email, jobTitle, password, isAdmin) {
         this._id = undefined;
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
+        this.jobTitle = jobTitle;
         this.password = password;
         this.isAdmin = isAdmin;
     }

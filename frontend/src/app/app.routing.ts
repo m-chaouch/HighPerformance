@@ -10,6 +10,9 @@ import {OrderPageComponent} from './pages/order-page/order-page.component';
 import {DetailedOrderPageComponent} from './pages/detailed-order-page/detailed-order-page.component';
 import {PerformanceReportPageComponent} from './pages/performance-report-page/performance-report-page.component';
 import {PerformanceReviewPageComponent} from './pages/performance-review-page/performance-review-page.component';
+import {AddUserComponent} from "./pages/addUser-page/addUser.component";
+import {AdminGuardService} from "./services/admin-auth-guard.service";
+
 
 /*
   This array holds the relation of paths and components which angular router should resolve.
@@ -22,6 +25,7 @@ import {PerformanceReviewPageComponent} from './pages/performance-review-page/pe
  */
 const routes: Routes = [
     {path: 'login', component: LoginPageComponent},
+    {path : 'addUser', component: AddUserComponent, canActivate: [AuthGuardService, AdminGuardService]},
     {path: 'example', component: ExamplePageComponent, canActivate: [AuthGuardService]},
     {path: 'employee', component: EmployeePageComponent},
     {path: 'orders', component: OrderPageComponent},
