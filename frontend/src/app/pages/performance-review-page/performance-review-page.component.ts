@@ -5,6 +5,7 @@ import {ActivatedRoute} from '@angular/router';
 import {OrderService} from '../../services/order.service';
 import {PerformanceReportDatapoint} from '../../interfaces/performance-report-datapoint';
 import {PerformanceReportService} from '../../services/performance-report.service';
+import {UserService} from "../../services/user.service";
 
 /* eslint-disable no-console */
 @Component({
@@ -23,11 +24,12 @@ export class PerformanceReviewPageComponent implements OnInit {
     socialPerformanceArray: any[] = [];
     protected disableButtonForCEO: boolean;
     protected disableButtonForHR: boolean;
-    protected bonusIsCalculated: boolean;
+    //protected bonusIsCalculated: boolean;
 
 
     constructor(private employeeDataService: EmployeeDataService, private orderService: OrderService,
-                private performanceReportService: PerformanceReportService, private route: ActivatedRoute) {}
+                private performanceReportService: PerformanceReportService, private route: ActivatedRoute,
+                private userService: UserService) {}
     ngOnInit(): void {
         this.route.params.subscribe((params): void => {
             this.employeeID = Number(params.id);
@@ -45,16 +47,24 @@ export class PerformanceReviewPageComponent implements OnInit {
         });
         this.disableButtonForCEO = this.performanceReport.isAcceptedByCEO;
         this.disableButtonForHR = this.performanceReport.isAcceptedByHR;
+
+        // muss geprüft werden, da sonst CEO, HR akzeptieren können ohne das ein report da ist
+        //this.bonusIsCalculated = !!this.performanceReport?.calculatedBonus; // !! wandelt den Wert in einen booleschen Wert um
     }
     async handleButtonClick(): Promise<void> {
-        await this.performanceReportService.updatePerformanceReportBonus(
-            this.salesman.employeeCode,
-            this.performanceDate,
-            this.performanceReport
-        );
-        this.performanceReport = (await this.performanceReportService.getPerformanceReport(this.salesman.employeeCode,
-            this.performanceDate))[0];
-        this.parsePerformanceReport(this.performanceReport);
+        this.userService.getOwnUser().subscribe( async (user) => {
+            if (user.isAdmin || user.jobTitle === 'CEO') {
+                await this.performanceReportService.updatePerformanceReportBonus(
+                    this.salesman.employeeCode,
+                    this.performanceDate,
+                    this.performanceReport
+                );
+                this.performanceReport = (await this.performanceReportService.getPerformanceReport(
+                    this.salesman.employeeCode,
+                    this.performanceDate))[0];
+                this.parsePerformanceReport(this.performanceReport);
+            }
+        })
     }
 
     // set button text via data
@@ -69,25 +79,43 @@ export class PerformanceReviewPageComponent implements OnInit {
      * button click ist nur möglich, falls der button nicht "disabled" ist,
      * somit keine interne status überprüfung notwendig
      */
-    // TODO was wäre wenn die accept buttons erst kommen nachdem calculatetBonus da ist ???
-    handleButtonCEO(): boolean {
-        // ist der calculatedBonus schon da?
-        if (this.performanceReport.calculatedBonus){ // TODO check ob klappt
-            alert("Bonus ist da");
-            return false;
-        }
+    // TODO was wäre wenn die accept buttons erst kommen nachdem calculatedBonus da ist ???
+    handleButtonCEO(): void {
+
+        this.userService.getOwnUser().subscribe((user) => {
+            let userIsCEO = user.jobTitle === 'CEO';
+            if (!userIsCEO) {
+                alert('Access denied!');
+                return;
+            }
+            if (!!this.performanceReport?.calculatedBonus) {
+                alert('fetch Bonus first');
+                return;
+            }
+            this.disableButtonForCEO = true;
+            alert('successfully accepted!');
+        })
         // TODO set isAcceptedByCEO auf true, auch in der db also innerhalb des performanceReports.
-        this.disableButtonForCEO = true;
+
         //this.performanceReportService.savePerformanceRecord(this.performanceReport);
         // TODO feedback bei erfolgreichem akzeptieren -> alert oder string
-        return true;
     }
-    handleButtonHR(): boolean {
-        this.disableButtonForHR= true
-        // TODO set isAcceptedByHR auf true, auch in der db also innerhalb des performanceReports.
-        return true;
-    }
+    handleButtonHR(): void {
 
+        this.userService.getOwnUser().subscribe((user) => {
+            let userIsHR = user.jobTitle === 'HR';
+            if (!userIsHR) {
+                alert('Access denied!');
+                return;
+            }
+            if (!!this.performanceReport?.calculatedBonus) {
+                alert('CEO has to fetch Bonus first');
+                return;
+            }
+            this.disableButtonForHR = true;
+            alert('successfully accepted!');
+        })
+    }
 
 
     parsePerformanceReport(performanceReport: PerformanceReportDatapoint): void{
