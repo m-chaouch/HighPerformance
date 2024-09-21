@@ -51,5 +51,6 @@ export class PerformanceReportPageComponent implements OnInit{
 
     handleSalesmanClick(id: string, date: string): void {
         void this.router.navigate(['/performance-review', id, date]);  // relative to the previous route + /id
+        // TODO ist das die selbe ID wie meine ??? dann kann ich drauf WENN is approved !!!
     }
 }

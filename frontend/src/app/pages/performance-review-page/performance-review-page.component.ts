@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {EmployeeDatapoint} from '../../interfaces/employee-datapoint';
 import {EmployeeDataService} from '../../services/employee-data.service';
 import {ActivatedRoute} from '@angular/router';
@@ -6,6 +6,7 @@ import {PerformanceReportDatapoint} from '../../interfaces/performance-report-da
 import {PerformanceReportService} from '../../services/performance-report.service';
 import {UserService} from '../../services/user.service';
 import {SocialPerformance} from '../../interfaces/social-performacne-datapoint';
+import {RemarkEnterFieldComponent} from "../../components/remark-enter-field/remark-enter-field.component";
 
 /* eslint-disable no-console */
 @Component({
@@ -22,10 +23,10 @@ export class PerformanceReviewPageComponent implements OnInit {
     performanceDate: string;
     salesPerformanceArray: any[] = [];
     socialPerformanceArray: any[] = [];
-    protected disableButtonForCEO: boolean;
-    protected disableButtonForHR: boolean;
-    //protected bonusIsCalculated: boolean;
+    disableButtonForCEO: boolean;
+    disableButtonForHR: boolean;
 
+    @ViewChild(RemarkEnterFieldComponent) remarkEnterField!: RemarkEnterFieldComponent;
 
     constructor(private employeeDataService: EmployeeDataService,
                 private performanceReportService: PerformanceReportService, private route: ActivatedRoute,
@@ -41,15 +42,12 @@ export class PerformanceReviewPageComponent implements OnInit {
                     this.performanceReport = (await this.performanceReportService.getPerformanceReport(
                         this.salesman.employeeCode, this.performanceDate))[0]; // a Salesman can only have one performance report per date
                     this.parsePerformanceReport(this.performanceReport);
+                    this.disableButtonForCEO = this.performanceReport.isAcceptedByCEO;
+                    this.disableButtonForHR = this.performanceReport.isAcceptedByHR;
                 })();
             });
 
         });
-        this.disableButtonForCEO = this.performanceReport.isAcceptedByCEO;
-        this.disableButtonForHR = this.performanceReport.isAcceptedByHR;
-
-        // muss geprüft werden, da sonst CEO, HR akzeptieren können ohne das ein report da ist
-        //this.bonusIsCalculated = !!this.performanceReport?.calculatedBonus; // !! wandelt den Wert in einen booleschen Wert um
     }
     async handleButtonClick(): Promise<void> {
         this.userService.getOwnUser().subscribe( async (user) => {
@@ -82,36 +80,39 @@ export class PerformanceReviewPageComponent implements OnInit {
      * somit keine interne status überprüfung notwendig
      */
     handleButtonCEO(): void {
-
+        //TODO remark hinzufügen, darf nicht leer sein beim bestätigen des reports
         this.userService.getOwnUser().subscribe((user) => {
-            let userIsCEO = user.jobTitle === 'CEO';
-            if (!userIsCEO) {
+            if (user.jobTitle !== 'CEO') {
                 alert('Access denied!');
                 return;
             }
-            if ( !(!!this.performanceReport?.calculatedBonus)) {
+            if (!this.performanceReport?.calculatedBonus) {
                 alert('fetch Bonus first');
                 return;
             }
+            this.performanceReportService.updatePerformanceReport(this.salesman.employeeCode, this.performanceDate, {isAcceptedByCEO: true}).then( async _ => {
+                this.performanceReport = (await this.performanceReportService.getPerformanceReport(this.salesman.employeeCode, this.performanceDate))[0];
+            });
             this.disableButtonForCEO = true;
             alert('successfully accepted!');
         })
-
     }
 
-    // TODO update performacePeport in db => konstruktor nochmal aufrufen um aktuellen report zu haben der accepted wurde ???
+    // TODO update performacePeport in db => performanceReport nochmal fetchen um aktuellen report zu haben der accepted wurde ???
+
     handleButtonHR(): void {
-        //TODO remark hinzufügen, darf nicht leer sein beim bestätigen des reports
         this.userService.getOwnUser().subscribe((user) => {
-            let userIsHR = user.jobTitle === 'HR';
-            if (!userIsHR) {
+            if (user.jobTitle !== 'HR') {
                 alert('Access denied!');
                 return;
             }
-            if (!!this.performanceReport?.calculatedBonus) {
+            if (!this.performanceReport?.calculatedBonus) {
                 alert('CEO has to fetch Bonus first');
                 return;
             }
+            this.performanceReportService.updatePerformanceReport(this.salesman.employeeCode, this.performanceDate, {isAcceptedByHR: true}).then( async _ => {
+                this.performanceReport = (await this.performanceReportService.getPerformanceReport(this.salesman.employeeCode, this.performanceDate))[0];
+            })
             this.disableButtonForHR = true;
             alert('successfully accepted!');
         });
