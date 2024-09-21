@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ApprovalPipe implements PipeTransform {
 
-    transform(approvalByHR: boolean, approvalByCEO: boolean ): string {
+    transform(approvalByCEO: boolean, approvalByHR: boolean ): string {
         if (approvalByCEO && approvalByHR){
             return '✅ approved';
         }
