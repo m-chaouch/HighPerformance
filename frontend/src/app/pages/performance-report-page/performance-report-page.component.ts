@@ -3,6 +3,8 @@ import {EmployeeDatapoint} from '../../interfaces/employee-datapoint';
 import {EmployeeDataService} from '../../services/employee-data.service';
 import {Router} from '@angular/router';
 import {PerformanceReportService} from '../../services/performance-report.service';
+import {UserService} from "../../services/user.service";
+import {User} from "../../models/User";
 
 
 @Component({
@@ -14,8 +16,9 @@ export class PerformanceReportPageComponent implements OnInit{
     salesmen: EmployeeDatapoint[] = [];
     displayedColumns = ['salesmanName', 'salesmanId', 'reportDate', 'reportDetails'];
     flattenedSalesmenReports: any[] = [];
+    user: User;
     constructor(private employeeService: EmployeeDataService,  private router: Router,
-                private performanceReportService: PerformanceReportService) {}
+                private performanceReportService: PerformanceReportService, private userService: UserService) {}
 
     ngOnInit(): void {
         this.employeeService.getEmployeeData().subscribe(async (response): Promise<void> => {  // subscribe expects a return
@@ -34,6 +37,7 @@ export class PerformanceReportPageComponent implements OnInit{
         }, ((error): void => {
             console.error('Fehler beim Abrufen der Mitarbeiterdaten und Performance Reports:', error);
         }) );
+        this.fetchUser();
     }
 
     // flattening the data, so if a salesman has two reports, he will appear twice in the table
@@ -50,7 +54,43 @@ export class PerformanceReportPageComponent implements OnInit{
 
 
     handleSalesmanClick(id: string, date: string): void {
-        void this.router.navigate(['/performance-review', id, date]);  // relative to the previous route + /id
-        // TODO ist das die selbe ID wie meine ??? dann kann ich drauf WENN is approved !!!
+        console.log('Clicked ID:', id); // Zeige die angeklickte ID
+
+        for (const salesman of this.salesmen) {
+            if (salesman.employeeId == Number(id)) { // ID in eine Zahl umwandeln
+                this.identify(salesman, this.user, date).then(condition => {
+                    if (condition) {
+                        void this.router.navigate(['/performance-review', id, date]);  // relative to the previous route + /id
+                    }
+                });
+            }
+        }
+    }
+
+    fetchUser(): void{
+        this.userService.getOwnUser().subscribe((user): void => {
+            this.user = user;
+        });
+    }
+
+    async identify(clickedSalesman: EmployeeDatapoint, user: User, date: string): Promise<boolean>{
+        if (user.isAdmin || user.jobTitle == 'HR' || user.jobTitle == 'CEO')
+            return true;
+        if (user.firstname == clickedSalesman.firstName && user.lastname == clickedSalesman.lastName) {
+            return await this.statusBonus(clickedSalesman, date);
+        }
+        if (user.firstname != clickedSalesman.firstName) {
+            alert('Access Denied!');
+            return false;
+        }
+    }
+
+    async statusBonus(clickedSalesman: EmployeeDatapoint, date: string): Promise<boolean> {
+        const {isAcceptedByCEO, isAcceptedByHR} = (await this.performanceReportService.getPerformanceReport(clickedSalesman.employeeCode, date))[0]
+        if (!isAcceptedByCEO || !isAcceptedByHR) {
+            alert('Your Bonus is not completely accepted!');
+            return false;
+        }
+        return true;
     }
 }
