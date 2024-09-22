@@ -1,3 +1,5 @@
+const path = require('path');
+
 const optionsSwagger = {
     definition: {
         openapi: "3.0.0",
@@ -403,7 +405,7 @@ const optionsSwagger = {
             }
         }
     },
-    apis: ['./backend/src/routes/api-routes.js']
+    apis: [path.join(__dirname, '../routes/api-routes.js')], // Use path.join for clarity
 };
 
 
