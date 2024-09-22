@@ -12,6 +12,9 @@ export class ApprovalPipe implements PipeTransform {
         if (approvalByCEO) {
             return '❗ HR approval needed';
         }
+        if (approvalByHR) {
+            return '❗ CEO approval needed';
+        }
         else {
             return '❌ not approved';
         }
