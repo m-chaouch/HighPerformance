@@ -38,8 +38,25 @@ router.delete('/performance-report/:salesManId/:date', bonusApi.deletePerformanc
 
 const orderApi = require ('../apis/order-data-api');
 
-
+/**
+ * @openapi
+ * /orders:
+ *   get:
+ *     summary: Returns all orders
+ *     description: Retrieves an array of all orders from the database.
+ *     responses:
+ *       200:
+ *         description: An array of orders
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Order'
+ */
 router.get('/orders', orderApi.getOrderData);
+
+
 router.get('/orders/:id', orderApi.getOrderData);
 
 const accountApi = require('../apis/account-data-api');

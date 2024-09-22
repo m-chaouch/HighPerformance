@@ -67,7 +67,7 @@ MongoClient.connect('mongodb+srv://oemersuezen:NDomyAOEOujuh2Cd@cluster0.in2cw.m
     app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs))
 
     app.listen(environment.port, () => { //start webserver, after database-connection was established
-
+        console.log('Documentation can be found under http://localhost:8080/api-docs');
         console.log('Webserver started.');
     });
 });
