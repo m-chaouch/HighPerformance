@@ -37,6 +37,8 @@ router.delete('/performance-report/:salesManId/:date', bonusApi.deletePerformanc
 
 
 const orderApi = require ('../apis/order-data-api');
+
+
 router.get('/orders', orderApi.getOrderData);
 router.get('/orders/:id', orderApi.getOrderData);
 
@@ -48,6 +50,8 @@ const productApi = require('../apis/product-data-api');
 router.get('/products/:id', productApi.getProductData);
 
 const positionApi = require('../apis/position-api');
+
+
 router.get('/positions/:id', positionApi.getPositionData);  // works only with SOID
 
 

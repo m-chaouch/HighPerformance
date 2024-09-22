@@ -14,6 +14,11 @@ const cors = require('cors');
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 
+const swaggerJSDoc = require('swagger-jsdoc');
+const optionsSwagger = require('./utils/swagger');
+const swaggerUI = require('swagger-ui-express');
+
+
 let environment;
 if(process.env.NODE_ENV === 'development'){
     environment = require('../environments/environment.js').default;
@@ -39,7 +44,7 @@ app.use(cors({
     credentials: true
 }));
 
-const apiRouter = require('./routes/api-routes'); //get api-router from routes/api
+const apiRouter = require('./routes/api-routes');
 app.use('/api', apiRouter); //mount api-router at path "/api"
 // !!!! attention all middlewares, mounted after the router wont be called for any requests
 
@@ -57,7 +62,12 @@ MongoClient.connect('mongodb+srv://oemersuezen:NDomyAOEOujuh2Cd@cluster0.in2cw.m
     await initDb(db); //run initialization function
     app.set('db',db); //register database in the express app
 
+    console.log(optionsSwagger)
+    const specs = swaggerJSDoc(optionsSwagger);
+    app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs))
+
     app.listen(environment.port, () => { //start webserver, after database-connection was established
+
         console.log('Webserver started.');
     });
 });
