@@ -98,8 +98,6 @@ export class PerformanceReviewPageComponent implements OnInit {
         })
     }
 
-    // TODO update performacePeport in db => performanceReport nochmal fetchen um aktuellen report zu haben der accepted wurde ???
-
     handleButtonHR(): void {
         this.userService.getOwnUser().subscribe((user) => {
             if (user.jobTitle !== 'HR') {
