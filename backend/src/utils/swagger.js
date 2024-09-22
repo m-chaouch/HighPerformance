@@ -76,20 +76,87 @@ const optionsSwagger = {
                             example: "12345"
                         },
                         socialPerformance: {
+                            type: "object",
+                            properties: {
+                                "leadershipCompetence": {
+                                    "actual": 3,
+                                    "target": 4
+                                },
+                                "opennessToEmployee": {
+                                    "actual": 4,
+                                    "target": 4
+                                },
+                                "socialBehaviourToEmployee": {
+                                    "actual": 2,
+                                    "target": 4
+                                },
+                                "attitudeTowardsClients": {
+                                    "actual": 4,
+                                    "target": 4
+                                },
+                                "communicationSkills": {
+                                    "actual": 5,
+                                    "target": 4
+                                },
+                                "integrityToCompany": {
+                                    "actual": 5,
+                                    "target": 4
+                                }
+                            }
 
                         },
                         salesPerformance: {
-
+                                list: {
+                                    "Innovative Tech": {
+                                        "rating": "0",
+                                        "soldQuantity": 200
+                                    },
+                                    "Eco Solutions": {
+                                        "rating": "1",
+                                        "soldQuantity": 150
+                                    },
+                                    "Green Energy": {
+                                        "rating": "1",
+                                        "soldQuantity": 180
+                                    },
+                                    "Tech Dynamics": {
+                                        "rating": "3",
+                                        "soldQuantity": 100
+                                    }
+                                }
                         },
                         date: {
-                            type: "integer",
+                            type: "string",
                             description: "The year the record was created",
-                            example: 2024
+                            example: "12-05-2024"
                         },
                         calculatedBonus: {
-                            type: "number",
+                            type: "object",
                             description: "The calculated bonus for the performance record",
-                            example: 500.0
+                            example:{
+
+                                    "socialBonus": {
+                                        "leadershipCompetence": 75,
+                                        "opennessToEmployee": 100,
+                                        "socialBehaviourToEmployee": 50,
+                                        "attitudeTowardsClients": 100,
+                                        "communicationSkills": 120,
+                                        "integrityToCompany": 120,
+                                        "total": 565
+                                    },
+                                    "salesBonus": {
+                                        "Innovative Tech": 2000,
+                                        "Eco Solutions": 2250,
+                                        "Green Energy": 2700,
+                                        "Tech Dynamics": 2500,
+                                        "total": 9450
+                                    },
+                                    "totalBonus": {
+                                        "sum": 10015
+                                    }
+
+                            }
+
                         },
                         isAcceptedByCEO: {
                             type: "boolean",
