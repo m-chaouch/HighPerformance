@@ -143,5 +143,6 @@ function GovIDtoUID(GovID, accounts){
 }
 module.exports = {
     fetchOrders,
-    getOrdersOfEmployee
+    getOrdersOfEmployee,
+    filterOrders
 }
