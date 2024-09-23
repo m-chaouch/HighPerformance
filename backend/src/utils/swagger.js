@@ -78,52 +78,112 @@ const optionsSwagger = {
                         socialPerformance: {
                             type: "object",
                             properties: {
-                                "leadershipCompetence": {
-                                    "actual": 3,
-                                    "target": 4
+                                leadershipCompetence: {
+                                    type: "object",
+                                    properties: {
+                                        actual: {
+                                            type: "number",
+                                            example: 75
+                                        },
+                                        target: {
+                                            type: "number",
+                                            example: 4
+                                        }
+                                    }
                                 },
-                                "opennessToEmployee": {
-                                    "actual": 4,
-                                    "target": 4
+                                opennessToEmployee: {
+                                    type: "object",
+                                    properties: {
+                                        actual: {
+                                            type: "number",
+                                            example: 100
+                                        },
+                                        target: {
+                                            type: "number",
+                                            example: 4
+                                        }
+                                    }
                                 },
-                                "socialBehaviourToEmployee": {
-                                    "actual": 2,
-                                    "target": 4
+                                socialBehaviourToEmployee: {
+                                    type: "object",
+                                    properties: {
+                                        actual: {
+                                            type: "number",
+                                            example: 50
+                                        },
+                                        target: {
+                                            type: "number",
+                                            example: 4
+                                        }
+                                    }
                                 },
-                                "attitudeTowardsClients": {
-                                    "actual": 4,
-                                    "target": 4
+                                attitudeTowardsClients: {
+                                    type: "object",
+                                    properties: {
+                                        actual: {
+                                            type: "number",
+                                            example: 100
+                                        },
+                                        target: {
+                                            type: "number",
+                                            example: 4
+                                        }
+                                    }
                                 },
-                                "communicationSkills": {
-                                    "actual": 5,
-                                    "target": 4
+                                communicationSkills: {
+                                    type: "object",
+                                    properties: {
+                                        actual: {
+                                            type: "number",
+                                            example: 120
+                                        },
+                                        target: {
+                                            type: "number",
+                                            example: 4
+                                        }
+                                    }
                                 },
-                                "integrityToCompany": {
-                                    "actual": 5,
-                                    "target": 4
+                                integrityToCompany: {
+                                    type: "object",
+                                    properties: {
+                                        actual: {
+                                            type: "number",
+                                            example: 120
+                                        },
+                                        target: {
+                                            type: "number",
+                                            example: 4
+                                        }
+                                    }
                                 }
                             }
 
                         },
                         salesPerformance: {
+                            type: "object",
+                            properties: {
                                 list: {
-                                    "Innovative Tech": {
-                                        "rating": "0",
-                                        "soldQuantity": 200
-                                    },
-                                    "Eco Solutions": {
-                                        "rating": "1",
-                                        "soldQuantity": 150
-                                    },
-                                    "Green Energy": {
-                                        "rating": "1",
-                                        "soldQuantity": 180
-                                    },
-                                    "Tech Dynamics": {
-                                        "rating": "3",
-                                        "soldQuantity": 100
+                                    type: "object",
+                                    example: {
+                                        "Innovative Tech": {
+                                            "rating": "0",
+                                            "soldQuantity": 200
+                                        },
+                                        "Eco Solutions": {
+                                            "rating": "1",
+                                            "soldQuantity": 150
+                                        },
+                                        "Green Energy": {
+                                            "rating": "1",
+                                            "soldQuantity": 180
+                                        },
+                                        "Tech Dynamics": {
+                                            "rating": "3",
+                                            "soldQuantity": 100
+                                        }  // Properly closing the object here
                                     }
                                 }
+                            }
                         },
                         date: {
                             type: "string",
@@ -133,30 +193,38 @@ const optionsSwagger = {
                         calculatedBonus: {
                             type: "object",
                             description: "The calculated bonus for the performance record",
-                            example:{
-
-                                    "socialBonus": {
-                                        "leadershipCompetence": 75,
-                                        "opennessToEmployee": 100,
-                                        "socialBehaviourToEmployee": 50,
-                                        "attitudeTowardsClients": 100,
-                                        "communicationSkills": 120,
-                                        "integrityToCompany": 120,
-                                        "total": 565
-                                    },
-                                    "salesBonus": {
-                                        "Innovative Tech": 2000,
-                                        "Eco Solutions": 2250,
-                                        "Green Energy": 2700,
-                                        "Tech Dynamics": 2500,
-                                        "total": 9450
-                                    },
-                                    "totalBonus": {
-                                        "sum": 10015
+                            properties: {
+                                socialBonus: {
+                                    type: "object",
+                                    properties: {
+                                        leadershipCompetence: { type: "number" },
+                                        opennessToEmployee: { type: "number" },
+                                        socialBehaviourToEmployee: { type: "number" },
+                                        attitudeTowardsClients: { type: "number" },
+                                        communicationSkills: { type: "number" },
+                                        integrityToCompany: { type: "number" },
+                                        total: { type: "number" }
+                                    }
+                                },
+                                salesBonus: {
+                                    type: "object",
+                                    example:{
+                                        "InnovativeTech":2000,
+                                        "EcoSolutions": 2250,
+                                        "GreenEnergy": 2700,
+                                        "TechDynamics": 2500,
+                                        "total": 9450,
+                                    }
+                                }
+     ,
+                                totalBonus: {
+                                    type: "object",
+                                    properties: {
+                                        sum: { type: "number", example: 9450 },
                                     }
 
+                                }
                             }
-
                         },
                         isAcceptedByCEO: {
                             type: "boolean",
@@ -277,30 +345,30 @@ const optionsSwagger = {
                             example: "2025-09-20"
                         },
                         contractCurrency: {
-                            type: "number",
+                            type: "string",
                             description: "The currency used in the contract",
-                            example: "5"
+                            example: "USD"
                         },
                         pricingRule: {
                             type: "number",
                             description: "The pricing rule applied to the order, if available",
-                            example: "1"
+                            example: 1
                         },
                         pricingState: {
                             type: "number",
                             description: "The current pricing state of the order",
-                            example: "430"
+                            example: 430
                         },
                         calcRule: {
                             type: "number",
                             nullable: true,
                             description: "The calculation rule applied to the order, if available",
-                            example: "3"
+                            example: 3
                         },
                         priority: {
                             type: "number",
                             description: "The priority level of the order",
-                            example: "2"
+                            example: 2
                         },
                         state: {
                             type: "string",
@@ -472,8 +540,7 @@ const optionsSwagger = {
             }
         }
     },
-    apis: [path.join(__dirname, '../routes/api-routes.js')], // Use path.join for clarity
+    apis: [path.join(__dirname, '../routes/api-routes.js')] // Use path.join for clarity
 };
 
-
-module.exports = optionsSwagger
+module.exports = optionsSwagger;
