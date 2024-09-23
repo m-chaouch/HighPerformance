@@ -62,6 +62,31 @@ async function employeeDataService() {
     }
 }
 
+async function getEmployeeData(id) {
+    const accessToken = await getToken();
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json',
+        }
+    };
+    const url = `${baseUrl}/api/v1/employee/search`;
+    const response = await axios.get(url, config);
+    const employees = response.data.data;
+    const filteredEmployees = employees.map(employee => ({
+        firstName: employee.firstName,
+        lastName: employee.lastName,
+        employeeId: employee.employeeId,
+        unit: employee.unit,
+        employeeCode: employee.code
+    }));
+    const salesman = filteredEmployees.find(employee => employee.employeeCode === id);
+    console.log('Employee data:', salesman);
+    //console.log(filteredEmployees);
+    return salesman.employeeId;
+}
+
 async function oneEmployeeDataService(id){
     try{
         const accessToken = await getToken();
@@ -91,5 +116,6 @@ async function oneEmployeeDataService(id){
 // Export der employeeDataService-Funktion zur Verwendung in anderen Modulen
 exports.getEmployeeService = employeeDataService;
 exports.getOneEmployeeService = oneEmployeeDataService;
+exports.getEmployeeData = getEmployeeData;
 
-oneEmployeeDataService(7)
+getEmployeeData("90133");
