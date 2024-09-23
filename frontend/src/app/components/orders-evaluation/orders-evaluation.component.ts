@@ -9,7 +9,7 @@ import {PerformanceReportDatapoint} from '../../interfaces/performance-report-da
 })
 export class OrdersEvaluationComponent{
 
-    displayedColumnsOrders = ['productName', 'clientName', 'rating', 'soldQuantity', 'bonus'];
+    displayedColumnsOrders = ['clientName', 'rating', 'soldQuantity', 'bonus'];
     @Input() performanceReport: PerformanceReportDatapoint;
     @Input() salesPerformanceArray: [];
 
