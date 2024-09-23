@@ -23,7 +23,7 @@
         <!-- Performance Report Details Column -->
         <ng-container matColumnDef="reportDetails">
             <th mat-header-cell *matHeaderCellDef>Status</th>
-            <td mat-cell *matCellDef="let item">{{ item.report.isAccepted | approval: item.report.isAcceptedByCEO && item.report.isAcceptedByHR}}</td>
+            <td mat-cell *matCellDef="let item">{{ item.report.isAcceptedByCEO | approval: item.report.isAcceptedByHR}}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns" ></tr>
