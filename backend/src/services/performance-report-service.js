@@ -8,6 +8,10 @@ const {readRatingConversion,
 const {create} = require("axios");
 const {createDB} = require("../../unit-tests/support/mockdb-new");
 const {bonusComputation} = require('../../src/services/bonus-computation-service')
+// const { getToken, baseUrl } = require('./accessToken-service');
+const {getEmployeeData} = require("../services/employee-data-service");
+const axios = require("axios");
+const qs = require("querystring");
 
 
 
@@ -113,6 +117,7 @@ async function updatePerformanceReport(db, salesManId, date, updateFields, optio
         const result = await collection.updateOne({ salesManId, date }, update, options);
 
         if (result.matchedCount > 0) {
+            await storePerformanceReportInOrangeHRM(db, salesManId, date);
             console.log('Document updated successfully.');
         } else {
             console.log('No document matched the query.');
@@ -124,6 +129,68 @@ async function updatePerformanceReport(db, salesManId, date, updateFields, optio
         throw error;
     }
 }
+
+async function storePerformanceReportInOrangeHRM(db, salesManId, date) {
+    try {
+        const performanceReport = (await getPerformanceReport(db, salesManId, date))[0];
+        console.log(performanceReport);
+        console.log("CEO: " , performanceReport.isAcceptedByCEO);
+        console.log("HR: " , performanceReport.isAcceptedByHR);
+        if (!performanceReport.isAcceptedByCEO || !performanceReport.isAcceptedByHR) {
+            console.log('Performance Report is not approved by CEO or HR.');
+            return;
+        }
+
+        const baseUrl = 'https://sepp-hrm.inf.h-brs.de/symfony/web/index.php';
+        const body = qs.stringify({
+            client_id: 'api_oauth_id',
+            client_secret: 'oauth_secret',
+            grant_type: 'password',
+            username: 'ratschuweit',
+            password: '*Safb02da42Demo$'
+        });
+        const config1 = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json',
+            }
+        };
+        const res = await axios.post(`${baseUrl}/oauth/issueToken`, body, config1);
+        const accessToken = res.data['access_token'];
+
+            const bonus = performanceReport.calculatedBonus.totalBonus;
+            if (!accessToken) {
+                throw new Error('Failed to retrieve access token.');
+            }
+
+
+            const employeeId = await getEmployeeData(salesManId);
+
+
+            // employeeID von x der die selbe salesManId hat
+            const url = `${baseUrl}/api/v1/employee/${employeeId}/bonussalary?year=${date}&value=${bonus.sum}`;
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    Accept: 'application/json',
+                },
+            };
+
+
+            const response = await axios.post(url,null, config);
+
+            // Überprüfen des Statuscodes der Antwort
+            if (response.status !== 200) {
+                throw new Error(`Failed to update bonus salary. Status code: ${response.status}`);
+            }
+
+            console.log('Performance report successfully stored in OrangeHRM.');
+        } catch (error) {
+            console.error('Error storing performance report in OrangeHRM:', error.message);
+    }
+}
+
 
 /**
  * Updates specific criteria in the social performance of a performance record.
