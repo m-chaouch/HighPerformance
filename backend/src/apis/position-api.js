@@ -7,6 +7,8 @@ const { fetchPositions } = require('../services/position-service');
  * @param {Request} req - Request object containing the position ID in req.params.id.
  * @param {Response} res - Response object to send the fetched data or error.
  */
+
+
 const getPositionData = async function (req, res) {
     const id = req.params.id;
     try {
