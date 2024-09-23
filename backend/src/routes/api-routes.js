@@ -1,31 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const {checkAuthorization} = require('../middlewares/auth-middleware');
+const { checkAuthorization } = require('../middlewares/auth-middleware');
 
+// API routing for the REST-endpoints under /api
+const authApi = require('../apis/auth-api');
+router.post('/login', authApi.login);  // Login
+router.delete('/login', checkAuthorization, authApi.logout);  // Logout
+router.get('/login', authApi.isLoggedIn);  // Check if logged in
 
-
-/*
-    In this file is the routing for the REST-endpoints under /api managed
- */
-
-
-
-const authApi = require('../apis/auth-api'); //api-endpoints are loaded from separate files
-router.post('/login', authApi.login); //the function decides which request type should be accepted
-router.delete('/login', checkAuthorization,authApi.logout); //middlewares can be defined in parameters
-router.get('/login', authApi.isLoggedIn); //the function, which handles requests is specified as the last parameter
-
-router.post('/register', authApi.register); // Registration route
+router.post('/register', authApi.register);  // User Registration
 
 const userApi = require('../apis/user-api');
-router.get('/user', checkAuthorization(), userApi.getSelf);
-
+router.get('/user', checkAuthorization(), userApi.getSelf);  // Get self
 
 const employeeApi = require('../apis/employee-data-api');
-router.get('/employee', checkAuthorization(), employeeApi.getEmployeeData);
-router.get('/employee/:id', checkAuthorization(), employeeApi.getOneEmployee); //needs employeeID not code
+router.get('/employee', checkAuthorization(), employeeApi.getEmployeeData);  // Get all employees
+router.get('/employee/:id', checkAuthorization(), employeeApi.getOneEmployee);  // Get employee by ID
 
 const bonusApi = require('../apis/performance-report-api');
+
 /**
  * @openapi
  * /performance-record:
@@ -64,8 +57,8 @@ router.post('/performance-record', bonusApi.saveSocialPerformance);
  *         name: date
  *         required: true
  *         schema:
- *           type: integer
- *         description: Report year (e.g., 2023).
+ *           type: string
+ *         description: Report year (e.g., 2024-4-3).
  *     responses:
  *       200:
  *         description: Performance report retrieved successfully.
@@ -205,8 +198,7 @@ router.put('/performance-report/:salesManId/:date', bonusApi.updatePerformanceRe
  */
 router.delete('/performance-report/:salesManId/:date', bonusApi.deletePerformanceReport);
 
-
-const orderApi = require ('../apis/order-data-api');
+const orderApi = require('../apis/order-data-api');
 
 /**
  * @openapi
@@ -228,37 +220,124 @@ router.get('/orders', orderApi.getOrderData);
 
 /**
  * @openapi
- * /order:
+ * /orders/{id}:
  *   get:
  *     summary: Returns a specific order by order-id
- *     description: Retrieves an array of all orders from the database.
+ *     description: Retrieves a specific order by its ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Order ID.
  *     responses:
  *       200:
  *         description: An array of orders
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Order'
+ *               $ref: '#/components/schemas/Order'
  */
 router.get('/orders/:id', orderApi.getOrderData);
 
 const accountApi = require('../apis/account-data-api');
 
+/**
+ * @openapi
+ * /accounts:
+ *   get:
+ *     summary: Get all accounts
+ *     description: Retrieves a list of all accounts.
+ *     responses:
+ *       200:
+ *         description: Accounts retrieved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Account'
+ */
 router.get('/accounts', accountApi.getAccountData);
+
+/**
+ * @openapi
+ * /accounts/{id}:
+ *   get:
+ *     summary: Get a specific account by ID
+ *     description: Retrieves data for a specific account by ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Account ID
+ *     responses:
+ *       200:
+ *         description: Account data retrieved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Account'
+ *       404:
+ *         description: Account not found.
+ */
 router.get('/accounts/:id', accountApi.getAccountData);
 
 const productApi = require('../apis/product-data-api');
+
+/**
+ * @openapi
+ * /products/{id}:
+ *   get:
+ *     summary: Get product data by ID
+ *     description: Retrieves data for a specific product by ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Product ID
+ *     responses:
+ *       200:
+ *         description: Product data retrieved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
+ *       404:
+ *         description: Product not found.
+ */
 router.get('/products/:id', productApi.getProductData);
 
 const positionApi = require('../apis/position-api');
 
-
-router.get('/positions/:id', positionApi.getPositionData);  // works only with SOID
-
-
-
-
+/**
+ * @openapi
+ * /positions/{id}:
+ *   get:
+ *     summary: Get position data by Sales Order ID (SOID)
+ *     description: Retrieves position data by the Sales Order ID (SOID).
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Sales Order ID
+ *     responses:
+ *       200:
+ *         description: Position data retrieved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Position'
+ *       404:
+ *         description: Position not found.
+ */
+router.get('/positions/:id', positionApi.getPositionData);  // Works only with SOID
 
 module.exports = router;
