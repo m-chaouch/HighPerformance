@@ -12,6 +12,7 @@ const {bonusComputation} = require('../../src/services/bonus-computation-service
 const {getEmployeeData} = require("../services/employee-data-service");
 const axios = require("axios");
 const qs = require("querystring");
+const {getToken, baseUrl} = require("./accessToken-service");
 
 
 
@@ -94,7 +95,6 @@ function updateObject(keyName, newVal, object) {
 /**
  * @param {Object} db - The database connection object.
  *     @param {string} salesManId - The ID of the salesperson.
- *     @param {number} date - The date for the report.
  *     @param {number} date - The year for the report.
  *     @param {Object} updateFields - The fields to update.
  *     @param {Object} [options] - Additional options for the update operation.
@@ -131,64 +131,45 @@ async function updatePerformanceReport(db, salesManId, date, updateFields, optio
 }
 
 async function storePerformanceReportInOrangeHRM(db, salesManId, date) {
-    try {
+
         const performanceReport = (await getPerformanceReport(db, salesManId, date))[0];
         console.log(performanceReport);
-        console.log("CEO: " , performanceReport.isAcceptedByCEO);
-        console.log("HR: " , performanceReport.isAcceptedByHR);
+        console.log("CEO: ", performanceReport.isAcceptedByCEO);
+        console.log("HR: ", performanceReport.isAcceptedByHR);
         if (!performanceReport.isAcceptedByCEO || !performanceReport.isAcceptedByHR) {
             console.log('Performance Report is not approved by CEO or HR.');
             return;
         }
 
-        const baseUrl = 'https://sepp-hrm.inf.h-brs.de/symfony/web/index.php';
-        const body = qs.stringify({
-            client_id: 'api_oauth_id',
-            client_secret: 'oauth_secret',
-            grant_type: 'password',
-            username: 'ratschuweit',
-            password: '*Safb02da42Demo$'
-        });
-        const config1 = {
+        const accessToken = await getToken();
+        const employeeId = await getEmployeeData(salesManId);
+        const bonus = performanceReport.calculatedBonus.totalBonus.sum.toString();
+
+        const url = `${baseUrl}/api/v1/employee/${employeeId}/bonussalary`;
+
+        // Form-Daten in x-www-form-urlencoded Format umwandeln
+        const body = new URLSearchParams();
+        body.append('year', date);
+        body.append('value', bonus);
+
+        const config = {
             headers: {
+                Authorization: `Bearer ${accessToken}`,
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Accept': 'application/json',
             }
         };
-        const res = await axios.post(`${baseUrl}/oauth/issueToken`, body, config1);
-        const accessToken = res.data['access_token'];
 
-            const bonus = performanceReport.calculatedBonus.totalBonus;
-            if (!accessToken) {
-                throw new Error('Failed to retrieve access token.');
+        try {
+            const response = await axios.post(url, body, config);
+
+            if (response.status === 200) {
+                console.log('Performance report successfully stored in OrangeHRM.');
+            } else {
+                console.error(`Failed to update bonus salary. Status code: ${response.status}`);
             }
-
-
-            const employeeId = await getEmployeeData(salesManId);
-
-
-            // employeeID von x der die selbe salesManId hat
-            const url = `${baseUrl}/api/v1/employee/${employeeId}/bonussalary?year=${date}&value=${bonus.sum}`;
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    Accept: 'application/json',
-                },
-            };
-
-
-            const response = await axios.post(url,null, config);
-
-            // Überprüfen des Statuscodes der Antwort
-            if (response.status !== 200) {
-                throw new Error(`Failed to update bonus salary. Status code: ${response.status}`);
-            }
-
-            console.log('Performance report successfully stored in OrangeHRM.');
         } catch (error) {
             console.error('Error storing performance report in OrangeHRM:', error.message);
-    }
+        }
 }
 
 
@@ -228,6 +209,5 @@ module.exports = {
     updatePerformanceReport,
     updateSocialCriteria
 }
-
 
 
