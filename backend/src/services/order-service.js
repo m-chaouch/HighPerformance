@@ -1,7 +1,8 @@
 const {loginService} = require('./login-service');
 const{getLastSegment} = require('../utils/helper');
-const {getAccountName} = require("./account-service");
+const {getAccountName, fetchAccounts} = require("./account-service");
 const {CRX_URL} = require("../utils/SaaSURLs");
+const {fetchPositions} = require("./position-service");
 
 
 /**
@@ -123,19 +124,29 @@ function getPricingState(pricingState) {
     return PricingStateObject[pricingState];
 }
 
+
+
+
+
+
 /**
  *
  * @param governmentId
- * @param orders
- * @param accounts
  * @returns {Promise<*>}
  */
-async function getOrdersOfEmployee(governmentId, orders, accounts) {
+async function getOrdersOfEmployee(governmentId) {
+    const accounts = await fetchAccounts();
+    const orders = await fetchOrders();
     const UID = GovIDtoUID(governmentId,accounts)
 
-    return orders.filter(item => {
+    const filteredOrders = orders.filter(item => {
         return item.sellerID === UID    //erstmal zum testen UID benutzen
     })
+    const filteredOrdersAndPositions = filteredOrders.map(async order => ({
+        order : order,
+        positions : await fetchPositions(order.SalesOrderID)
+    }));
+    return Promise.all(filteredOrdersAndPositions);
 }
 
 function GovIDtoUID(GovID, accounts){
@@ -146,3 +157,11 @@ module.exports = {
     getOrdersOfEmployee,
     filterOrders
 }
+
+ const test = async () => {
+
+    const ordersOfEmployee = await getOrdersOfEmployee(90123);
+    console.log(ordersOfEmployee)
+}
+
+ test()
