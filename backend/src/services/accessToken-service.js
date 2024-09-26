@@ -45,7 +45,7 @@ async function getToken() {
 
         // Extrahieren und Rückgabe des Zugriffstokens
         const accessToken = res.data['access_token'];
-        console.log('Access Token:', accessToken);
+        //console.log('Access Token:', accessToken);
         return accessToken;
     } catch (error) {
         // Ausgabe einer Fehlermeldung bei Problemen mit der Tokenanforderung
