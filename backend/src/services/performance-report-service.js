@@ -1,17 +1,8 @@
-const { SocialPerformance } = require('../models/SocialPerformance');
 const { PerformanceRecord } = require('../models/PerformanceRecord');
-const {readRatingConversion,
-    updateRatingToNumber,
-    readSocialScores,
-    updateSocialFactors,
-    defaultValueSocialPer} = require('../utils/helper')
-const {create} = require("axios");
-const {createDB} = require("../../unit-tests/support/mockdb-new");
+const {defaultValueSocialPer} = require('../utils/helper')
 const {bonusComputation} = require('../../src/services/bonus-computation-service')
-// const { getToken, baseUrl } = require('./accessToken-service');
 const {getEmployeeData} = require("../services/employee-data-service");
 const axios = require("axios");
-const qs = require("querystring");
 const {getToken, baseUrl} = require("./accessToken-service");
 
 
@@ -195,7 +186,7 @@ async function updateSocialCriteria(db, salesManId, date, update) {
     // Update the performance report with the new values
     return await updatePerformanceReport(db, salesManId, date, updateFields);
 }
-async function deletePeformanceReport(db, salesManId, date) {
+async function deletePerformanceReport(db, salesManId, date) {
     const collection = db.collection(collectionName);
     const query = {salesManId, date};
     await collection.deleteOne(query);
