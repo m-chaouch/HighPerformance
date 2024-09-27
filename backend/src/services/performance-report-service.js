@@ -123,44 +123,52 @@ async function updatePerformanceReport(db, salesManId, date, updateFields, optio
 
 async function storePerformanceReportInOrangeHRM(db, salesManId, date) {
 
-        const performanceReport = (await getPerformanceReport(db, salesManId, date))[0];
-        console.log(performanceReport);
-        console.log("CEO: ", performanceReport.isAcceptedByCEO);
-        console.log("HR: ", performanceReport.isAcceptedByHR);
-        if (!performanceReport.isAcceptedByCEO || !performanceReport.isAcceptedByHR) {
-            console.log('Performance Report is not approved by CEO or HR.');
-            return;
+    const performanceReport = (await getPerformanceReport(db, salesManId, date))[0];
+    if (!performanceReport) {
+        console.error('No performance report found for the given salesManId and date.');
+        return;
+    }
+
+    if (!performanceReport.isAcceptedByHR || !performanceReport.isAcceptedByCEO){
+        console.error('Performance report not accepted');
+        return;
+    }
+
+    const accessToken = await getToken();
+
+    const employeeId = await getEmployeeData(salesManId);
+    if (!employeeId) {
+        console.error('Employee ID not found for the given salesManId.');
+        return;
+    }
+
+    const bonus = performanceReport?.calculatedBonus?.totalBonus?.sum;
+    if (!bonus) {
+        console.error('Bonus data is missing in the performance report.');
+        return;
+    }
+
+    const url = `${baseUrl}/api/v1/employee/${employeeId}/bonussalary`;
+
+    // Form-Daten in x-www-form-urlencoded Format umwandeln
+    const body = new URLSearchParams();
+    body.append('year', date.split('-')[0]); // 'year-month-day'
+    body.append('value', bonus.toString());
+
+    const config = {
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Bearer ${accessToken}`,
+            Cookie: "Loggedin=True; PHPSESSID=hpldi2nsohoe0nve96udgtn8op"
         }
+    };
 
-        const accessToken = await getToken();
-        const employeeId = await getEmployeeData(salesManId);
-        const bonus = performanceReport.calculatedBonus.totalBonus.sum.toString();
-
-        const url = `${baseUrl}/api/v1/employee/${employeeId}/bonussalary`;
-
-        // Form-Daten in x-www-form-urlencoded Format umwandeln
-        const body = new URLSearchParams();
-        body.append('year', date);
-        body.append('value', bonus);
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-                'Content-Type': 'application/x-www-form-urlencoded',
-            }
-        };
-
-        try {
-            const response = await axios.post(url, body, config);
-
-            if (response.status === 200) {
-                console.log('Performance report successfully stored in OrangeHRM.');
-            } else {
-                console.error(`Failed to update bonus salary. Status code: ${response.status}`);
-            }
-        } catch (error) {
-            console.error('Error storing performance report in OrangeHRM:', error.message);
-        }
+    try {
+        const response = await axios.post(url, body, config);
+        console.log(response.data);
+    } catch (error) {
+        console.error("Error:", error.response ? error.response.data : error.message);
+    }
 }
 
 
@@ -192,7 +200,6 @@ async function deletePerformanceReport(db, salesManId, date) {
     await collection.deleteOne(query);
 
 }
-
 
 module.exports = {
     storePerformanceRecord,
