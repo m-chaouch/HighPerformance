@@ -71,9 +71,11 @@ async function getEmployeeData(id) {
             'Accept': 'application/json',
         }
     };
+
     const url = `${baseUrl}/api/v1/employee/search`;
     const response = await axios.get(url, config);
     const employees = response.data.data;
+
     const filteredEmployees = employees.map(employee => ({
         firstName: employee.firstName,
         lastName: employee.lastName,
@@ -81,11 +83,24 @@ async function getEmployeeData(id) {
         unit: employee.unit,
         employeeCode: employee.code
     }));
-    const salesman = filteredEmployees.find(employee => employee.employeeCode === id);
-    console.log('Employee data:', salesman);
-    //console.log(filteredEmployees);
-    return salesman.employeeId;
+
+    let salesman = null;
+    for (let i = 0; i < filteredEmployees.length; i++) {
+        if (filteredEmployees[i].employeeCode === id) {
+            salesman = filteredEmployees[i];
+            break; // Wenn gefunden, Schleife beenden
+        }
+    }
+
+    if (salesman) {
+        console.log('Employee data:', salesman);
+        return salesman.employeeId;
+    } else {
+        console.log('No employee found with the given employeeCode.');
+        return null;
+    }
 }
+
 
 async function oneEmployeeDataService(id){
     try{
