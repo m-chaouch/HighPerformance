@@ -90,7 +90,7 @@ export class PerformanceReviewPageComponent implements OnInit {
                 alert('fetch Bonus first');
                 return;
             }
-            this.performanceReportService.updatePerformanceReport(this.salesman.employeeCode, this.performanceDate, {isAcceptedByCEO: true}).then( async _ => {
+            this.performanceReportService.updatePerformanceReport(this.salesman.employeeCode, this.performanceDate, {isAcceptedByCEO: true}).then( async () => {
                 this.performanceReport = (await this.performanceReportService.getPerformanceReport(this.salesman.employeeCode, this.performanceDate))[0];
             });
             this.disableButtonForCEO = true;
@@ -108,7 +108,7 @@ export class PerformanceReviewPageComponent implements OnInit {
                 alert('CEO has to fetch Bonus first');
                 return;
             }
-            this.performanceReportService.updatePerformanceReport(this.salesman.employeeCode, this.performanceDate, {isAcceptedByHR: true}).then( async _ => {
+            this.performanceReportService.updatePerformanceReport(this.salesman.employeeCode, this.performanceDate, {isAcceptedByHR: true}).then( async () => {
                 this.performanceReport = (await this.performanceReportService.getPerformanceReport(this.salesman.employeeCode, this.performanceDate))[0];
             });
             this.disableButtonForHR = true;
