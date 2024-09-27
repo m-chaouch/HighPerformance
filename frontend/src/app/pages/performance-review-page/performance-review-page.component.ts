@@ -6,7 +6,7 @@ import {PerformanceReportDatapoint} from '../../interfaces/performance-report-da
 import {PerformanceReportService} from '../../services/performance-report.service';
 import {UserService} from '../../services/user.service';
 import {SocialPerformance} from '../../interfaces/social-performacne-datapoint';
-import {RemarkEnterFieldComponent} from "../../components/remark-enter-field/remark-enter-field.component";
+import {RemarkEnterFieldComponent} from '../../components/remark-enter-field/remark-enter-field.component';
 
 /* eslint-disable no-console */
 @Component({
@@ -80,7 +80,7 @@ export class PerformanceReviewPageComponent implements OnInit {
      * somit keine interne status überprüfung notwendig
      */
     handleButtonCEO(): void {
-        //TODO remark hinzufügen, darf nicht leer sein beim bestätigen des reports
+        // TODO remark hinzufügen, darf nicht leer sein beim bestätigen des reports
         this.userService.getOwnUser().subscribe((user) => {
             if (user.jobTitle !== 'CEO') {
                 alert('Access denied!');
@@ -95,7 +95,7 @@ export class PerformanceReviewPageComponent implements OnInit {
             });
             this.disableButtonForCEO = true;
             alert('successfully accepted!');
-        })
+        });
     }
 
     handleButtonHR(): void {
@@ -110,7 +110,7 @@ export class PerformanceReviewPageComponent implements OnInit {
             }
             this.performanceReportService.updatePerformanceReport(this.salesman.employeeCode, this.performanceDate, {isAcceptedByHR: true}).then( async _ => {
                 this.performanceReport = (await this.performanceReportService.getPerformanceReport(this.salesman.employeeCode, this.performanceDate))[0];
-            })
+            });
             this.disableButtonForHR = true;
             alert('successfully accepted!');
         });
