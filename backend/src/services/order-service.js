@@ -3,7 +3,6 @@ const{getLastSegment} = require('../utils/helper');
 const {getAccountName, fetchAccounts} = require("./account-service");
 const {CRX_URL} = require("../utils/SaaSURLs");
 const {fetchPositions} = require("./position-service");
-const {getPositionData} = require("../apis/position-api");
 
 
 /**
@@ -128,15 +127,16 @@ function getPricingState(pricingState) {
 /**
  *
  * @param governmentId
+ * @param year
  * @returns {Promise<*>}
  */
 async function ClientsServedBySalesman(governmentId, year) {
     const accounts = await fetchAccounts();
     const orders = await fetchOrders();
     const UID = GovIDtoUID(governmentId,accounts)
-
+    console.log(UID)
     const filteredOrders = orders.filter(item => {
-        return item.sellerID === UID  && extractYear(item.createdAt) === year
+        return item.sellerID === UID  && extractYear(item.createdAt) === Number(year)
     })
     const filteredOrdersAndPositions = filteredOrders.map(async order => ({
         SalesOrderID : order.SalesOrderID,
@@ -148,7 +148,7 @@ async function ClientsServedBySalesman(governmentId, year) {
 }
 
 function GovIDtoUID(GovID, accounts){
-    return (accounts.find(item => item.governmentId === GovID)).UID
+    return (accounts.find(item => item.governmentId === Number(GovID))).UID
 }
 
 function extractYear(DateAsString) {
@@ -156,33 +156,30 @@ function extractYear(DateAsString) {
 }
 
 
-async function getPositionsOfSalesman(governmentId, year){
-    const ordersOfEmployee = await ClientsServedBySalesman(governmentId, year);
-    const allPositions = [];
-    ordersOfEmployee.forEach(order => {
-        order.positions.forEach(positions => {
-            allPositions.push(positions)
+async function getOrdersEvaluation(governmentId, year){
+    const orders = await ClientsServedBySalesman(governmentId, year);
+    const OrderEvaluation = {};
+    orders.forEach(order => {
+        order.positions.forEach(position => {
+            const productName = position.product.name
+            // console.log(productName)
+            if(!OrderEvaluation[productName]){  // to not delete the existing array
+                OrderEvaluation[productName] = [];
+            }
+
+            OrderEvaluation[productName].push({
+                clientName: order.clientName,
+                quantity: position.quantity,
+                rating: order.rating
+            });
         })
     })
-    return allPositions;
-}
-
-
-function turnOrders(orders){
-    orders.forEach()
+    console.log(OrderEvaluation)
+    return OrderEvaluation
 }
 
 
 module.exports = {
     fetchOrders,
-    ClientsServedBySalesman,
-    filterOrders
+    getOrdersEvaluation
 }
-
- const test = async () => {
-    const orders = await ClientsServedBySalesman(90123, 2019);
-    const turnedOrders = turnOrders(orders);
-    console.log(orders)
-}
-
- test()
