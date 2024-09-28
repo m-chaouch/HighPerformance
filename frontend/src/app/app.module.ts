@@ -29,6 +29,7 @@ import {ApprovalPipe} from './services/approval.pipe';
 import { CriteriaPipe } from './services/criteria.pipe';
 import { RemarkEnterFieldComponent } from './components/remark-enter-field/remark-enter-field.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import {NgApexchartsModule} from "ng-apexcharts";
 
 
 @NgModule({
@@ -63,7 +64,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
         MatToolbarModule,
         MatIconModule,
         MatTableModule,
-        TransformPriorityPipe
+        TransformPriorityPipe,
+        NgApexchartsModule
     ],
     providers: [],
     bootstrap: [AppComponent]
