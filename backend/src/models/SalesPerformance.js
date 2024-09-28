@@ -1,4 +1,5 @@
-const {SocialPerformance} = require("./SocialPerformance");
+const { readRatingConversion } = require('../utils/helper');
+const { SocialPerformance } = require('./SocialPerformance'); // Correct import statement
 
 /**
  * Class representing sales performance for various companies.
@@ -7,57 +8,25 @@ const {SocialPerformance} = require("./SocialPerformance");
 class SalesPerformance {
     /**
      * Initializes the SalesPerformance instance with an empty list of companies.
+     *
+     * @param {Object.<string, Array<{clientName: string, quantity: number, rating: number}>>} salesDetails
+     *
      */
-    constructor() {
-        /**
-         * Object to store companies' sales performance.
-         * Keys are company names, and values are objects containing company details (rating, soldQuantity).
-         * @type {Object.<string, {rating: string, soldQuantity: number}>}
-         */
-        this.list = {};
+    constructor(salesDetails) {
+        this.salesDetails = salesDetails;
     }
 
     /**
-     * Adds a new company to the sales performance list with an initial rating and a default sold quantity of 0.
-     * @param {Object} companyDetails - The company details.
-     * @param {string} companyDetails.company - The name of the company.
-     * @param {string} [companyDetails.rating="not defined"] - The rating of the company.
+     * Makes the SalesPerformance object iterable.
+     * @returns {Generator<{product: string, rating: string, soldQuantity: number}>}
      */
-    addCompanyToList({company = "not defined", rating = "not defined"} = {}) {
-        if (this.list.hasOwnProperty(company)) {
-            throw new Error(company + " already exists in sales performance");
+    *[Symbol.iterator]() {
+        for (const [product, salesRecords] of Object.entries(this.salesDetails)) {
+            for (const { clientName, quantity, rating } of salesRecords) {
+                yield { product, clientName, quantity, rating };
+            }
         }
-        this.list[company] = { rating, soldQuantity: 0 };
-    }
-
-    /**
-     * Adds sales data (sold quantity) to an existing company in the sales performance list.
-     * @param {string} company - The name of the company.
-     * @param {number} soldQuantity - The number of items sold to be added to the company's record.
-     */
-    addSales(company = "not defined", soldQuantity = 0) {
-        if (!this.list.hasOwnProperty(company)) {
-            this.addCompanyToList({ company }); // Automatically add company with default details
-        }
-        this.list[company].soldQuantity += soldQuantity;
-    }
-
-    /**
-     * Retrieves the sales entry for a specific company.
-     * @param {string} company - The name of the company.
-     * @returns {Object} The details of the company including rating and soldQuantity.
-     */
-    getEntry(company) {
-        return this.list[company];
-    }
-    getSalesList() {
-        return JSON.parse(JSON.stringify(this.list));
     }
 }
 
 exports.SalesPerformance = SalesPerformance;
-
-const salesPerf = new SalesPerformance();
-
-
-

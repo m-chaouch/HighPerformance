@@ -28,9 +28,45 @@ function defaultCalculationSocial(criterion = { actual: 0, target: 0 }, config =
  * @param {number} details.soldQuantity - The quantity of items sold.
  * @returns {number} - Calculated sales bonus.
  */
-function defaultCalculationSales({ rating, soldQuantity }) {
+function defaultCalculationSales({ rating, quantity }) {
     const converter = readRatingConversion();
-    return converter[rating] * soldQuantity;
+    return converter[rating] * quantity;
+}
+
+function socialCalculation(socialPerformance, socialCal = defaultCalculationSocial){
+    let socialBonus = {}, total = 0;
+    let sum = 0;
+    if (socialPerformance) {
+        // Ensure you are accessing the correct property structure
+        for (const value of socialPerformance) {
+            sum = socialCal(value);
+            socialBonus[value.criteria] = sum;
+            total += sum;
+        }
+    }
+    socialBonus.total = total;
+    return socialBonus;
+}
+
+function salesCalculation(salesPerformance, salesCal = defaultCalculationSales){
+    let salesBonus = {}, total = 0;
+    let product, clientName;
+    if (salesPerformance) {
+
+        for (const value of salesPerformance) {
+            const sum = salesCal(value); // Correct data access
+            product = value.product;
+            clientName = value.clientName;
+            //initialize procuct if not already in the slaesBonus
+            if (!salesBonus[product])
+                salesBonus[product] = {}
+
+            salesBonus[product][clientName] = sum;// adds to the product the client name and also the correspondig bonus for the salesman
+            total += sum;
+        }
+    }
+    salesBonus.total = total;
+    return salesBonus;
 }
 
 /**
@@ -43,39 +79,53 @@ function defaultCalculationSales({ rating, soldQuantity }) {
  */
 function bonusComputation(socialPerformance, salesPerformance, calculation = { socialCal: defaultCalculationSocial, salesCal: defaultCalculationSales }) {
     const { socialCal, salesCal } = calculation;
-    var socialBonus = {}, socialTotal = 0;
-    var salesBonus = {}, salesTotal = 0;
     console.log("hallo ", socialPerformance);
     console.log("hallo ", salesPerformance);
-    if (socialPerformance) {
-        // Ensure you are accessing the correct property structure
-        Object.keys(socialPerformance).forEach(key => {
-            console.log(key);
-            let tmp = socialCal(socialPerformance[key]);
-            socialBonus[key] = tmp;
-            socialTotal += tmp;
-        });
-        socialBonus.total = socialTotal;
-    }
+
     console.log('salesPerformance: ' + salesPerformance);
-    if (salesPerformance) {
-        // const salesList = salesPerformance.getSalesList(); // Properly reference the sales list
-        Object.keys(salesPerformance.list).forEach(key => {
+    let socialBonus = socialCalculation(socialPerformance, calculation.socialCal);
+    let salesBonus = salesCalculation(salesPerformance, calculation.salesCal)
 
-            let tmp = salesCal(salesPerformance.list[key]); // Correct data access
-            console.log('tmp:  ' + tmp);
-            salesBonus[key] = tmp;
-            salesTotal += tmp;
-        });
-        salesBonus.total = salesTotal;
-    }
 
-    let totalBonus = { sum: socialTotal + salesTotal };
-    return { socialBonus, salesBonus, totalBonus };
+    let totalBonus = { sum: socialBonus.total + salesBonus.total };
+    return {socialBonus, salesBonus, totalBonus };
 }
 
 
 module.exports = {
     bonusComputation
 }
+
+// Creating an instance of SocialPerformance using default data
+const defaultSocialPerformance = {
+    leadershipCompetence: { actual: 5, target: 10 },
+    opennessToEmployee: { actual: 8, target: 10 },
+    socialBehaviourToEmployee: { actual: 9, target: 10 },
+    attitudeTowardsClients: { actual: 7, target: 10 },
+    communicationSkills: { actual: 6, target: 10 },
+    integrityToCompany: { actual: 10, target: 10 }
+};
+
+// Construct SocialPerformance
+const socialPerformance = new SocialPerformance(defaultSocialPerformance);
+
+// Creating an instance of SalesPerformance using sales data
+const salesDetails = {
+    "HooverClean": [
+        { clientName: "Germania GmbH", quantity: 10, rating: 3 },
+        { clientName: "Dirk Müller GmbH", quantity: 25, rating: 3 }
+    ],
+    "HooverGo": [
+        { clientName: "Telekom AG", quantity: 20, rating: 1 }
+    ]
+};
+
+// Construct SalesPerformance
+const salesPerformance = new SalesPerformance(salesDetails);
+
+// Performing the bonus calculation
+const bonus = bonusComputation(socialPerformance, salesPerformance);
+
+// Printing the bonus calculation result
+console.log("Bonus Calculation Result: ", bonus);
 
