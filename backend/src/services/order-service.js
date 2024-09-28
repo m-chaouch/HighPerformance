@@ -3,6 +3,7 @@ const{getLastSegment} = require('../utils/helper');
 const {getAccountName, fetchAccounts} = require("./account-service");
 const {CRX_URL} = require("../utils/SaaSURLs");
 const {fetchPositions} = require("./position-service");
+const {getPositionData} = require("../apis/position-api");
 
 
 /**
@@ -124,27 +125,24 @@ function getPricingState(pricingState) {
     return PricingStateObject[pricingState];
 }
 
-
-
-
-
-
 /**
  *
  * @param governmentId
  * @returns {Promise<*>}
  */
-async function getOrdersOfEmployee(governmentId) {
+async function ClientsServedBySalesman(governmentId, year) {
     const accounts = await fetchAccounts();
     const orders = await fetchOrders();
     const UID = GovIDtoUID(governmentId,accounts)
 
     const filteredOrders = orders.filter(item => {
-        return item.sellerID === UID    //erstmal zum testen UID benutzen
+        return item.sellerID === UID  && extractYear(item.createdAt) === year
     })
     const filteredOrdersAndPositions = filteredOrders.map(async order => ({
-        order : order,
-        positions : await fetchPositions(order.SalesOrderID)
+        SalesOrderID : order.SalesOrderID,
+        clientName: order.clientName,
+        rating: (await fetchAccounts(order.clientID))[0].rating,
+        positions: await fetchPositions(order.SalesOrderID),
     }));
     return Promise.all(filteredOrdersAndPositions);
 }
@@ -152,16 +150,39 @@ async function getOrdersOfEmployee(governmentId) {
 function GovIDtoUID(GovID, accounts){
     return (accounts.find(item => item.governmentId === GovID)).UID
 }
+
+function extractYear(DateAsString) {
+     return parseInt(DateAsString.split('-') [0]);
+}
+
+
+async function getPositionsOfSalesman(governmentId, year){
+    const ordersOfEmployee = await ClientsServedBySalesman(governmentId, year);
+    const allPositions = [];
+    ordersOfEmployee.forEach(order => {
+        order.positions.forEach(positions => {
+            allPositions.push(positions)
+        })
+    })
+    return allPositions;
+}
+
+
+function turnOrders(orders){
+    orders.forEach()
+}
+
+
 module.exports = {
     fetchOrders,
-    getOrdersOfEmployee,
+    ClientsServedBySalesman,
     filterOrders
 }
 
  const test = async () => {
-
-    const ordersOfEmployee = await getOrdersOfEmployee(90123);
-    console.log(ordersOfEmployee)
+    const orders = await ClientsServedBySalesman(90123, 2019);
+    const turnedOrders = turnOrders(orders);
+    console.log(orders)
 }
 
  test()
