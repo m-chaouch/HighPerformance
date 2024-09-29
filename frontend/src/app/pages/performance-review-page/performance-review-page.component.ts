@@ -6,7 +6,8 @@ import {PerformanceReportDatapoint} from '../../interfaces/performance-report-da
 import {PerformanceReportService} from '../../services/performance-report.service';
 import {UserService} from '../../services/user.service';
 import {SocialPerformance} from '../../interfaces/social-performacne-datapoint';
-import {RemarkEnterFieldComponent} from "../../components/remark-enter-field/remark-enter-field.component";
+import {RemarkEnterFieldComponent} from '../../components/remark-enter-field/remark-enter-field.component';
+import {SalesPerformance} from '../../interfaces/sales-performance-datapoint';
 
 /* eslint-disable no-console */
 @Component({
@@ -21,7 +22,8 @@ export class PerformanceReviewPageComponent implements OnInit {
     employeeID: number;
     performanceReport: PerformanceReportDatapoint;
     performanceDate: string;
-    salesPerformanceArray: any[] = [];
+    products: any[];
+    salesPerformance: SalesPerformance;
     socialPerformanceArray: any[] = [];
     disableButtonForCEO: boolean;
     disableButtonForHR: boolean;
@@ -40,7 +42,13 @@ export class PerformanceReviewPageComponent implements OnInit {
                 void (async (): Promise<void> => {
                     this.salesman = response.body;
                     this.performanceReport = (await this.performanceReportService.getPerformanceReport(
-                        this.salesman.employeeCode, this.performanceDate))[0]; // a Salesman can only have one performance report per date
+                        this.salesman.employeeCode,
+                        this.performanceDate
+                    ))[0]; // a Salesman can only have one performance report per date
+                    this.performanceReport.salesPerformance = await this.performanceReportService.getOrdersEvaluation(
+                        this.salesman.employeeCode,
+                        this.performanceDate
+                    );
                     this.parsePerformanceReport(this.performanceReport);
                     this.disableButtonForCEO = this.performanceReport.isAcceptedByCEO;
                     this.disableButtonForHR = this.performanceReport.isAcceptedByHR;
@@ -95,7 +103,7 @@ export class PerformanceReviewPageComponent implements OnInit {
             });
             this.disableButtonForCEO = true;
             alert('successfully accepted!');
-        })
+        });
     }
 
     handleButtonHR(): void {
@@ -117,13 +125,9 @@ export class PerformanceReviewPageComponent implements OnInit {
     }
 
     parsePerformanceReport(performanceReport: PerformanceReportDatapoint): void{
-        this.salesPerformanceArray = Object.keys(performanceReport.salesPerformance.list).map((key): object => ({
-            clientName: key,
-            // clientName: performanceReport.salesPerformance.list[key].clientName,  // use when clientname implemented
-            rating: performanceReport.salesPerformance.list[key].rating,
-            soldQuantity: performanceReport.salesPerformance.list[key].soldQuantity,
-            bonus: Number(performanceReport.calculatedBonus?.salesBonus?.[key]) || ''
-        }));
+        this.products = Object.keys(performanceReport.salesPerformance);
+        this.salesPerformance = performanceReport.salesPerformance;
+        console.log(this.salesPerformance);
         this.socialPerformanceArray = Object.keys(performanceReport.socialPerformance).map((key): object => {
             const performanceKey = key as keyof SocialPerformance;
             const performance = performanceReport.socialPerformance[performanceKey];
