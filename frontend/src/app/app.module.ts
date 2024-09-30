@@ -28,9 +28,10 @@ import { SocialPerformanceEvaluationComponent } from './components/social-perfor
 import {ApprovalPipe} from './services/approval.pipe';
 import { CriteriaPipe } from './services/criteria.pipe';
 import { RemarkEnterFieldComponent } from './components/remark-enter-field/remark-enter-field.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { PieChartComponent } from './components/pie-chart/pie-chart.component';
 import {NgApexchartsModule} from 'ng-apexcharts';
 import { StatsPageComponent } from './pages/stats-page/stats-page.component';
+import { LineChartComponent } from './components/line-chart/line-chart.component';
 
 
 @NgModule({
@@ -51,8 +52,9 @@ import { StatsPageComponent } from './pages/stats-page/stats-page.component';
         ApprovalPipe,
         CriteriaPipe,
         RemarkEnterFieldComponent,
-        DashboardComponent,
-        StatsPageComponent
+        PieChartComponent,
+        StatsPageComponent,
+        LineChartComponent
     ],
     imports: [
         BrowserModule,
