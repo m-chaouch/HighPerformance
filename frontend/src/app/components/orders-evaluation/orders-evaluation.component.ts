@@ -10,54 +10,68 @@ import {SalesPerformance} from '../../interfaces/sales-performance-datapoint';
 })
 export class OrdersEvaluationComponent implements OnInit{
 
-    displayedColumns = ['productName', 'clientName', 'rating', 'soldQuantity'];
+    displayedColumns = ['productName', 'clientName', 'rating', 'soldQuantity', 'bonus'];
     dataSource = [];
     @Input() performanceReport: PerformanceReportDatapoint;
     @Input() salesPerformance: SalesPerformance;
     salesPerformanceValues: any[];
-    @Input() products: string[];
+    products: string[];
     spans: number[] = [];
     // existingValue = [];
 
-    protected readonly Object = Object;
-
     ngOnInit(): void {
-        this.salesPerformance = {
-            HooverClean: [
-                {
-                    clientName: 'Germania GmbH',
-                    quantity: 10,
-                    rating: 3
-                },
-                {
-                    clientName: 'Dirk Müller GmbH',
-                    quantity: 25,
-                    rating: 3
-                }
-            ],
-            HooverGo: [
-                {
-                    clientName: 'Telekom AG',
-                    quantity: 20,
-                    rating: 1
-                }
-            ]
-        };
-        this.flattenSalesPerformance(this.salesPerformance);
-        console.log(this.dataSource);
+        // console.log('Salesperformance in ordersevaluation:', this.performanceReport);
+        this.salesPerformance = this.performanceReport.salesPerformance;
+        this.products = this.products = Object.keys(this.salesPerformance);
+        this.flattenSalesPerformance(this.salesPerformance, this.performanceReport?.calculatedBonus?.salesBonus);
         this.products = Object.keys(this.salesPerformance);
         this.setRowSpan();
+
+
+        // this.salesPerformance = {
+        //     HooverClean: [
+        //         {
+        //             clientName: 'Germania GmbH',
+        //             quantity: 10,
+        //             rating: 3
+        //         },
+        //         {
+        //             clientName: 'Dirk Müller GmbH',
+        //             quantity: 25,
+        //             rating: 3
+        //         }
+        //     ],
+        //     HooverGo: [
+        //         {
+        //             clientName: 'Telekom AG',
+        //             quantity: 20,
+        //             rating: 1
+        //         }
+        //     ]
+        // };
+
     }
 
-    private flattenSalesPerformance(salesPerformance: SalesPerformance): void {
-        for (let key in salesPerformance) {
-            salesPerformance[key].forEach((SalesInfo): void => {
-                this.dataSource.push({
-                    productName: key,
-                    clientName: SalesInfo.clientName,
-                    rating: SalesInfo.rating,
-                    quantity: SalesInfo.quantity});
-            });
+
+    private flattenSalesPerformance(salesPerformance: SalesPerformance, salesBonus: any): void {
+        for (let product in salesPerformance) {
+            if (salesPerformance.hasOwnProperty(product)) {
+                salesPerformance[product].forEach((SalesInfo): void => {
+
+                    const clientName = SalesInfo.clientName;
+                    let bonus = '';
+                    if (salesBonus) {
+                        bonus = salesBonus[product] ? salesBonus[product][clientName] : '';
+                    }
+                    this.dataSource.push({
+                        productName: product,
+                        clientName,
+                        rating: SalesInfo.rating,
+                        quantity: SalesInfo.quantity,
+                        bonus : bonus
+                    });
+                });
+            }
         }
     }
 

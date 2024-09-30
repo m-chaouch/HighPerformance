@@ -45,7 +45,7 @@ function defaultCalculationSales({ rating, quantity }) {
  */
 function socialCalculation(socialPerformance, socialCal = defaultCalculationSocial) {
     let socialBonus = {}, total = 0;
-
+    console.log(socialPerformance)
     if (socialPerformance) {
         for (const value of socialPerformance) {
             // Calculate the bonus for each social criterion

@@ -39,6 +39,6 @@ export class PerformanceReportService{
 
     public getOrdersEvaluation(SID: string, year: string): Promise<SalesPerformance>{
         const params = {salesManId : SID, year};
-        return this.http.get<SalesPerformance>(environment.apiEndpoint + 'api/orders-evaluation', {params}).toPromise();
+        return this.http.get<SalesPerformance>(environment.apiEndpoint + `/api/orders-evaluation/`, {params}).toPromise();
     }
 }

@@ -17,13 +17,11 @@ import {SalesPerformance} from '../../interfaces/sales-performance-datapoint';
 })
 export class PerformanceReviewPageComponent implements OnInit {
 
-
     salesman: EmployeeDatapoint;
     employeeID: number;
     performanceReport: PerformanceReportDatapoint;
     performanceDate: string;
     products: any[];
-    salesPerformance: SalesPerformance;
     socialPerformanceArray: any[] = [];
     disableButtonForCEO: boolean;
     disableButtonForHR: boolean;
@@ -45,10 +43,12 @@ export class PerformanceReviewPageComponent implements OnInit {
                         this.salesman.employeeCode,
                         this.performanceDate
                     ))[0]; // a Salesman can only have one performance report per date
+                    console.log('Salesperformance:',this.performanceReport.salesPerformance);
                     this.performanceReport.salesPerformance = await this.performanceReportService.getOrdersEvaluation(
                         this.salesman.employeeCode,
                         this.performanceDate
                     );
+                    console.log('Salesperformance-NEW:',this.performanceReport.salesPerformance);
                     this.parsePerformanceReport(this.performanceReport);
                     this.disableButtonForCEO = this.performanceReport.isAcceptedByCEO;
                     this.disableButtonForHR = this.performanceReport.isAcceptedByHR;
@@ -125,9 +125,6 @@ export class PerformanceReviewPageComponent implements OnInit {
     }
 
     parsePerformanceReport(performanceReport: PerformanceReportDatapoint): void{
-        this.products = Object.keys(performanceReport.salesPerformance);
-        this.salesPerformance = performanceReport.salesPerformance;
-        console.log(this.salesPerformance);
         this.socialPerformanceArray = Object.keys(performanceReport.socialPerformance).map((key): object => {
             const performanceKey = key as keyof SocialPerformance;
             const performance = performanceReport.socialPerformance[performanceKey];
