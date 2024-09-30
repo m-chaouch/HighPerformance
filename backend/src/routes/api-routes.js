@@ -233,6 +233,9 @@ router.get('/orders', orderApi.getOrderData);
  */
 router.get('/orders/:id', orderApi.getOrderData);
 
+router.get('/orders-evaluation', orderApi.getOrdersEvaluationData);
+
+
 const accountApi = require('../apis/account-data-api');
 
 /**
@@ -331,5 +334,8 @@ const positionApi = require('../apis/position-api');
  *         description: Position not found.
  */
 router.get('/positions/:id', positionApi.getPositionData);  // Works only with SOID
+
+
+
 
 module.exports = router;

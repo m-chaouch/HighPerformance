@@ -1,7 +1,8 @@
 const {loginService} = require('./login-service');
 const{getLastSegment} = require('../utils/helper');
-const {getAccountName} = require("./account-service");
+const {getAccountName, fetchAccounts} = require("./account-service");
 const {CRX_URL} = require("../utils/SaaSURLs");
+const {fetchPositions} = require("./position-service");
 
 
 /**
@@ -126,23 +127,59 @@ function getPricingState(pricingState) {
 /**
  *
  * @param governmentId
- * @param orders
- * @param accounts
+ * @param year
  * @returns {Promise<*>}
  */
-async function getOrdersOfEmployee(governmentId, orders, accounts) {
+async function ClientsServedBySalesman(governmentId, year) {
+    const accounts = await fetchAccounts();
+    const orders = await fetchOrders();
     const UID = GovIDtoUID(governmentId,accounts)
-
-    return orders.filter(item => {
-        return item.sellerID === UID    //erstmal zum testen UID benutzen
+    console.log(UID)
+    const filteredOrders = orders.filter(item => {
+        return item.sellerID === UID  && extractYear(item.createdAt) === Number(year)
     })
+    const filteredOrdersAndPositions = filteredOrders.map(async order => ({
+        SalesOrderID : order.SalesOrderID,
+        clientName: order.clientName,
+        rating: (await fetchAccounts(order.clientID))[0].rating,
+        positions: await fetchPositions(order.SalesOrderID),
+    }));
+    return Promise.all(filteredOrdersAndPositions);
 }
 
 function GovIDtoUID(GovID, accounts){
-    return (accounts.find(item => item.governmentId === GovID)).UID
+    return (accounts.find(item => item.governmentId === Number(GovID))).UID
 }
+
+function extractYear(DateAsString) {
+     return parseInt(DateAsString.split('-') [0]);
+}
+
+
+async function getOrdersEvaluation(governmentId, year){
+    const orders = await ClientsServedBySalesman(governmentId, year);
+    const OrderEvaluation = {};
+    orders.forEach(order => {
+        order.positions.forEach(position => {
+            const productName = position.product.name
+            // console.log(productName)
+            if(!OrderEvaluation[productName]){  // to not delete the existing array
+                OrderEvaluation[productName] = [];
+            }
+
+            OrderEvaluation[productName].push({
+                clientName: order.clientName,
+                quantity: position.quantity,
+                rating: order.rating
+            });
+        })
+    })
+    console.log(OrderEvaluation)
+    return OrderEvaluation
+}
+
+
 module.exports = {
     fetchOrders,
-    getOrdersOfEmployee,
-    filterOrders
+    getOrdersEvaluation
 }
