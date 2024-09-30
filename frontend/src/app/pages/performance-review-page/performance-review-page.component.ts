@@ -43,12 +43,12 @@ export class PerformanceReviewPageComponent implements OnInit {
                         this.salesman.employeeCode,
                         this.performanceDate
                     ))[0]; // a Salesman can only have one performance report per date
-                    console.log('Salesperformance:',this.performanceReport.salesPerformance);
+                    // console.log('Salesperformance:',this.performanceReport.salesPerformance);
                     this.performanceReport.salesPerformance = await this.performanceReportService.getOrdersEvaluation(
                         this.salesman.employeeCode,
                         this.performanceDate
                     );
-                    console.log('Salesperformance-NEW:',this.performanceReport.salesPerformance);
+                    // console.log('Salesperformance-NEW:',this.performanceReport.salesPerformance);
                     this.parsePerformanceReport(this.performanceReport);
                     this.disableButtonForCEO = this.performanceReport.isAcceptedByCEO;
                     this.disableButtonForHR = this.performanceReport.isAcceptedByHR;

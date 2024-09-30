@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {PerformanceReportDatapoint} from '../../interfaces/performance-report-datapoint';
 import {SalesPerformance} from '../../interfaces/sales-performance-datapoint';
 
@@ -8,7 +8,7 @@ import {SalesPerformance} from '../../interfaces/sales-performance-datapoint';
     styleUrls: ['./orders-evaluation.component.css',
         '../../pages/performance-review-page/performance-review-page.component.css']
 })
-export class OrdersEvaluationComponent implements OnInit{
+export class OrdersEvaluationComponent implements OnChanges{
 
     displayedColumns = ['productName', 'clientName', 'rating', 'soldQuantity', 'bonus'];
     dataSource = [];
@@ -19,14 +19,18 @@ export class OrdersEvaluationComponent implements OnInit{
     spans: number[] = [];
     // existingValue = [];
 
-    ngOnInit(): void {
-        // console.log('Salesperformance in ordersevaluation:', this.performanceReport);
-        this.salesPerformance = this.performanceReport.salesPerformance;
-        this.products = this.products = Object.keys(this.salesPerformance);
-        this.flattenSalesPerformance(this.salesPerformance, this.performanceReport?.calculatedBonus?.salesBonus);
-        this.products = Object.keys(this.salesPerformance);
-        this.setRowSpan();
 
+    ngOnChanges(changes: SimpleChanges): void {
+        console.log('Salesperformance in ordersevaluation:', this.performanceReport);
+        if (this.performanceReport?.salesPerformance){
+            this.salesPerformance = this.performanceReport.salesPerformance;
+            this.products = this.products = Object.keys(this.salesPerformance);
+            this.flattenSalesPerformance(this.salesPerformance, this.performanceReport?.calculatedBonus?.salesBonus);
+            this.products = Object.keys(this.salesPerformance);
+            this.setRowSpan();
+            console.log('OKAAAY');
+            this.dataSource = this.flattenSalesPerformance(this.salesPerformance, this.performanceReport?.calculatedBonus?.salesBonus);
+        }
 
         // this.salesPerformance = {
         //     HooverClean: [
@@ -53,7 +57,8 @@ export class OrdersEvaluationComponent implements OnInit{
     }
 
 
-    private flattenSalesPerformance(salesPerformance: SalesPerformance, salesBonus: any): void {
+    private flattenSalesPerformance(salesPerformance: SalesPerformance, salesBonus: any): any[] {
+        const tableData = [];
         for (let product in salesPerformance) {
             if (salesPerformance.hasOwnProperty(product)) {
                 salesPerformance[product].forEach((SalesInfo): void => {
@@ -63,7 +68,8 @@ export class OrdersEvaluationComponent implements OnInit{
                     if (salesBonus) {
                         bonus = salesBonus[product] ? salesBonus[product][clientName] : '';
                     }
-                    this.dataSource.push({
+                    console.log(tableData);
+                    tableData.push({
                         productName: product,
                         clientName,
                         rating: SalesInfo.rating,
@@ -73,6 +79,7 @@ export class OrdersEvaluationComponent implements OnInit{
                 });
             }
         }
+        return tableData;
     }
 
     setRowSpan(): void {
