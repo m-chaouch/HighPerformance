@@ -29,7 +29,8 @@ import {ApprovalPipe} from './services/approval.pipe';
 import { CriteriaPipe } from './services/criteria.pipe';
 import { RemarkEnterFieldComponent } from './components/remark-enter-field/remark-enter-field.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import {NgApexchartsModule} from "ng-apexcharts";
+import {NgApexchartsModule} from 'ng-apexcharts';
+import { StatsPageComponent } from './pages/stats-page/stats-page.component';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import {NgApexchartsModule} from "ng-apexcharts";
         ApprovalPipe,
         CriteriaPipe,
         RemarkEnterFieldComponent,
-        DashboardComponent
+        DashboardComponent,
+        StatsPageComponent
     ],
     imports: [
         BrowserModule,
