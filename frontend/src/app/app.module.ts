@@ -32,6 +32,7 @@ import { PieChartComponent } from './components/pie-chart/pie-chart.component';
 import {NgApexchartsModule} from 'ng-apexcharts';
 import { StatsPageComponent } from './pages/stats-page/stats-page.component';
 import { LineChartComponent } from './components/line-chart/line-chart.component';
+import { BarChartComponent } from './components/bar-chart/bar-chart.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { LineChartComponent } from './components/line-chart/line-chart.component
         RemarkEnterFieldComponent,
         PieChartComponent,
         StatsPageComponent,
-        LineChartComponent
+        LineChartComponent,
+        BarChartComponent
     ],
     imports: [
         BrowserModule,
