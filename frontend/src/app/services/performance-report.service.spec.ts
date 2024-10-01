@@ -8,7 +8,7 @@ import { SocialPerformance } from '../../../../backend/src/models/SocialPerforma
 import { PerformanceRecord } from '../../../../backend/src/models/SocialPerformance';
 import { storePerformanceRecord } from '../../../../backend/src/services/performance-report-service'
 import { createDB, closeDB } from '../../../../backend/unit-tests/support/mockdb-new';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient} from '@angular/common/http';
 
 
 
@@ -84,15 +84,15 @@ describe('PerformanceReportService', () => {
 
     it('should fetch performance report by SID', () => {
         const dummyData: PerformanceReportDatapoint[] = [
-            { /* mock data matching your PerformanceReportDatapoint structure */ },
-            { /* mock data */ }
+      //      { /* mock data matching your PerformanceReportDatapoint structure */ },
+        //    { /* mock data */ }
         ];
 
         const testSID = '123456'; // Beispiel-SID
         const expectedUrl = `${environment.apiEndpoint}/api/performance-report/${testSID}`;
 
         // Aufruf der Service-Methode
-        service.getPerformanceReport(testSID).subscribe((data) => {
+        service.getPerformanceReport(testSID).then((data) => {
             expect(data.length).toBe(2);
             expect(data).toEqual(dummyData);
         });
