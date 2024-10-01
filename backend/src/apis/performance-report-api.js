@@ -108,6 +108,7 @@ exports.updatePerformanceReport= async (req, res) => {
         if (!result) {
             res.status(404).json({error: 'Performance report not found or not updated'});
         }
+        res.status(200).json({success: 'functions'});
     }catch(error){
         console.log("updating a performance report went wrong", error);
     }
