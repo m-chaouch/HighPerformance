@@ -57,7 +57,7 @@ function bonusComputation(socialPerformance, salesPerformance, calculation = { s
         });
         socialBonus.total = socialTotal;
     }
-    console.log('salesPerformance: ' + salesPerformance);
+    //console.log('salesPerformance: ' + salesPerformance);
     if (salesPerformance) {
         // const salesList = salesPerformance.getSalesList(); // Properly reference the sales list
         Object.keys(salesPerformance.list).forEach(key => {
