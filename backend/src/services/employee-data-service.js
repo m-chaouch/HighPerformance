@@ -51,7 +51,7 @@ async function employeeDataService() {
         }));
 
         // Ausgabe der gefilterten Mitarbeiterdaten in der Konsole
-        console.log('Employee data:', filteredEmployees);
+        //console.log('Employee data:', filteredEmployees);
 
         // Rückgabe der gefilterten Mitarbeiterdaten
         return filteredEmployees;
@@ -82,7 +82,7 @@ async function getEmployeeData(id) {
         employeeCode: employee.code
     }));
     const salesman = filteredEmployees.find(employee => employee.employeeCode === id);
-    console.log('Employee data:', salesman);
+    //console.log('Employee data:', salesman);
     //console.log(filteredEmployees);
     return salesman.employeeId;
 }

@@ -104,7 +104,7 @@ function updateObject(keyName, newVal, object) {
 async function updatePerformanceReport(db, salesManId, date, updateFields, options = { upsert: false }) {
     try {
         const collection = db.collection(collectionName);
-        console.log({ salesManId, date });
+        //console.log({ salesManId, date });
         // Prepare the update object
         const update = { $set:{} };
         // Iterate over the keys in updateFields and populate the $set object
@@ -131,9 +131,9 @@ async function updatePerformanceReport(db, salesManId, date, updateFields, optio
 async function storePerformanceReportInOrangeHRM(db, salesManId, date) {
     try {
         const performanceReport = (await getPerformanceReport(db, salesManId, date))[0];
-        console.log(performanceReport);
-        console.log("CEO: " , performanceReport.isAcceptedByCEO);
-        console.log("HR: " , performanceReport.isAcceptedByHR);
+        //console.log(performanceReport);
+        //console.log("CEO: " , performanceReport.isAcceptedByCEO);
+        //console.log("HR: " , performanceReport.isAcceptedByHR);
         if (!performanceReport.isAcceptedByCEO || !performanceReport.isAcceptedByHR) {
             console.log('Performance Report is not approved by CEO or HR.');
             return;
