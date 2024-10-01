@@ -27,8 +27,6 @@ const collectionName = 'Performance_Reports'; // Consider using snake_case for c
 async function storePerformanceRecord(db, performanceRecord) {
     try {
         const collection = db.collection(collectionName);
-        const performanceRecordClone = JSON.parse(JSON.stringify(performanceRecord));   // clone the performanceReport, so the original record doesn't change
-        performanceRecord.calculatedBonus = bonusComputation(performanceRecordClone.socialPerformance, performanceRecordClone.salesPerformance);
         console.log(performanceRecord.calculatedBonus);
         const result = await collection.insertOne(performanceRecord);
         console.log('Performance record stored successfully.');

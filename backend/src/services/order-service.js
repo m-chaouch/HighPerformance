@@ -148,7 +148,7 @@ async function ClientsServedBySalesman(governmentId, year) {
 }
 
 function GovIDtoUID(GovID, accounts){
-    return (accounts.find(item => item.governmentId === Number(GovID))).UID
+    return (accounts.find(item => item.governmentId === Number(GovID)))?.UID
 }
 
 function extractYear(DateAsString) {
@@ -181,5 +181,7 @@ async function getOrdersEvaluation(governmentId, year){
 
 module.exports = {
     fetchOrders,
-    getOrdersEvaluation
+    getOrdersEvaluation,
+    GovIDtoUID,
+    extractYear
 }

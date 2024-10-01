@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import {PerformanceReportDatapoint} from '../../interfaces/performance-report-datapoint';
 import {SalesPerformance} from '../../interfaces/sales-performance-datapoint';
 
@@ -13,47 +13,21 @@ export class OrdersEvaluationComponent implements OnChanges{
     displayedColumns = ['productName', 'clientName', 'rating', 'soldQuantity', 'bonus'];
     dataSource = [];
     @Input() performanceReport: PerformanceReportDatapoint;
-    @Input() salesPerformance: SalesPerformance;
+    @Input() salesPerformanceArray: [];
     salesPerformanceValues: any[];
     products: string[];
     spans: number[] = [];
     // existingValue = [];
 
 
-    ngOnChanges(changes: SimpleChanges): void {
+    ngOnChanges(): void {
+        console.log('SalesPerformanceArray:', this.salesPerformanceArray);
+        const salesPerformance = this.performanceReport?.salesPerformance;
         console.log('Salesperformance in ordersevaluation:', this.performanceReport);
-        if (this.performanceReport?.salesPerformance){
-            this.salesPerformance = this.performanceReport.salesPerformance;
-            this.products = this.products = Object.keys(this.salesPerformance);
-            this.flattenSalesPerformance(this.salesPerformance, this.performanceReport?.calculatedBonus?.salesBonus);
-            this.products = Object.keys(this.salesPerformance);
-            this.setRowSpan();
-            console.log('OKAAAY');
-            this.dataSource = this.flattenSalesPerformance(this.salesPerformance, this.performanceReport?.calculatedBonus?.salesBonus);
-        }
-
-        // this.salesPerformance = {
-        //     HooverClean: [
-        //         {
-        //             clientName: 'Germania GmbH',
-        //             quantity: 10,
-        //             rating: 3
-        //         },
-        //         {
-        //             clientName: 'Dirk Müller GmbH',
-        //             quantity: 25,
-        //             rating: 3
-        //         }
-        //     ],
-        //     HooverGo: [
-        //         {
-        //             clientName: 'Telekom AG',
-        //             quantity: 20,
-        //             rating: 1
-        //         }
-        //     ]
-        // };
-
+        console.log(salesPerformance);
+        this.products = Object.keys(salesPerformance);
+        this.setRowSpan(salesPerformance);
+        console.log(this.spans);
     }
 
 
@@ -82,10 +56,10 @@ export class OrdersEvaluationComponent implements OnChanges{
         return tableData;
     }
 
-    setRowSpan(): void {
+    setRowSpan(salesPerformance: SalesPerformance): void {
         let i = 0;
         this.products.forEach((product): void => {
-            let spanLength = this.salesPerformance[product].length;
+            let spanLength = salesPerformance[product].length;
             this.spans[i] = spanLength;
             i = i + spanLength;
         });

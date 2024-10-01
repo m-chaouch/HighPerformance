@@ -1,6 +1,6 @@
 <div class="orders-evaluation">
     <h3>A.) Orders Evaluation</h3>
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <table mat-table [dataSource]="salesPerformanceArray" class="mat-elevation-z8">
         <!--Product Name Column -->
         <ng-container matColumnDef="productName">
             <th mat-header-cell *matHeaderCellDef> Product </th>
@@ -39,10 +39,10 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-<!--    <div class="bonus-container">-->
-<!--        <div class="totalBonus">-->
-<!--            <div class="left-block"><p>Total Bonus for part A):</p></div>-->
-<!--            <div class="right-block" style="width: 45%; text-align: center; font-weight: bold"><p>{{performanceReport?.calculatedBonus?.salesBonus?.total ||  ''}}</p></div>-->
-<!--        </div>-->
-<!--    </div>-->
+    <div class="bonus-container">
+        <div class="totalBonus">
+            <div class="left-block"><p>Total Bonus for part A):</p></div>
+            <div class="right-block" style="width: 45%; text-align: center; font-weight: bold"><p>{{performanceReport?.calculatedBonus?.salesBonus?.total ||  ''}}</p></div>
+        </div>
+    </div>
 </div>

@@ -12,7 +12,7 @@
             <div class="columnRight">{{performanceDate | date:'yyyy'}}</div>
         </div>
 
-        <app-orders-evaluation [performanceReport]="performanceReport" [salesPerformance]="performanceReport?.salesPerformance"></app-orders-evaluation>
+        <app-orders-evaluation [performanceReport]="performanceReport" [salesPerformanceArray]="salesPerformanceArray"></app-orders-evaluation>
 
        <app-social-performance-evaluation [performanceReport]="performanceReport" [socialPerformanceArray]="socialPerformanceArray"></app-social-performance-evaluation>
 
