@@ -1,20 +1,16 @@
 /**
- * This interface defines the structure of an individual company's sales performance.
+ * This interface defines the structure of an individual product's sales performance.
  */
-export interface CompanySales {
+export interface ProductSales {
     clientName: string;
+    quantity: number;
     rating: number;
-    soldQuantity: number;
-}
-
-class list {
-    [company: string]: CompanySales;
 }
 
 /**
  * This interface represents the sales performance list.
- * The keys are company names, and the values are CompanySales objects.
+ * The keys are product names, and the values are arrays of ProductSales objects.
  */
 export interface SalesPerformance {
-    list: list;
+    [product: string]: ProductSales[]; // The keys are product names, and the values are arrays of sales records
 }
