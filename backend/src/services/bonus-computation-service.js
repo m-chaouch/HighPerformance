@@ -45,7 +45,7 @@ function defaultCalculationSales({ rating, quantity }) {
  */
 function socialCalculation(socialPerformance, socialCal = defaultCalculationSocial) {
     let socialBonus = {}, total = 0;
-
+    // console.log(socialPerformance)
     if (socialPerformance) {
         for (const value of socialPerformance) {
             // Calculate the bonus for each social criterion
@@ -119,36 +119,36 @@ module.exports = {
     bonusComputation
 };
 
-// Creating an instance of SocialPerformance using default data
-const defaultSocialPerformance = {
-    leadershipCompetence: { actual: 5, target: 10 },
-    opennessToEmployee: { actual: 8, target: 10 },
-    socialBehaviourToEmployee: { actual: 9, target: 10 },
-    attitudeTowardsClients: { actual: 7, target: 10 },
-    communicationSkills: { actual: 6, target: 10 },
-    integrityToCompany: { actual: 10, target: 10 }
-};
-
-// Constructing an instance of SocialPerformance with default data
-const socialPerformance = new SocialPerformance(defaultSocialPerformance);
-
-// Creating an instance of SalesPerformance using sales data
-const salesDetails = {
-    "HooverClean": [
-        { clientName: "Germania GmbH", quantity: 10, rating: 3 },
-        { clientName: "Dirk Müller GmbH", quantity: 25, rating: 3 }
-    ],
-    "HooverGo": [
-        { clientName: "Telekom AG", quantity: 20, rating: 1 }
-    ]
-};
-
-// Constructing an instance of SalesPerformance with sales data
-const salesPerformance = new SalesPerformance(salesDetails);
-
-// Performing the bonus calculation
-const bonus = bonusComputation(socialPerformance, salesPerformance);
-
-// Printing the bonus calculation result
-console.log("Bonus Calculation Result: ", bonus);
+// // Creating an instance of SocialPerformance using default data
+// const defaultSocialPerformance = {
+//     leadershipCompetence: { actual: 5, target: 10 },
+//     opennessToEmployee: { actual: 8, target: 10 },
+//     socialBehaviourToEmployee: { actual: 9, target: 10 },
+//     attitudeTowardsClients: { actual: 7, target: 10 },
+//     communicationSkills: { actual: 6, target: 10 },
+//     integrityToCompany: { actual: 10, target: 10 }
+// };
+//
+// // Constructing an instance of SocialPerformance with default data
+// const socialPerformance = new SocialPerformance(defaultSocialPerformance);
+//
+// // Creating an instance of SalesPerformance using sales data
+// const salesDetails = {
+//     "HooverClean": [
+//         { clientName: "Germania GmbH", quantity: 10, rating: 3 },
+//         { clientName: "Dirk Müller GmbH", quantity: 25, rating: 3 }
+//     ],
+//     "HooverGo": [
+//         { clientName: "Telekom AG", quantity: 20, rating: 1 }
+//     ]
+// };
+//
+// // Constructing an instance of SalesPerformance with sales data
+// const salesPerformance = new SalesPerformance(salesDetails);
+//
+// // Performing the bonus calculation
+// const bonus = bonusComputation(socialPerformance, salesPerformance);
+//
+// // Printing the bonus calculation result
+// console.log("Bonus Calculation Result: ", bonus);
 

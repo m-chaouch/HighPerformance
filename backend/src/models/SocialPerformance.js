@@ -57,8 +57,8 @@ class SocialPerformance {
 module.exports = { SocialPerformance };
 
 
-const tmp = new SocialPerformance();
-for(const entry of tmp){
-    console.log(entry)
-}
+// const tmp = new SocialPerformance();
+// for(const entry of tmp){
+//     console.log(entry)
+// }
 

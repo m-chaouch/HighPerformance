@@ -26,7 +26,7 @@ export class RemarkEnterFieldComponent implements OnInit, OnChanges {
                 this.performanceReport.remark = this.remark;
                 await this.reportService.updatePerformanceReport(salesManId, date, {remark: this.remark});
             }else {
-                this.remark = "";
+                this.remark = '';
             }
         });
     }

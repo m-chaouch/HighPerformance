@@ -6,9 +6,9 @@ import {PerformanceReportDatapoint} from '../../interfaces/performance-report-da
 import {PerformanceReportService} from '../../services/performance-report.service';
 import {UserService} from '../../services/user.service';
 import {SocialPerformance} from '../../interfaces/social-performacne-datapoint';
-import {RemarkEnterFieldComponent} from "../../components/remark-enter-field/remark-enter-field.component";
+import {RemarkEnterFieldComponent} from '../../components/remark-enter-field/remark-enter-field.component';
 
-/* eslint-disable no-console */
+
 @Component({
     selector: 'app-performance-review-page',
     templateUrl: './performance-review-page.component.html',
@@ -16,15 +16,15 @@ import {RemarkEnterFieldComponent} from "../../components/remark-enter-field/rem
 })
 export class PerformanceReviewPageComponent implements OnInit {
 
-
     salesman: EmployeeDatapoint;
     employeeID: number;
     performanceReport: PerformanceReportDatapoint;
     performanceDate: string;
-    salesPerformanceArray: any[] = [];
+    products: any[];
     socialPerformanceArray: any[] = [];
     disableButtonForCEO: boolean;
     disableButtonForHR: boolean;
+    salesPerformanceArray: any[] = [];
 
     @ViewChild(RemarkEnterFieldComponent) remarkEnterField!: RemarkEnterFieldComponent;
 
@@ -40,7 +40,19 @@ export class PerformanceReviewPageComponent implements OnInit {
                 void (async (): Promise<void> => {
                     this.salesman = response.body;
                     this.performanceReport = (await this.performanceReportService.getPerformanceReport(
-                        this.salesman.employeeCode, this.performanceDate))[0]; // a Salesman can only have one performance report per date
+                        this.salesman.employeeCode,
+                        this.performanceDate
+                    ))[0]; // a Salesman can only have one performance report per date
+                    if (!this.performanceReport.salesPerformance) { // if and only if salesPerformance is undefined, then initialize it
+                        const salesPerformance = await this.performanceReportService.getOrdersEvaluation(
+                            this.salesman.employeeCode,
+                            this.performanceDate
+                        );
+                        this.performanceReport.salesPerformance = salesPerformance;
+                        await this.performanceReportService.updatePerformanceReport(this.salesman.employeeCode, this.performanceDate, {salesPerformance});
+                    }
+                    console.log('SALESPERFORMANCE!!!!', this.performanceReport.salesPerformance);
+
                     this.parsePerformanceReport(this.performanceReport);
                     this.disableButtonForCEO = this.performanceReport.isAcceptedByCEO;
                     this.disableButtonForHR = this.performanceReport.isAcceptedByHR;
@@ -59,6 +71,7 @@ export class PerformanceReviewPageComponent implements OnInit {
                 this.performanceReport = (await this.performanceReportService.getPerformanceReport(
                     this.salesman.employeeCode,
                     this.performanceDate))[0];
+                console.log('SALESPERFORMANCE:' , this.performanceReport);
                 this.parsePerformanceReport(this.performanceReport);
             }
             else {
@@ -90,12 +103,17 @@ export class PerformanceReviewPageComponent implements OnInit {
                 alert('fetch Bonus first');
                 return;
             }
-            this.performanceReportService.updatePerformanceReport(this.salesman.employeeCode, this.performanceDate, {isAcceptedByCEO: true}).then( async _ => {
-                this.performanceReport = (await this.performanceReportService.getPerformanceReport(this.salesman.employeeCode, this.performanceDate))[0];
+            this.performanceReportService.updatePerformanceReport(
+                this.salesman.employeeCode,
+                this.performanceDate,
+                {isAcceptedByCEO: true}).then( async _ => {
+                this.performanceReport = (await this.performanceReportService.getPerformanceReport(
+                    this.salesman.employeeCode,
+                    this.performanceDate))[0];
             });
             this.disableButtonForCEO = true;
             alert('successfully accepted!');
-        })
+        });
     }
 
     handleButtonHR(): void {
@@ -108,26 +126,54 @@ export class PerformanceReviewPageComponent implements OnInit {
                 alert('CEO has to fetch Bonus first');
                 return;
             }
-            this.performanceReportService.updatePerformanceReport(this.salesman.employeeCode, this.performanceDate, {isAcceptedByHR: true}).then( async _ => {
-                this.performanceReport = (await this.performanceReportService.getPerformanceReport(this.salesman.employeeCode, this.performanceDate))[0];
-            })
+            this.performanceReportService.updatePerformanceReport(
+                this.salesman.employeeCode,
+                this.performanceDate,
+                {isAcceptedByHR: true}).then( async _ => {
+                this.performanceReport = (await this.performanceReportService.getPerformanceReport(
+                    this.salesman.employeeCode,
+                    this.performanceDate))[0];
+            });
             this.disableButtonForHR = true;
             alert('successfully accepted!');
         });
     }
 
     parsePerformanceReport(performanceReport: PerformanceReportDatapoint): void{
-        this.salesPerformanceArray = Object.keys(performanceReport.salesPerformance.list).map((key): object => ({
-            clientName: key,
-            // clientName: performanceReport.salesPerformance.list[key].clientName,  // use when clientname implemented
-            rating: performanceReport.salesPerformance.list[key].rating,
-            soldQuantity: performanceReport.salesPerformance.list[key].soldQuantity,
-            bonus: Number(performanceReport.calculatedBonus?.salesBonus?.[key]) || ''
-        }));
-        this.socialPerformanceArray = Object.keys(performanceReport.socialPerformance).map((key): object => {
+        this.salesPerformanceArray = this.parseSalesPerformance(performanceReport);
+        this.socialPerformanceArray = this.parseSocialPerformance(performanceReport);
+    }
+
+    private parseSalesPerformance(performanceReport: PerformanceReportDatapoint): any[]{
+        const salesPerformance = performanceReport?.salesPerformance;
+        const salesBonus = performanceReport?.calculatedBonus?.salesBonus;
+        const tableData = [];
+        for (let product in salesPerformance) {
+            if (salesPerformance.hasOwnProperty(product)) {
+                salesPerformance[product].forEach((SalesInfo): void => {
+                    const clientName = SalesInfo.clientName;
+                    let bonus = '';
+                    if (salesBonus) {
+                        bonus = salesBonus[product] ? salesBonus[product][clientName] : '';
+                    }
+                    console.log('SALESPERFORMANCEARRAY:', tableData);
+                    tableData.push({
+                        productName: product,
+                        clientName,
+                        rating: SalesInfo.rating,
+                        quantity: SalesInfo.quantity,
+                        bonus
+                    });
+                });
+            }
+        }
+        return tableData;
+    }
+
+    private parseSocialPerformance(performanceReport: PerformanceReportDatapoint): any[] {
+        return Object.keys(performanceReport.socialPerformance).map((key): object => {
             const performanceKey = key as keyof SocialPerformance;
             const performance = performanceReport.socialPerformance[performanceKey];
-
             return {
                 criteria: key,
                 target: performance.target,

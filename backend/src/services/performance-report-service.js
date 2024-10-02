@@ -27,9 +27,6 @@ const collectionName = 'Performance_Reports'; // Consider using snake_case for c
 async function storePerformanceRecord(db, performanceRecord) {
     try {
         const collection = db.collection(collectionName);
-        const performanceRecordClone = JSON.parse(JSON.stringify(performanceRecord));   // clone the performanceReport, so the original record doesn't change
-        performanceRecord.calculatedBonus = bonusComputation(performanceRecordClone.socialPerformance, performanceRecordClone.salesPerformance);
-        //console.log(performanceRecord.calculatedBonus);
         const result = await collection.insertOne(performanceRecord);
         console.log('Performance record stored successfully.');
         return result;
@@ -133,9 +130,6 @@ async function updatePerformanceReport(db, salesManId, date, updateFields, optio
 async function storePerformanceReportInOrangeHRM(db, salesManId, date) {
     try {
         const performanceReport = (await getPerformanceReport(db, salesManId, date))[0];
-        //console.log(performanceReport);
-        //console.log("CEO: " , performanceReport.isAcceptedByCEO);
-        //console.log("HR: " , performanceReport.isAcceptedByHR);
         if (!performanceReport.isAcceptedByCEO || !performanceReport.isAcceptedByHR) {
             console.log('Performance Report is not approved by CEO or HR.');
             return;

@@ -134,7 +134,6 @@ async function ClientsServedBySalesman(governmentId, year) {
     const accounts = await fetchAccounts();
     const orders = await fetchOrders();
     const UID = GovIDtoUID(governmentId,accounts)
-    console.log(UID)
     const filteredOrders = orders.filter(item => {
         return item.sellerID === UID  && extractYear(item.createdAt) === Number(year)
     })
@@ -148,7 +147,7 @@ async function ClientsServedBySalesman(governmentId, year) {
 }
 
 function GovIDtoUID(GovID, accounts){
-    return (accounts.find(item => item.governmentId === Number(GovID))).UID
+    return (accounts.find(item => item.governmentId === Number(GovID)))?.UID
 }
 
 function extractYear(DateAsString) {
@@ -174,12 +173,14 @@ async function getOrdersEvaluation(governmentId, year){
             });
         })
     })
-    console.log(OrderEvaluation)
+    // console.log("Orderevaluation:",OrderEvaluation)
     return OrderEvaluation
 }
 
 
 module.exports = {
     fetchOrders,
-    getOrdersEvaluation
+    getOrdersEvaluation,
+    GovIDtoUID,
+    extractYear
 }
