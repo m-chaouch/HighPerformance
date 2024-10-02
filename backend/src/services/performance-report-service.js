@@ -108,8 +108,8 @@ async function updatePerformanceReport(db, salesManId, date, updateFields, optio
         const result = await collection.updateOne({ salesManId, date }, update, options);
 
         if (result.matchedCount > 0) {
-            await storePerformanceReportInOrangeHRM(db, salesManId, date);
             console.log('Document updated successfully.');
+            await storePerformanceReportInOrangeHRM(db, salesManId, date);
         } else {
             console.log('No document matched the query.');
         }
@@ -129,7 +129,7 @@ async function storePerformanceReportInOrangeHRM(db, salesManId, date) {
         return;
     }
 
-    if (!performanceReport.isAcceptedByHR || !performanceReport.isAcceptedByCEO){
+    if (!performanceReport.isAcceptedBySalesman){
         console.error('Performance report not accepted');
         return;
     }
