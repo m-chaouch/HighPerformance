@@ -51,12 +51,14 @@ export class PerformanceReportPageComponent implements OnInit{
         }, []);
     }
 
-    async handleSalesmanClick(id: string, date: string): Promise<void> {
+    handleSalesmanClick(id: string, date: string): void {
         for (const salesman of this.salesmen) {
-            const condition = await this.identify(salesman, this.user, date);
-            if (condition) {
-                await this.router.navigate(['/performance-review', id, date]);
-                break;
+            if (salesman.employeeId == Number(id)){
+                this.identify(salesman, this.user, date).then(condition => {
+                    if (condition) {
+                        void this.router.navigate(['/performance-review', id, date]);
+                    }
+                });
             }
         }
     }
@@ -68,14 +70,14 @@ export class PerformanceReportPageComponent implements OnInit{
     }
 
     async identify(clickedSalesman: EmployeeDatapoint, user: User, date: string): Promise<boolean> {
-        if (user.isAdmin || user.jobTitle === 'HR' || user.jobTitle === 'CEO') {
+        if (user.isAdmin || user.jobTitle == 'HR' || user.jobTitle == 'CEO') {
             return true;
         }
-        if (user.firstname === clickedSalesman.firstName && user.lastname === clickedSalesman.lastName) {
+        if (user.firstname == clickedSalesman.firstName && user.lastname == clickedSalesman.lastName) {
             return await this.statusBonus(clickedSalesman, date);
         }
-        if (user.firstname !== clickedSalesman.firstName) {
-            alert('Access Denied!');
+        if (user.firstname != clickedSalesman.firstName) {
+            alert('Access Denied');
             return false;
         }
     }
