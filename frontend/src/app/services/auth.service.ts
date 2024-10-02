@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Credentials} from '../models/Credentials';
-import {CredentialsRegister} from '../models/Credentials'
+import {CredentialsRegister} from '../models/Credentials';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable, Observer} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
@@ -105,7 +105,7 @@ export class AuthService {
         }).pipe(
             tap((response): void => {
                 if (response.status === 200) { // if registration was successful
-                    alert("Registration successfully");
+                    alert('Registration successfully');
                 }
             })
         );
@@ -114,7 +114,8 @@ export class AuthService {
 
     validateRegister(credentials: CredentialsRegister): string | null {
         // Check if any field is empty
-        if (!credentials.username || !credentials.firstname || !credentials.lastname || !credentials.email || !credentials.password || !credentials.passwordConfirm) {
+        if (!credentials.username || !credentials.firstname || !credentials.lastname ||
+            !credentials.email || !credentials.password || !credentials.passwordConfirm) {
             return 'Please fill in all fields.';
         }
 
@@ -129,7 +130,12 @@ export class AuthService {
             return 'Passwords do not match.';
         }
         // Check password strength (example: minimum 8 characters)
-
+        if (credentials.governmentId.toString().length < 5) {
+            return 'Government ID not correct.';
+        }
+        if (credentials.governmentId === 90100) {
+            return 'Enter your own Government ID.';
+        }
         // If all checks pass, return null (no error)
         return null;
     }
