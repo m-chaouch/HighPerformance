@@ -33,6 +33,8 @@ import {NgApexchartsModule} from 'ng-apexcharts';
 import { StatsPageComponent } from './pages/stats-page/stats-page.component';
 import { LineChartComponent } from './components/line-chart/line-chart.component';
 import { BarChartComponent } from './components/bar-chart/bar-chart.component';
+import { SocialBonusChartComponent } from './components/social-bonus-chart/social-bonus-chart.component';
+import { SalesBonusChartComponent } from './components/sales-bonus-chart/sales-bonus-chart.component';
 
 
 @NgModule({
@@ -56,7 +58,9 @@ import { BarChartComponent } from './components/bar-chart/bar-chart.component';
         PieChartComponent,
         StatsPageComponent,
         LineChartComponent,
-        BarChartComponent
+        BarChartComponent,
+        SocialBonusChartComponent,
+        SalesBonusChartComponent
     ],
     imports: [
         BrowserModule,

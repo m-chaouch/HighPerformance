@@ -35,7 +35,7 @@ export class ChartServiceService {
         // Handling social bonus entries
         delete (copySalesBonus as any).total;
         // Handling sales bonus entries
-        const entriesForSalesBonus = Object.entries(salesBonus);
+        const entriesForSalesBonus = Object.entries(copySalesBonus);
         entriesForSalesBonus.forEach(([productName, sales]) => {
             const salesRecord = sales as Record<string, number>;
             // Calculate total product bonus
