@@ -30,7 +30,6 @@ export class PerformanceReportPageComponent implements OnInit{
                     } catch (error) {
                         console.log(`couldn't find performancereport to ${salesMan.employeeCode}`);
                     }
-                    console.log(salesMan.employeeCode, salesMan.performanceReport);
                 }
                 this.flattenData();
             }

@@ -55,7 +55,6 @@ export class PerformanceReviewPageComponent implements OnInit {
                             {salesPerformance}
                         );
                     }
-                    console.log('SALESPERFORMANCE!!!!', this.performanceReport.salesPerformance);
 
                     this.parsePerformanceReport(this.performanceReport);
                     this.disableButtonForCEO = this.performanceReport.isAcceptedByCEO;
@@ -75,7 +74,6 @@ export class PerformanceReviewPageComponent implements OnInit {
                 this.performanceReport = (await this.performanceReportService.getPerformanceReport(
                     this.salesman.employeeCode,
                     this.performanceDate))[0];
-                console.log('SALESPERFORMANCE:' , this.performanceReport);
                 this.parsePerformanceReport(this.performanceReport);
             }
             else {
@@ -159,7 +157,6 @@ export class PerformanceReviewPageComponent implements OnInit {
                     if (salesBonus) {
                         bonus = salesBonus[product] ? salesBonus[product][clientName] : '';
                     }
-                    console.log('SALESPERFORMANCEARRAY:', tableData);
                     tableData.push({
                         productName: product,
                         clientName,
