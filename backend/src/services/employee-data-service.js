@@ -47,7 +47,8 @@ async function employeeDataService() {
             lastName: employee.lastName,
             employeeId: employee.employeeId,
             unit: employee.unit,
-            employeeCode: employee.code
+            employeeCode: employee.code,
+            jobTitle: employee.jobTitle
         }));
 
         // Ausgabe der gefilterten Mitarbeiterdaten in der Konsole
@@ -133,4 +134,5 @@ exports.getEmployeeService = employeeDataService;
 exports.getOneEmployeeService = oneEmployeeDataService;
 exports.getEmployeeData = getEmployeeData;
 
-getEmployeeData("90133");
+// getEmployeeData("90133");
+//employeeDataService();
