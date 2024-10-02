@@ -3,8 +3,8 @@ import {EmployeeDatapoint} from '../../interfaces/employee-datapoint';
 import {EmployeeDataService} from '../../services/employee-data.service';
 import {Router} from '@angular/router';
 import {PerformanceReportService} from '../../services/performance-report.service';
-import {UserService} from "../../services/user.service";
-import {User} from "../../models/User";
+import {UserService} from '../../services/user.service';
+import {User} from '../../models/User';
 
 
 @Component({
@@ -52,45 +52,41 @@ export class PerformanceReportPageComponent implements OnInit{
         }, []);
     }
 
-
-    handleSalesmanClick(id: string, date: string): void {
-        console.log('Clicked ID:', id); // Zeige die angeklickte ID
-
+    async handleSalesmanClick(id: string, date: string): Promise<void> {
         for (const salesman of this.salesmen) {
-            if (salesman.employeeId == Number(id)) { // ID in eine Zahl umwandeln
-                this.identify(salesman, this.user, date).then(condition => {
-                    if (condition) {
-                        void this.router.navigate(['/performance-review', id, date]);  // relative to the previous route + /id
-                    }
-                });
+            const condition = await this.identify(salesman, this.user, date);
+            if (condition) {
+                await this.router.navigate(['/performance-review', id, date]);
+                break;
             }
         }
     }
 
-    fetchUser(): void{
+    fetchUser(): void {
         this.userService.getOwnUser().subscribe((user): void => {
             this.user = user;
         });
     }
 
-    async identify(clickedSalesman: EmployeeDatapoint, user: User, date: string): Promise<boolean>{
-        if (user.isAdmin || user.jobTitle == 'HR' || user.jobTitle == 'CEO')
+    async identify(clickedSalesman: EmployeeDatapoint, user: User, date: string): Promise<boolean> {
+        if (user.isAdmin || user.jobTitle === 'HR' || user.jobTitle === 'CEO') {
             return true;
-        if (user.firstname == clickedSalesman.firstName && user.lastname == clickedSalesman.lastName) {
+        }
+        if (user.firstname === clickedSalesman.firstName && user.lastname === clickedSalesman.lastName) {
             return await this.statusBonus(clickedSalesman, date);
         }
-        if (user.firstname != clickedSalesman.firstName) {
-            alert('Access Denied!');
-            return false;
-        }
+        return false; // Fall-back, falls keine Bedingung erfüllt ist
     }
 
     async statusBonus(clickedSalesman: EmployeeDatapoint, date: string): Promise<boolean> {
-        const {isAcceptedByCEO, isAcceptedByHR} = (await this.performanceReportService.getPerformanceReport(clickedSalesman.employeeCode, date))[0]
+        const report = await this.performanceReportService.getPerformanceReport(clickedSalesman.employeeCode, date);
+        const {isAcceptedByCEO, isAcceptedByHR} = report[0];
+
         if (!isAcceptedByCEO || !isAcceptedByHR) {
             alert('Your Bonus is not completely accepted!');
             return false;
         }
         return true;
     }
+
 }
