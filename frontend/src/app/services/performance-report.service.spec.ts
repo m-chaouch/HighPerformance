@@ -79,7 +79,7 @@ describe('PerformanceReportService', () => {
         });
 
         await storePerformanceRecord(perfRecord);
-        console.log(perfRecord);
+        //console.log(perfRecord);
     });
 
     it('should fetch performance report by SID', () => {

@@ -1,5 +1,6 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import {PerformanceReportDatapoint} from '../../interfaces/performance-report-datapoint';
+import {SalesPerformance} from '../../interfaces/sales-performance-datapoint';
 
 @Component({
     selector: 'app-orders-evaluation',
@@ -7,10 +8,29 @@ import {PerformanceReportDatapoint} from '../../interfaces/performance-report-da
     styleUrls: ['./orders-evaluation.component.css',
         '../../pages/performance-review-page/performance-review-page.component.css']
 })
-export class OrdersEvaluationComponent{
+export class OrdersEvaluationComponent implements OnChanges{
 
-    displayedColumnsOrders = ['productName', 'clientName', 'rating', 'soldQuantity', 'bonus'];
+    displayedColumns = ['productName', 'clientName', 'rating', 'soldQuantity', 'bonus'];
     @Input() performanceReport: PerformanceReportDatapoint;
     @Input() salesPerformanceArray: [];
+    products: string[];
+    spans: number[] = [];
 
+
+    ngOnChanges(): void {
+        const salesPerformance = this.performanceReport?.salesPerformance;
+        if (salesPerformance){
+            this.products = Object.keys(salesPerformance);
+            this.setRowSpan(salesPerformance);
+        }
+    }
+
+    setRowSpan(salesPerformance: SalesPerformance): void {
+        let i = 0;
+        this.products.forEach((product): void => {
+            const spanLength = salesPerformance[product].length;
+            this.spans[i] = spanLength;
+            i = i + spanLength;
+        });
+    }
 }

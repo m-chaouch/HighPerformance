@@ -4,6 +4,7 @@ const { PerformanceRecord } = require('../models/PerformanceRecord');
 const {createDB, deleteDB} = require('../../unit-tests/support/mockdb-new') //TODO remove after testing this and insert the real db into function
 const express = require('express');
 const {bonusComputation} = require("../services/bonus-computation-service");
+const {SalesPerformance} = require("../models/SalesPerformance");
 const app = express();
 // var db = req.app.get('db');//TODO needs to be removed onece there is an actual db
 // createDB().then(res => db = res).then(() => console.log("db is has started running") );
@@ -71,12 +72,15 @@ exports.getPerformanceReport = async (req, res) => {
  */
 exports.updatePerformanceReportBonus = async (req, res) => {
     const performanceReport = req.body;
+    console.log(performanceReport)
     const db = req.app.get('db');
     const { salesManId, date } = convert(performanceReport);
     console.log("addBonus", salesManId);
 
     try {
-            const calculatedBonus = bonusComputation(performanceReport.socialPerformance, performanceReport.salesPerformance);
+            const socialPerformance = new SocialPerformance(performanceReport.socialPerformance);
+            const salesPerformance = new SalesPerformance(performanceReport.salesPerformance);
+            const calculatedBonus = bonusComputation(socialPerformance, salesPerformance);
             const fieldToUpdate = {'calculatedBonus': calculatedBonus};
             const result = await updatePerformanceReport(db, salesManId, date, fieldToUpdate);
             if (!result) {
@@ -104,6 +108,7 @@ exports.updatePerformanceReport= async (req, res) => {
         if (!result) {
             res.status(404).json({error: 'Performance report not found or not updated'});
         }
+        res.status(200).json({success: 'functions'});
     }catch(error){
         console.log("updating a performance report went wrong", error);
     }

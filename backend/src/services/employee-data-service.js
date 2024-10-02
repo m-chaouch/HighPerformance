@@ -52,7 +52,7 @@ async function employeeDataService() {
         }));
 
         // Ausgabe der gefilterten Mitarbeiterdaten in der Konsole
-        console.log('Employee data:', filteredEmployees);
+        //console.log('Employee data:', filteredEmployees);
 
         // Rückgabe der gefilterten Mitarbeiterdaten
         return filteredEmployees;

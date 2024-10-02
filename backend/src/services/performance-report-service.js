@@ -19,9 +19,6 @@ const collectionName = 'Performance_Reports'; // Consider using snake_case for c
 async function storePerformanceRecord(db, performanceRecord) {
     try {
         const collection = db.collection(collectionName);
-        const performanceRecordClone = JSON.parse(JSON.stringify(performanceRecord));   // clone the performanceReport, so the original record doesn't change
-        performanceRecord.calculatedBonus = bonusComputation(performanceRecordClone.socialPerformance, performanceRecordClone.salesPerformance);
-        console.log(performanceRecord.calculatedBonus);
         const result = await collection.insertOne(performanceRecord);
         console.log('Performance record stored successfully.');
         return result;
@@ -97,7 +94,7 @@ function updateObject(keyName, newVal, object) {
 async function updatePerformanceReport(db, salesManId, date, updateFields, options = { upsert: false }) {
     try {
         const collection = db.collection(collectionName);
-        console.log({ salesManId, date });
+        //console.log({ salesManId, date });
         // Prepare the update object
         const update = { $set:{} };
         // Iterate over the keys in updateFields and populate the $set object
@@ -109,7 +106,7 @@ async function updatePerformanceReport(db, salesManId, date, updateFields, optio
 
         if (result.matchedCount > 0) {
             console.log('Document updated successfully.');
-            await storePerformanceReportInOrangeHRM(db, salesManId, date);
+            storePerformanceReportInOrangeHRM(db, salesManId, date);
         } else {
             console.log('No document matched the query.');
         }
@@ -201,11 +198,13 @@ async function deletePerformanceReport(db, salesManId, date) {
 
 }
 
+
 module.exports = {
     storePerformanceRecord,
     getPerformanceReport,
     updatePerformanceReport,
     updateSocialCriteria
 }
+
 
 

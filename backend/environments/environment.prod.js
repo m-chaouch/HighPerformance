@@ -1,5 +1,5 @@
 const environment = {
-    production: true,
+    production: false,
     port: 8080,
     defaultAdminPassword: 'c3uz#3zd',
     db:{

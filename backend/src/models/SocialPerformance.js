@@ -32,7 +32,7 @@ class SocialPerformance {
     /**
      * Returns a copy of the current social performance.
      * 
-     * @returns {Object} The performance report object.
+     * @returns {criteria, actual, target} The performance report object.
      */
     getSocialPerformance() {
         return {
@@ -44,10 +44,21 @@ class SocialPerformance {
             integrityToCompany: this.integrityToCompany
         };
     }
+    *[Symbol.iterator]() {
+        for (const [key, {actual, target}] of Object.entries(this)) {
+            yield { criteria : key, actual, target };
+        }
+    }
 }
 
 
 
 // Export the SocialPerformance class for use in other modules
 module.exports = { SocialPerformance };
+
+
+// const tmp = new SocialPerformance();
+// for(const entry of tmp){
+//     console.log(entry)
+// }
 

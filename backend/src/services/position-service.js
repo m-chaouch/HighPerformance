@@ -65,7 +65,7 @@ async function filterPositions(responseData) {
             positionID: getLastSegment(position.identity),
             positionNumber: position.positionNumber,
             productID: getLastSegment(position.product['@href']),
-            products: await fetchProducts(getLastSegment(position.product['@href'])),
+            product: (await fetchProducts(getLastSegment(position.product['@href'])))[0],   // a position(=auftrag) only has one product
             productDescription: position.productDescription,
             quantity: Number(position.quantity),
             pricePerUnit: Number(position.pricePerUnit),

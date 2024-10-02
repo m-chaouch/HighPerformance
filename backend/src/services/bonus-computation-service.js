@@ -1,7 +1,7 @@
 // Imports only necessary utilities
 const { readRatingConversion } = require('../utils/helper');
 const { SocialPerformance } = require('../models/SocialPerformance'); // Correct import statement
-const { SalesPerformance } = require('../models/SalesPerformance')
+const { SalesPerformance } = require('../models/SalesPerformance');
 
 /**
  * Calculates the bonus based on actual and target social skill points.
@@ -17,24 +17,84 @@ const { SalesPerformance } = require('../models/SalesPerformance')
 function defaultCalculationSocial(criterion = { actual: 0, target: 0 }, config = { bonusFactor: 25, additionalBonus: 20 }) {
     const { actual, target } = criterion;
     const { bonusFactor, additionalBonus } = config;
+
+    // Calculate bonus based on whether actual is below or above the target
     return actual <= target ? actual * bonusFactor : target * bonusFactor + (actual - target) * additionalBonus;
 }
 
 /**
  * Calculates sales bonuses based on rating and sold quantity.
  *
- * @param {Object} details - Contains rating and sold quantity.
+ * @param {Object} details - Contains rating and quantity of items sold.
  * @param {string} details.rating - The rating associated with sales performance.
- * @param {number} details.soldQuantity - The quantity of items sold.
+ * @param {number} details.quantity - The quantity of items sold.
  * @returns {number} - Calculated sales bonus.
  */
-function defaultCalculationSales({ rating, soldQuantity }) {
+function defaultCalculationSales({ rating, quantity }) {
+    // Convert rating to a multiplier using an external utility function
     const converter = readRatingConversion();
-    return converter[rating] * soldQuantity;
+    return converter[rating] * quantity;
 }
 
 /**
- * Computes the bonus for a performance report based on criteria from sales and social performances.
+ * Calculates the social performance bonus based on given criteria.
+ *
+ * @param {SocialPerformance} socialPerformance - An instance of SocialPerformance class.
+ * @param {Function} socialCal - Calculation function for social performance (default: defaultCalculationSocial).
+ * @returns {Object} - An object containing individual social bonuses and the total bonus.
+ */
+function socialCalculation(socialPerformance, socialCal = defaultCalculationSocial) {
+    let socialBonus = {}, total = 0;
+    // console.log(socialPerformance)
+    if (socialPerformance) {
+        for (const value of socialPerformance) {
+            // Calculate the bonus for each social criterion
+            const sum = socialCal(value);
+            socialBonus[value.criteria] = sum;
+            total += sum;
+        }
+    }
+
+    // Store the total social bonus
+    socialBonus.total = total;
+    return socialBonus;
+}
+
+/**
+ * Calculates the sales performance bonus for each product and each client.
+ *
+ * @param {SalesPerformance} salesPerformance - An instance of SalesPerformance class.
+ * @param {Function} salesCal - Calculation function for sales performance (default: defaultCalculationSales).
+ * @returns {Object} - An object containing individual client bonuses per product and the total bonus.
+ */
+function salesCalculation(salesPerformance, salesCal = defaultCalculationSales) {
+    let salesBonus = {}, total = 0;
+
+    if (salesPerformance) {
+        for (const value of salesPerformance) {
+            // Calculate the bonus for each client
+            const sum = salesCal(value);
+            const product = value.product;
+            const clientName = value.clientName;
+
+            // Initialize product if not already in salesBonus
+            if (!salesBonus[product]) {
+                salesBonus[product] = {};
+            }
+
+            // Assign the bonus to the client under the respective product
+            salesBonus[product][clientName] = sum;
+            total += sum;
+        }
+    }
+
+    // Store the total sales bonus
+    salesBonus.total = total;
+    return salesBonus;
+}
+
+/**
+ * Computes the bonus for a performance report based on social and sales performances.
  *
  * @param {SocialPerformance} socialPerformance - Data for social performance calculations.
  * @param {SalesPerformance} salesPerformance - Data for sales performance calculations.
@@ -43,39 +103,52 @@ function defaultCalculationSales({ rating, soldQuantity }) {
  */
 function bonusComputation(socialPerformance, salesPerformance, calculation = { socialCal: defaultCalculationSocial, salesCal: defaultCalculationSales }) {
     const { socialCal, salesCal } = calculation;
-    var socialBonus = {}, socialTotal = 0;
-    var salesBonus = {}, salesTotal = 0;
-    console.log("hallo ", socialPerformance);
-    console.log("hallo ", salesPerformance);
-    if (socialPerformance) {
-        // Ensure you are accessing the correct property structure
-        Object.keys(socialPerformance).forEach(key => {
-            console.log(key);
-            let tmp = socialCal(socialPerformance[key]);
-            socialBonus[key] = tmp;
-            socialTotal += tmp;
-        });
-        socialBonus.total = socialTotal;
-    }
-    console.log('salesPerformance: ' + salesPerformance);
-    if (salesPerformance) {
-        // const salesList = salesPerformance.getSalesList(); // Properly reference the sales list
-        Object.keys(salesPerformance.list).forEach(key => {
 
-            let tmp = salesCal(salesPerformance.list[key]); // Correct data access
-            console.log('tmp:  ' + tmp);
-            salesBonus[key] = tmp;
-            salesTotal += tmp;
-        });
-        salesBonus.total = salesTotal;
-    }
+    // Calculate social and sales bonuses separately
+    let socialBonus = socialCalculation(socialPerformance, socialCal);
+    let salesBonus = salesCalculation(salesPerformance, salesCal);
 
-    let totalBonus = { sum: socialTotal + salesTotal };
+    // Calculate the total bonus as the sum of social and sales bonuses
+    let totalBonus = { sum: socialBonus.total + salesBonus.total };
+
     return { socialBonus, salesBonus, totalBonus };
 }
 
-
+// Export the bonus computation function for external use
 module.exports = {
     bonusComputation
-}
+};
+
+// // Creating an instance of SocialPerformance using default data
+// const defaultSocialPerformance = {
+//     leadershipCompetence: { actual: 5, target: 10 },
+//     opennessToEmployee: { actual: 8, target: 10 },
+//     socialBehaviourToEmployee: { actual: 9, target: 10 },
+//     attitudeTowardsClients: { actual: 7, target: 10 },
+//     communicationSkills: { actual: 6, target: 10 },
+//     integrityToCompany: { actual: 10, target: 10 }
+// };
+//
+// // Constructing an instance of SocialPerformance with default data
+// const socialPerformance = new SocialPerformance(defaultSocialPerformance);
+//
+// // Creating an instance of SalesPerformance using sales data
+// const salesDetails = {
+//     "HooverClean": [
+//         { clientName: "Germania GmbH", quantity: 10, rating: 3 },
+//         { clientName: "Dirk Müller GmbH", quantity: 25, rating: 3 }
+//     ],
+//     "HooverGo": [
+//         { clientName: "Telekom AG", quantity: 20, rating: 1 }
+//     ]
+// };
+//
+// // Constructing an instance of SalesPerformance with sales data
+// const salesPerformance = new SalesPerformance(salesDetails);
+//
+// // Performing the bonus calculation
+// const bonus = bonusComputation(socialPerformance, salesPerformance);
+//
+// // Printing the bonus calculation result
+// console.log("Bonus Calculation Result: ", bonus);
 

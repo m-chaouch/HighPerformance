@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {PerformanceReportDatapoint} from '../interfaces/performance-report-datapoint';
 import {HttpClient} from '@angular/common/http';
+import {SalesPerformance} from '../interfaces/sales-performance-datapoint';
 
 
 @Injectable({
@@ -32,5 +33,10 @@ export class PerformanceReportService{
             environment.apiEndpoint + `/api/performance-report/${SID}/${date}`,
             updateField
         ).toPromise();
+    }
+
+    public getOrdersEvaluation(SID: string, year: string): Promise<SalesPerformance>{
+        const params = {salesManId : SID, year};
+        return this.http.get<SalesPerformance>(environment.apiEndpoint + `/api/orders-evaluation/`, {params}).toPromise();
     }
 }

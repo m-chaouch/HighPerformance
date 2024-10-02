@@ -30,7 +30,6 @@ export class PerformanceReportPageComponent implements OnInit{
                     } catch (error) {
                         console.log(`couldn't find performancereport to ${salesMan.employeeCode}`);
                     }
-                    console.log(salesMan.employeeCode, salesMan.performanceReport);
                 }
                 this.flattenData();
             }
@@ -75,7 +74,10 @@ export class PerformanceReportPageComponent implements OnInit{
         if (user.firstname === clickedSalesman.firstName && user.lastname === clickedSalesman.lastName) {
             return await this.statusBonus(clickedSalesman, date);
         }
-        return false; // Fall-back, falls keine Bedingung erfüllt ist
+        if (user.firstname !== clickedSalesman.firstName) {
+            alert('Access Denied!');
+            return false;
+        }
     }
 
     async statusBonus(clickedSalesman: EmployeeDatapoint, date: string): Promise<boolean> {
@@ -88,5 +90,4 @@ export class PerformanceReportPageComponent implements OnInit{
         }
         return true;
     }
-
 }
