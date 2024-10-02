@@ -118,4 +118,4 @@ exports.getEmployeeService = employeeDataService;
 exports.getOneEmployeeService = oneEmployeeDataService;
 exports.getEmployeeData = getEmployeeData;
 
-getEmployeeData("90133");
+
