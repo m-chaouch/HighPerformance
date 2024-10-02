@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import {UserService} from "./user.service";
+import {UserService} from './user.service';
 
 @Injectable({
     providedIn: 'root'
@@ -18,11 +18,11 @@ export class AdminGuardService {
                 map((isLoggedIn): boolean => {
                     this.userService.getOwnUser().subscribe((user): boolean => {
                         if (!isLoggedIn || user.isAdmin !== true) {
-                            alert("access only for admin")
-                            void this.router.navigate(['']); // Optional: Redirect to unauthorized page
+                            alert('access only for admin');
+                            void this.router.navigate(['']); // Redirect to unauthorized page
                             return false;
                         }
-                    })
+                    });
                     return true;
                 })
             );

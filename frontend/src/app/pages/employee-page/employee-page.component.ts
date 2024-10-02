@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EmployeeDataService } from '../../services/employee-data.service';
-import { EmployeeDatapoint } from "../../interfaces/employee-datapoint";
-import { MatTableModule } from "@angular/material/table";
+import { EmployeeDatapoint } from '../../interfaces/employee-datapoint';
+import { MatTableModule } from '@angular/material/table';
 
 /**
  * EmployeePageComponent
