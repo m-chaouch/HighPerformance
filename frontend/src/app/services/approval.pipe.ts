@@ -5,19 +5,28 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ApprovalPipe implements PipeTransform {
 
-    transform(approvalByCEO: boolean, approvalByHR: boolean ): string {
-        if (approvalByCEO && approvalByHR){
+    transform(approvalByCEO: boolean, approvalByHR: boolean , isAcceptedBySalesman: boolean): string {
+        /**
+         * Falsy-Werte sind z.B. `null`, `undefined`, `0`, `''` (leerer String) oder `false`.
+         * Wenn eine Bedingung nur mit `if (approvalByCEO)` geprüft wird, könnten diese falsy-Werte ebenfalls
+         * als `false` interpretiert werden, obwohl der Wert in der Datenbank möglicherweise als `true` gespeichert ist.
+         *
+         * Durch die explizite Prüfung `=== true` bzw. `!== true` wird sichergestellt, dass der Wert tatsächlich
+         * nur dann als `true` bewertet wird, wenn er wirklich `true` ist, und nicht durch einen falsy-Wert verfälscht wird.
+         */
+        if (approvalByCEO === true && approvalByHR === true && isAcceptedBySalesman === true) {
             return '✅ approved';
         }
-        if (approvalByCEO) {
-            return '❗ HR approval needed';
-        }
-        if (approvalByHR) {
+        if (approvalByCEO !== true) {
             return '❗ CEO approval needed';
         }
-        else {
-            return '❌ not approved';
+        if (approvalByHR !== true) {
+            return '❗ HR approval needed';
         }
+        if (isAcceptedBySalesman !== true) {
+            return '❗ Salesman approval needed';
+        }
+        return '❌ not approved';
     }
 
 }
