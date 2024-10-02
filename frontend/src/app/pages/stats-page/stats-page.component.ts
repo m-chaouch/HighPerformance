@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {PerformanceReportDatapoint} from '../../interfaces/performance-report-datapoint';
+import {PerformanceReportService} from '../../services/performance-report.service';
 
 @Component({
   selector: 'app-stats-page',
@@ -7,7 +8,9 @@ import {PerformanceReportDatapoint} from '../../interfaces/performance-report-da
   styleUrls: ['./stats-page.component.css']
 })
 export class StatsPageComponent {
-    constructor() {
+    performanceReport: PerformanceReportDatapoint;
+    constructor(private performanceReportService: PerformanceReportService) {
+        void performanceReportService.getPerformanceReport('90124', '2020').then(report => this.performanceReport = report[0]);
     }
 
 }
