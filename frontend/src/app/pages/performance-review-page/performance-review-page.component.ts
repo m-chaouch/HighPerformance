@@ -49,7 +49,11 @@ export class PerformanceReviewPageComponent implements OnInit {
                             this.performanceDate
                         );
                         this.performanceReport.salesPerformance = salesPerformance;
-                        await this.performanceReportService.updatePerformanceReport(this.salesman.employeeCode, this.performanceDate, {salesPerformance});
+                        await this.performanceReportService.updatePerformanceReport(
+                            this.salesman.employeeCode,
+                            this.performanceDate,
+                            {salesPerformance}
+                        );
                     }
                     console.log('SALESPERFORMANCE!!!!', this.performanceReport.salesPerformance);
 
@@ -61,8 +65,8 @@ export class PerformanceReviewPageComponent implements OnInit {
 
         });
     }
-    async handleButtonClick(): Promise<void> {
-        this.userService.getOwnUser().subscribe( async (user) => {
+    handleButtonClick(): void {
+        this.userService.getOwnUser().subscribe( async (user): Promise<void> => {
             if (user.isAdmin || user.jobTitle === 'CEO') {
                 await this.performanceReportService.updatePerformanceReportBonus(
                     this.performanceReport,
@@ -93,7 +97,6 @@ export class PerformanceReviewPageComponent implements OnInit {
      * somit keine interne status überprüfung notwendig
      */
     handleButtonCEO(): void {
-        //TODO remark hinzufügen, darf nicht leer sein beim bestätigen des reports
         this.userService.getOwnUser().subscribe((user) => {
             if (user.jobTitle !== 'CEO') {
                 alert('Access denied!');
@@ -148,7 +151,7 @@ export class PerformanceReviewPageComponent implements OnInit {
         const salesPerformance = performanceReport?.salesPerformance;
         const salesBonus = performanceReport?.calculatedBonus?.salesBonus;
         const tableData = [];
-        for (let product in salesPerformance) {
+        for (const product in salesPerformance) {
             if (salesPerformance.hasOwnProperty(product)) {
                 salesPerformance[product].forEach((SalesInfo): void => {
                     const clientName = SalesInfo.clientName;

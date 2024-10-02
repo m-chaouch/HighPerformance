@@ -86,7 +86,7 @@ export class PerformanceReportPageComponent implements OnInit{
     }
 
     async statusBonus(clickedSalesman: EmployeeDatapoint, date: string): Promise<boolean> {
-        const {isAcceptedByCEO, isAcceptedByHR} = (await this.performanceReportService.getPerformanceReport(clickedSalesman.employeeCode, date))[0]
+        const {isAcceptedByCEO, isAcceptedByHR} = (await this.performanceReportService.getPerformanceReport(clickedSalesman.employeeCode, date))[0];
         if (!isAcceptedByCEO || !isAcceptedByHR) {
             alert('Your Bonus is not completely accepted!');
             return false;
