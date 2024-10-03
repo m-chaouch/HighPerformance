@@ -12,3 +12,19 @@
     border-top: 1px solid transparent;
     cursor: pointer;
 }
+
+.button-container{
+    display: flex;
+    justify-content: right;
+    width: 100%;
+}
+
+.graph-button{
+    background-color: rgb(64,84,180);
+    color: white;
+}
+
+.graph-button:hover{
+    background-color: rgb(64,76,148)
+}
+

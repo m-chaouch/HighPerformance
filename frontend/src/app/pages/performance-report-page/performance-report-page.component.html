@@ -1,5 +1,7 @@
 <h1>All Performance Reports</h1>
-
+<div class="button-container">
+    <button mat-flat-button class="graph-button" (click)="lineGraphButton()"> Line-Graph </button>
+</div>
 <div>
     <table mat-table [dataSource]="flattenedSalesmenReports" class="mat-elevation-z8 demo-table">
         <!-- Salesman Name Column -->

@@ -9,16 +9,22 @@ import {PerformanceReportService} from '../../services/performance-report.servic
 })
 export class StatsPageComponent implements OnInit{
     performanceReport: PerformanceReportDatapoint;
-    constructor(private performanceReportService: PerformanceReportService) {
-
-    }
+    performanceReports: PerformanceReportDatapoint[];
+    constructor(private performanceReportService: PerformanceReportService) {}
 
     ngOnInit(): void {
         console.log('hello');
         void this.performanceReportService.getPerformanceReport('90124', '2020')
-            .then( (report) => {
+            .then( (report): void => {
                 this.performanceReport = report[0];
             });
+
+        this.performanceReportService.getPerformanceReport('90124').then((performanceReports): void => {
+            this.performanceReports = performanceReports;
+            console.log(this.performanceReports);
+        }).catch((error): void => {
+            console.error('Error fetching performance reports:', error);
+        });
     }
 
 }

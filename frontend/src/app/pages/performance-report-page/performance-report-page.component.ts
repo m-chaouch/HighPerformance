@@ -93,4 +93,10 @@ export class PerformanceReportPageComponent implements OnInit{
         }
         return true;
     }
+
+    lineGraphButton(id: string, date: string): void{
+        this.user.
+        void this.router.navigate(['/performance-review', id, date]);  // relative to the previous route + /id
+
+    }
 }

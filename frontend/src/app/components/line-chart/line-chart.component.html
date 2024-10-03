@@ -1,5 +1,5 @@
-<p>line-chart works!</p>
-<div id="chart">
+
+<div id="chart" *ngIf="calculatedBonusExists">
     <apx-chart
         [series]="chartOptions.series"
         [chart]="chartOptions.chart"
