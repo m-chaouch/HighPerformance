@@ -24,7 +24,7 @@ convert = (input) => {
 
 }
 //TODO implement the api for by using the bonus compution service
-exports.saveSocialPerformance = async function (req, res) {
+exports.savePerformanceRecord = async function (req, res) {
     const db = req.app.get('db');
     const performance = req.body;
     try {
