@@ -90,6 +90,36 @@ p {
     display: inline-block;
     width: 50%;
 }
+.stats-button-container {
+    display: flex;
+    width: 100%; /* Full width of the parent container, not explicitly the viewport */
+    justify-content: flex-end; /* Aligns the button to the right end of the container */
+    align-items: center; /* Aligns items vertically in the center */
+    padding: 10px; /* Padding around the container for better spacing */
+}
+
+.stats-button {
+    width: auto; /* The button will only be as wide as its content */
+    flex-shrink: 0; /* Prevent shrinking if there is more space available */
+    margin-left: auto; /* Pushes the button to the far right */
+    padding: 10px 20px; /* Add padding for comfortable click area */
+    background-color: orangered; /* Button background color */
+    color: white; /* Text color for better contrast */
+    border: none; /* Remove the default border */
+    border-radius: 8px; /* Add rounded corners */
+    cursor: pointer; /* Change cursor to pointer for better UX */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for a 3D effect */
+    transition: background-color 0.3s, transform 0.3s; /* Add smooth transitions */
+}
+
+.stats-button:hover {
+    background-color: #ff5733; /* Slightly brighter color on hover */
+    transform: translateY(-5px); /* Slight lift on hover */
+}
+
+.stats-button:active {
+    transform: translateY(1px); /* Slight press effect when clicked */
+}
 
 
 
