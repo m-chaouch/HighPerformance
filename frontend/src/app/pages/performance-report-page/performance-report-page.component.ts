@@ -73,7 +73,7 @@ export class PerformanceReportPageComponent implements OnInit{
         if (user.isAdmin || user.jobTitle == 'HR' || user.jobTitle == 'CEO') {
             return true;
         }
-        if (user.firstname == clickedSalesman.firstName && user.lastname == clickedSalesman.lastName) {
+        if (user.governmentId.toString() === clickedSalesman.employeeCode) {
             return await this.statusBonus(clickedSalesman, date);
         }
         if (user.firstname != clickedSalesman.firstName) {
