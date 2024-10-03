@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {EmployeeDatapoint} from '../../interfaces/employee-datapoint';
 import {EmployeeDataService} from '../../services/employee-data.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {PerformanceReportDatapoint} from '../../interfaces/performance-report-datapoint';
 import {PerformanceReportService} from '../../services/performance-report.service';
 import {UserService} from '../../services/user.service';
@@ -30,7 +30,7 @@ export class PerformanceReviewPageComponent implements OnInit {
 
     constructor(private employeeDataService: EmployeeDataService,
                 private performanceReportService: PerformanceReportService, private route: ActivatedRoute,
-                private userService: UserService) {}
+                private userService: UserService, private router: Router) {}
     ngOnInit(): void {
         this.route.params.subscribe((params): void => {
             this.employeeID = Number(params.id);
@@ -182,5 +182,10 @@ export class PerformanceReviewPageComponent implements OnInit {
                 bonus: Number(performanceReport.calculatedBonus?.socialBonus?.[performanceKey]) || ''
             };
         });
+    }
+    routeToSates(): void{
+        const salesManId: string = this.performanceReport.salesManId;
+        const date: string = this.performanceReport.date;
+        void this.router.navigate([`/stats/${salesManId}/${date}`]);
     }
 }
