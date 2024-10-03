@@ -1,9 +1,6 @@
 
 <div class="container">
-    <p>stats-page works!</p>
-    <div class="container">
-        <app-social-bonus-chart  [performanceReport]="performanceReport"></app-social-bonus-chart>
-        <app-sales-bonus-chart [performanceReport]="performanceReport"></app-sales-bonus-chart>
-    </div>
-    <app-line-chart > </app-line-chart>
+    <app-social-bonus-chart class="flex-item"[performanceReport]="performanceReport"></app-social-bonus-chart>
+    <app-sales-bonus-chart class="flex-item"[performanceReport]="performanceReport"></app-sales-bonus-chart>
 </div>
+<app-line-chart > </app-line-chart>

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {PerformanceReportDatapoint} from '../../interfaces/performance-report-datapoint';
 import {PerformanceReportService} from '../../services/performance-report.service';
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     selector: 'app-stats-page',
@@ -9,16 +10,25 @@ import {PerformanceReportService} from '../../services/performance-report.servic
 })
 export class StatsPageComponent implements OnInit{
     performanceReport: PerformanceReportDatapoint;
-    constructor(private performanceReportService: PerformanceReportService) {
+    constructor(private performanceReportService: PerformanceReportService, private route: ActivatedRoute ) {
 
     }
 
     ngOnInit(): void {
         console.log('hello');
-        void this.performanceReportService.getPerformanceReport('90124', '2020')
-            .then( (report) => {
-                this.performanceReport = report[0];
-            });
+        this.route.params.subscribe((params): void => {
+            console.log(params.id);
+            console.log(params.date);
+            const salesId: string = params.id as string ;
+            const date: string = params.id as string ;
+            console.log(typeof params.date);
+            void this.performanceReportService.getPerformanceReport(salesId, date)
+                .then( (report) => {
+                    this.performanceReport = report[0];
+                    console.log(this.performanceReport);
+                });
+        });
     }
+
 
 }

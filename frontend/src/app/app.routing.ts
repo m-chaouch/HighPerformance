@@ -33,7 +33,7 @@ const routes: Routes = [
     {path: 'orders/:id', component: DetailedOrderPageComponent, canActivate: [AuthGuardService]},
     {path: 'performance-report', component: PerformanceReportPageComponent, canActivate: [AuthGuardService]},
     {path: 'performance-review/:id/:date', component: PerformanceReviewPageComponent, canActivate: [AuthGuardService]},
-    {path: 'stats/:id', component: StatsPageComponent, canActivate:[AuthGuardService]},
+    {path: 'stats/:id/:date', component: StatsPageComponent, canActivate:[AuthGuardService]},
     {path: '', component: LandingPageComponent, canActivate: [AuthGuardService]},
     {path: '**', component: NotFoundPageComponent} // these entries are matched from top to bottom => not found should be the last entry
 ];

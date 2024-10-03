@@ -1,4 +1,9 @@
 .container{
-
+    display: flex;
+    flex-flow: row;
+    width: auto;
+    justify-content: space-between;
 }
-
+.flex-item {
+    flex: 1 1 auto;  /* Flex-grow: 1, Flex-shrink: 1, Flex-basis: auto */
+}
