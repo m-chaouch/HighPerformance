@@ -52,7 +52,7 @@ export class LineChartComponent implements OnChanges{
             curve: 'straight'
         },
         title: {
-            text: 'All total bonus',
+            text: 'Total bonus of every year',
             align: 'left'
         },
         grid: {

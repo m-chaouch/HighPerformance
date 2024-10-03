@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {EmployeeDatapoint} from '../../interfaces/employee-datapoint';
 import {EmployeeDataService} from '../../services/employee-data.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {PerformanceReportDatapoint} from '../../interfaces/performance-report-datapoint';
 import {PerformanceReportService} from '../../services/performance-report.service';
 import {UserService} from '../../services/user.service';

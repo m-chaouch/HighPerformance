@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {PerformanceReportDatapoint} from '../../interfaces/performance-report-datapoint';
 import {PerformanceReportService} from '../../services/performance-report.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
     selector: 'app-stats-page',
@@ -15,19 +16,15 @@ export class StatsPageComponent implements OnInit{
     }
 
     ngOnInit(): void {
-        console.log('hello');
-        this.route.params.subscribe((params): void => {
-            console.log(params.id);
-            console.log(params.date);
-            const salesId: string = params.id as string ;
-            const date: string = params.id as string ;
-            console.log(typeof params.date);
-            void this.performanceReportService.getPerformanceReport(salesId, date)
-                .then( (report) => {
-                    this.performanceReport = report[0];
-                    console.log(this.performanceReport);
-                });
+        this.route.params.subscribe(async (params): Promise<void> => {
+            const id = params.id as string;
+            const date = params.date as string;
+            console.log(id, date);
+            this.performanceReport = (await this.performanceReportService.getPerformanceReport(id, date))[0];
+            this.performanceReports = await this.performanceReportService.getPerformanceReport(id);
+            console.log(this.performanceReport);
         });
     }
+
 
 }

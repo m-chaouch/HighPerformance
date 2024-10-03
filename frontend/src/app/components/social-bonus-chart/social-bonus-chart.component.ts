@@ -13,7 +13,7 @@ import {ChartServiceService} from '../../services/chart-service.service';
   styleUrls: ['./social-bonus-chart.component.css']
 })
 export class SocialBonusChartComponent implements OnChanges, OnInit{
-    chartSeries: ApexNonAxisChartSeries = [1, 2, 43, 5, 6, 7]; // Keeps the values for the pie chart
+    chartSeries: ApexNonAxisChartSeries = []; // Keeps the values for the pie chart
     @Input() performanceReport: PerformanceReportDatapoint;
     constructor(private chartService: ChartServiceService) {}
     /**
@@ -26,9 +26,9 @@ export class SocialBonusChartComponent implements OnChanges, OnInit{
                 show: true
             }
         } as ApexChart,
-        labels: ['Item A', 'Item B', 'Item C', 'Item D', 'Item E', 'Item F'], // Keeps the labels for the pie chart
+        labels: [], // Keeps the labels for the pie chart
         title: {
-            text: 'Pie Chart Example'
+            text: 'currently no data.'
         } as ApexTitleSubtitle
     };
 
@@ -42,6 +42,7 @@ export class SocialBonusChartComponent implements OnChanges, OnInit{
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.performanceReport) {
             void this.buildPie();
+            this.chartDetails.title.text = 'Criteria Distribution';
         }
     }
 
