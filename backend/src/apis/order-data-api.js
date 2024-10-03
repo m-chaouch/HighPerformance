@@ -22,7 +22,6 @@ const getOrderData = async function (req, res) {
 const getOrdersEvaluationData = async function(req, res) {
     const salesManId = req.query.salesManId;
     const year = req.query.year;
-    console.log(typeof(salesManId), typeof(year))
     try {
         const ordersEvaluation = await getOrdersEvaluation(salesManId, year)
         // console.log(ordersEvaluation)

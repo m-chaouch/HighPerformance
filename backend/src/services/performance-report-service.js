@@ -162,7 +162,7 @@ async function storePerformanceReportInOrangeHRM(db, salesManId, date) {
 
     try {
         const response = await axios.post(url, body, config);
-        console.log(response.data);
+        // console.log(response.data);
     } catch (error) {
         console.error("Error:", error.response ? error.response.data : error.message);
     }

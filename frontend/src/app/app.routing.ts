@@ -10,8 +10,9 @@ import {OrderPageComponent} from './pages/order-page/order-page.component';
 import {DetailedOrderPageComponent} from './pages/detailed-order-page/detailed-order-page.component';
 import {PerformanceReportPageComponent} from './pages/performance-report-page/performance-report-page.component';
 import {PerformanceReviewPageComponent} from './pages/performance-review-page/performance-review-page.component';
-import {AddUserComponent} from "./pages/addUser-page/addUser.component";
-import {AdminGuardService} from "./services/admin-auth-guard.service";
+import {AddUserComponent} from './pages/addUser-page/addUser.component';
+import {AdminGuardService} from './services/admin-auth-guard.service';
+import {StatsPageComponent} from './pages/stats-page/stats-page.component';
 
 
 /*
@@ -32,6 +33,7 @@ const routes: Routes = [
     {path: 'orders/:id', component: DetailedOrderPageComponent, canActivate: [AuthGuardService]},
     {path: 'performance-report', component: PerformanceReportPageComponent, canActivate: [AuthGuardService]},
     {path: 'performance-review/:id/:date', component: PerformanceReviewPageComponent, canActivate: [AuthGuardService]},
+    {path: 'stats/:id/:date', component: StatsPageComponent, canActivate:[AuthGuardService]},
     {path: '', component: LandingPageComponent, canActivate: [AuthGuardService]},
     {path: '**', component: NotFoundPageComponent} // these entries are matched from top to bottom => not found should be the last entry
 ];

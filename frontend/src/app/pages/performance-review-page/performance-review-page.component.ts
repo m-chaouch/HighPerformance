@@ -270,4 +270,9 @@ export class PerformanceReviewPageComponent implements OnInit {
             };
         });
     }
+    routeToSates(): void{
+        const salesManId: string = this.performanceReport.salesManId;
+        const date: string = this.performanceReport.date;
+        void this.router.navigate([`/stats/${salesManId}/${date}`]);
+    }
 }

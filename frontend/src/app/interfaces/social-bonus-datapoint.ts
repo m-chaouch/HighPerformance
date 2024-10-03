@@ -1,6 +1,10 @@
-import {SocialPerformance} from './social-performacne-datapoint';
 
 export interface SocialBonusDatapoint {
-    socialPerformance: SocialPerformance;
+    leadershipCompetence: number;
+    opennessToEmployee: number;
+    socialBehaviourToEmployee: number;
+    attitudeTowardsClients: number;
+    communicationSkills: number;
+    integrityToCompany: number;
     total: number;
 }
