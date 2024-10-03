@@ -38,7 +38,7 @@ const bonusApi = require('../apis/performance-report-api');
  *       400:
  *         description: Invalid input data.
  */
-router.post('/performance-record', bonusApi.saveSocialPerformance);
+router.post('/performance-record', bonusApi.savePerformanceRecord);
 
 /**
  * @openapi

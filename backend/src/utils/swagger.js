@@ -161,34 +161,36 @@ const optionsSwagger = {
                         },
                         salesPerformance: {
                             type: "object",
-                            properties: {
-                                list: {
+                            additionalProperties: {
+                                type: "array",
+                                items: {
                                     type: "object",
-                                    example: {
-                                        "Innovative Tech": {
-                                            "rating": "0",
-                                            "soldQuantity": 200
+                                    properties: {
+                                        clientName: {
+                                            type: "string",
+                                            description: "The name of the client",
+                                            example: "Telekom AG"
                                         },
-                                        "Eco Solutions": {
-                                            "rating": "1",
-                                            "soldQuantity": 150
+                                        rating: {
+                                            type: "number",
+                                            description: "The rating given by the client",
+                                            example: 1
                                         },
-                                        "Green Energy": {
-                                            "rating": "1",
-                                            "soldQuantity": 180
-                                        },
-                                        "Tech Dynamics": {
-                                            "rating": "3",
-                                            "soldQuantity": 100
-                                        }  // Properly closing the object here
-                                    }
+                                        quantity: {
+                                            type: "number",
+                                            description: "The quantity of items sold",
+                                            example: 15
+                                        }
+                                    },
+                                    required: ["clientName", "rating", "quantity"]
                                 }
-                            }
+                            },
+                            description: "Sales performance data for various products, each product is associated with an array of sales information"
                         },
                         date: {
                             type: "string",
                             description: "The year the record was created",
-                            example: "12-05-2024"
+                            example: "2024"
                         },
                         calculatedBonus: {
                             type: "object",
