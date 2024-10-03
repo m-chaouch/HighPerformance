@@ -4,7 +4,7 @@ export interface PositionDatapoint {
     positionID: number;
     positionNumber: number;
     productID: string;
-    products: ProductDatapoint;
+    product: ProductDatapoint;
     productDescription: string;
     quantity: number;
     pricePerUnit: number;
