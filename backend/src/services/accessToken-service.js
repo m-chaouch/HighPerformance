@@ -41,12 +41,10 @@ async function getToken() {
         const res = await axios.post(`${baseUrl}/oauth/issueToken`, body, config1);
 
         // Überprüfung auf Fehler in der API-Antwort
-        if (res.data.error) throw new Error(res.data.error);
+        if (res.data.error)  console.error(res.data.error);
 
-        // Extrahieren und Rückgabe des Zugriffstokens
-        const accessToken = res.data['access_token'];
-        console.log('Access Token:', accessToken);
-        return accessToken;
+        //Rückgabe des extrahierten Zugriffstokens
+        return res.data['access_token'];
     } catch (error) {
         // Ausgabe einer Fehlermeldung bei Problemen mit der Tokenanforderung
         console.error('Fehler beim Abrufen des Zugriffstokens:', error.message);

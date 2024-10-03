@@ -14,7 +14,5 @@ export class SocialPerformanceEvaluationComponent implements OnInit{
     @Input() socialPerformanceArray: [];
 
     constructor() {}
-    ngOnInit(): void{
-        console.log('SocialPerformanceArray:', this.socialPerformanceArray);
-    }
+    ngOnInit(): void{}
 }
