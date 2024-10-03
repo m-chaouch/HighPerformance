@@ -1,4 +1,6 @@
-<label for="remarkInput">Enter your remark:</label>
-<input id="remarkInput" [(ngModel)]="enteredRemark" placeholder=" please provide a remark">
-<button (click)="saveRemark()">Enter</button>
+<div *ngIf="user.jobTitle === 'CEO'">
+    <label for="remarkInput">Enter your remark:</label>
+    <input id="remarkInput" [(ngModel)]="enteredRemark" placeholder=" please provide a remark">
+    <button  (click)="saveRemark()">Enter</button>
+</div>
 <p>Your remark is: {{ currentRemark }}</p>
