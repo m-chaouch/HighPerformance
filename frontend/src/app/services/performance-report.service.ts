@@ -21,11 +21,9 @@ export class PerformanceReportService{
             performanceRecord).toPromise();
     }
 
-    public updatePerformanceReportBonus( performanceReport: PerformanceReportDatapoint,
-        headers = {updateBonusOnly: 'false'}):
-    Promise<void>{
+    public updatePerformanceReportBonus(performanceReport: PerformanceReportDatapoint, headers = {updateBonusOnly: 'false'}): Promise<void>{
         return this.http.put<void>(
-            environment.apiEndpoint + `/api/performance-report`,
+            environment.apiEndpoint + '/api/performance-report',
             performanceReport,
             {headers}
         ).toPromise();

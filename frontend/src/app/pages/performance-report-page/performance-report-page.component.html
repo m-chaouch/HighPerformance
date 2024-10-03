@@ -1,5 +1,4 @@
 <h1>All Performance Reports</h1>
-
 <div>
     <table mat-table [dataSource]="flattenedSalesmenReports" class="mat-elevation-z8 demo-table">
         <!-- Salesman Name Column -->
@@ -23,7 +22,7 @@
         <!-- Performance Report Details Column -->
         <ng-container matColumnDef="reportDetails">
             <th mat-header-cell *matHeaderCellDef>Status</th>
-            <td mat-cell *matCellDef="let item">{{ item.report.isAcceptedByCEO | approval: item.report.isAcceptedByHR}}</td>
+            <td mat-cell *matCellDef="let item">{{ item.report.isAcceptedByCEO | approval: item.report.isAcceptedByHR: item.report.isAcceptedBySalesman}}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns" ></tr>

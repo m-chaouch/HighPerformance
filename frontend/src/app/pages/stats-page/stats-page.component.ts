@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {PerformanceReportDatapoint} from '../../interfaces/performance-report-datapoint';
 import {PerformanceReportService} from '../../services/performance-report.service';
-import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     selector: 'app-stats-page',
@@ -10,6 +9,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class StatsPageComponent implements OnInit{
     performanceReport: PerformanceReportDatapoint;
+    performanceReports: PerformanceReportDatapoint[];
     constructor(private performanceReportService: PerformanceReportService, private route: ActivatedRoute ) {
 
     }
@@ -29,6 +29,5 @@ export class StatsPageComponent implements OnInit{
                 });
         });
     }
-
 
 }

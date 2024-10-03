@@ -7,6 +7,8 @@ import {PerformanceReportService} from '../../services/performance-report.servic
 import {UserService} from '../../services/user.service';
 import {SocialPerformance} from '../../interfaces/social-performacne-datapoint';
 import {RemarkEnterFieldComponent} from '../../components/remark-enter-field/remark-enter-field.component';
+import {User} from '../../models/User';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -16,15 +18,23 @@ import {RemarkEnterFieldComponent} from '../../components/remark-enter-field/rem
 })
 export class PerformanceReviewPageComponent implements OnInit {
 
+    user: User;
     salesman: EmployeeDatapoint;
     employeeID: number;
     performanceReport: PerformanceReportDatapoint;
     performanceDate: string;
     products: any[];
     socialPerformanceArray: any[] = [];
-    disableButtonForCEO: boolean;
-    disableButtonForHR: boolean;
     salesPerformanceArray: any[] = [];
+
+    iAmCEO: boolean;
+    disableButtonForCEO: boolean;
+    iAmHR: boolean;
+    disableButtonForHR: boolean;
+    iAmSalesman: boolean;
+    salesmanStatus: number;
+    disableButtonForSalesmanRefuse: boolean;
+    disableButtonForSalesmanAccept: boolean;
 
     @ViewChild(RemarkEnterFieldComponent) remarkEnterField!: RemarkEnterFieldComponent;
 
@@ -49,94 +59,172 @@ export class PerformanceReviewPageComponent implements OnInit {
                             this.performanceDate
                         );
                         this.performanceReport.salesPerformance = salesPerformance;
-                        await this.performanceReportService.updatePerformanceReport(this.salesman.employeeCode, this.performanceDate, {salesPerformance});
+                        await this.performanceReportService.updatePerformanceReport(
+                            this.salesman.employeeCode,
+                            this.performanceDate,
+                            {salesPerformance}
+                        );
                     }
-                    console.log('SALESPERFORMANCE!!!!', this.performanceReport.salesPerformance);
 
                     this.parsePerformanceReport(this.performanceReport);
                     this.disableButtonForCEO = this.performanceReport.isAcceptedByCEO;
                     this.disableButtonForHR = this.performanceReport.isAcceptedByHR;
+                    this.salesmanStatus = this.performanceReport.isAcceptedBySalesman;
+                    this.disableButtonForSalesmanAccept = this.salesmanStatus === 1;
+                    this.disableButtonForSalesmanRefuse = this.salesmanStatus === -1;
+                    this.user = await this.userService.getOwnUser().toPromise();
+                    this.iAmCEO = this.user.jobTitle === 'CEO';
+                    this.iAmHR = this.user.jobTitle === 'HR';
+                    this.iAmSalesman = this.user.jobTitle === 'Salesman';
                 })();
             });
-
         });
     }
+
+
     async handleButtonClick(): Promise<void> {
-        this.userService.getOwnUser().subscribe( async (user) => {
-            if (user.isAdmin || user.jobTitle === 'CEO') {
-                await this.performanceReportService.updatePerformanceReportBonus(
-                    this.performanceReport,
-                    {updateBonusOnly: 'true'}
-                );
-                this.performanceReport = (await this.performanceReportService.getPerformanceReport(
-                    this.salesman.employeeCode,
-                    this.performanceDate))[0];
-                console.log('SALESPERFORMANCE:' , this.performanceReport);
-                this.parsePerformanceReport(this.performanceReport);
-            }
-            else {
+        try {
+            if (this.user.isAdmin || this.user.jobTitle === 'CEO') {
+                await this.processBonusUpdate(); // Separater asynchroner Aufruf
+            } else {
                 alert('Only CEO can Calculate the Bonus'); // alert for HR
             }
-        });
+        } catch (error) {
+            console.error('Error fetching performance report:', error);
+        }
     }
 
-    // set button text via data
+
+    private async processBonusUpdate(): Promise<void> {
+        await this.performanceReportService.updatePerformanceReportBonus(
+            this.performanceReport,
+            {updateBonusOnly: 'true'}
+        );
+        this.performanceReport = (await this.performanceReportService.getPerformanceReport(
+            this.salesman.employeeCode,
+            this.performanceDate))[0];
+        this.parsePerformanceReport(this.performanceReport);
+    }
+
+
     getButtonTextCEO(): string {
         return this.disableButtonForCEO === true ? 'Is Accepted By CEO' : 'Accept As CEO';
     }
     getButtonTextHR(): string {
         return this.disableButtonForHR === true ? 'Is Accepted By HR' : 'Accept As HR';
     }
+    getButtonTextSalesmanAccept(): string {
+        return this.disableButtonForSalesmanAccept === true ? 'Salesman Accept' : 'Accept as Salesman';
+    }
+    getButtonTextSalesmanRefused(): string {
+        return this.disableButtonForSalesmanRefuse === true ? 'Salesman Refused' : 'Refuse as Salesman';
+    }
 
     /**
      * button click ist nur möglich, falls der button nicht "disabled" ist,
      * somit keine interne status überprüfung notwendig
      */
-    handleButtonCEO(): void {
-        //TODO remark hinzufügen, darf nicht leer sein beim bestätigen des reports
-        this.userService.getOwnUser().subscribe((user) => {
-            if (user.jobTitle !== 'CEO') {
-                alert('Access denied!');
-                return;
-            }
-            if (!this.performanceReport?.calculatedBonus) {
-                alert('fetch Bonus first');
-                return;
-            }
-            this.performanceReportService.updatePerformanceReport(
-                this.salesman.employeeCode,
-                this.performanceDate,
-                {isAcceptedByCEO: true}).then( async _ => {
-                this.performanceReport = (await this.performanceReportService.getPerformanceReport(
-                    this.salesman.employeeCode,
-                    this.performanceDate))[0];
-            });
+    async handleButtonCEO(): Promise<void> {
+        if (this.user.jobTitle !== 'CEO') {
+            alert('Access denied!');
+            return;
+        }
+
+        if (!this.performanceReport?.calculatedBonus) {
+            alert('Please fetch the bonus first before confirming.');
+            return;
+        }
+
+        if (!this.performanceReport?.remark) {
+            alert('Remark cannot be empty when confirming the report.');
+            return;
+        }
+
+        try {
             this.disableButtonForCEO = true;
-            alert('successfully accepted!');
-        });
+            alert('Successfully accepted!');
+            await this.performanceReportService.updatePerformanceReport(
+                this.salesman.employeeCode, this.performanceDate, {isAcceptedByCEO: true}
+            );
+            await this.updateCurrentPerformanceReport();
+        } catch (error) {
+            console.error('Error updating performance report:', error);
+            alert('An error occurred while updating the performance report. Please try again.');
+        }
     }
 
-    handleButtonHR(): void {
-        this.userService.getOwnUser().subscribe((user) => {
-            if (user.jobTitle !== 'HR') {
-                alert('Access denied!');
-                return;
-            }
-            if (!this.performanceReport?.calculatedBonus) {
-                alert('CEO has to fetch Bonus first');
-                return;
-            }
-            this.performanceReportService.updatePerformanceReport(
-                this.salesman.employeeCode,
-                this.performanceDate,
-                {isAcceptedByHR: true}).then( async _ => {
-                this.performanceReport = (await this.performanceReportService.getPerformanceReport(
-                    this.salesman.employeeCode,
-                    this.performanceDate))[0];
-            });
+
+    async handleButtonHR(): Promise<void> {
+        if (this.user.jobTitle !== 'HR') {
+            alert('Access denied!');
+            return;
+        }
+
+        if (!this.performanceReport?.calculatedBonus) {
+            alert('CEO has to fetch Bonus first');
+            return;
+        }
+
+        try {
             this.disableButtonForHR = true;
             alert('successfully accepted!');
-        });
+            await this.performanceReportService.updatePerformanceReport(
+                this.salesman.employeeCode, this.performanceDate, {isAcceptedByHR: true}
+            );
+            await this.updateCurrentPerformanceReport();
+        } catch (error) {
+            console.error('Error updating performance report:', error);
+            alert('An error occurred while updating the performance report. Please try again.');
+        }
+    }
+
+    /**
+     * Weitere Identitätsprüfung hier nicht notwendig, da
+     * in performance-report schon geprüft wird, wer auf diese view darf und wann.
+     */
+    async handleButtonSalesmanAccept(): Promise<void> {
+        if (!this.checkIdentityForSalesman()){
+            alert('Access denied!');
+            return;
+        }
+        alert('successfully accepted!');
+        this.disableButtonForSalesmanAccept = true;
+        await this.performanceReportService.updatePerformanceReport(
+            this.salesman.employeeCode, this.performanceDate, {isAcceptedBySalesman: 1}
+        );
+        await this.updateCurrentPerformanceReport();
+    }
+
+
+    async handleButtonSalesmanRefused(): Promise<void> {
+        if (!this.checkIdentityForSalesman()){
+            alert('Access denied!');
+            return;
+        }
+
+        // nicht Blockierend
+        setTimeout((): void => {
+            void this.router.navigate(['/performance-report']);
+        }, 3000);
+        alert('Successfully refused the performance report');
+
+        this.disableButtonForSalesmanRefuse = true;
+        await this.performanceReportService.updatePerformanceReport(
+            this.salesman.employeeCode, this.performanceDate, {
+                calculatedBonus: null, isAcceptedByCEO: false,
+                isAcceptedByHR: false, isAcceptedBySalesman: 0, remark: ''
+            }
+        );
+        await this.updateCurrentPerformanceReport();
+    }
+
+    private async updateCurrentPerformanceReport(): Promise<void> {
+        this.performanceReport = (await this.performanceReportService.getPerformanceReport(
+            this.salesman.employeeCode, this.performanceDate))[0];
+    }
+
+    private checkIdentityForSalesman(): boolean {
+        return this.user.jobTitle === 'Salesman';
     }
 
     parsePerformanceReport(performanceReport: PerformanceReportDatapoint): void{
@@ -148,7 +236,7 @@ export class PerformanceReviewPageComponent implements OnInit {
         const salesPerformance = performanceReport?.salesPerformance;
         const salesBonus = performanceReport?.calculatedBonus?.salesBonus;
         const tableData = [];
-        for (let product in salesPerformance) {
+        for (const product in salesPerformance) {
             if (salesPerformance.hasOwnProperty(product)) {
                 salesPerformance[product].forEach((SalesInfo): void => {
                     const clientName = SalesInfo.clientName;
@@ -156,7 +244,6 @@ export class PerformanceReviewPageComponent implements OnInit {
                     if (salesBonus) {
                         bonus = salesBonus[product] ? salesBonus[product][clientName] : '';
                     }
-                    console.log('SALESPERFORMANCEARRAY:', tableData);
                     tableData.push({
                         productName: product,
                         clientName,

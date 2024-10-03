@@ -37,8 +37,26 @@
      Das bedeutet, dass das Template neu gerendert wird, wenn Angular Änderungen in der Komponente oder ihren Daten feststellt.
      -->
     <div class="button-container">
-        <button mat-fab extended class='button-style' [disabled]="disableButtonForCEO" (click)='handleButtonCEO()'> {{ getButtonTextCEO() }} </button>
-        <button mat-fab extended class='button-style' [disabled]="disableButtonForHR" (click)='handleButtonHR()' > {{ getButtonTextHR() }} </button>
-        <button mat-fab extended class='button-style' (click)='handleButtonClick()' *ngIf="!performanceReport?.calculatedBonus">calculate bonus</button>
+        <button
+            mat-fab extended class='button-style' *ngIf="iAmCEO"
+            [disabled]="disableButtonForCEO" (click)='handleButtonCEO()'> {{ getButtonTextCEO() }}
+        </button>
+        <button
+            mat-fab extended class='button-style' *ngIf="iAmHR"
+            [disabled]="disableButtonForHR" (click)='handleButtonHR()' > {{ getButtonTextHR() }}
+        </button>
+        <button
+            mat-fab extended class='button-style' *ngIf="iAmSalesman && !disableButtonForSalesmanAccept"
+            [disabled]="disableButtonForSalesmanRefuse" (click)='handleButtonSalesmanRefused()' > {{ getButtonTextSalesmanRefused() }}
+        </button>
+        <button
+            mat-fab extended class='button-style' *ngIf="iAmSalesman && !disableButtonForSalesmanRefuse"
+            [disabled]="disableButtonForSalesmanAccept" (click)='handleButtonSalesmanAccept()' > {{ getButtonTextSalesmanAccept() }}
+        </button>
+        <button
+            mat-fab extended class='button-style' (click)='handleButtonClick()'
+            *ngIf="iAmCEO && !performanceReport?.calculatedBonus">calculate bonus
+        </button>
     </div>
-    </div>
+
+</div>

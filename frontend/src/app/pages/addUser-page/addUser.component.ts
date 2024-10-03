@@ -1,17 +1,17 @@
-import {Component, OnInit} from "@angular/core";
-import {AuthService} from "../../services/auth.service";
-import {CredentialsRegister} from "../../models/Credentials";
-import {HttpErrorResponse} from "@angular/common/http";
-import {FormsModule} from "@angular/forms";
-import {MatButtonModule} from "@angular/material/button";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatInputModule} from "@angular/material/input";
-import {NgIf} from "@angular/common";
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from '../../services/auth.service';
+import {CredentialsRegister} from '../../models/Credentials';
+import {HttpErrorResponse} from '@angular/common/http';
+import {FormsModule} from '@angular/forms';
+import {MatButtonModule} from '@angular/material/button';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {NgIf} from '@angular/common';
 
 
 @Component({
-    selector: "app-register",
-    templateUrl: "addUser.component.html",
+    selector: 'app-register',
+    templateUrl: 'addUser.component.html',
     standalone: true,
     imports: [
         FormsModule,
@@ -20,7 +20,7 @@ import {NgIf} from "@angular/common";
         MatInputModule,
         NgIf
     ],
-    styleUrls: ["./addUser.component.css"]
+    styleUrls: ['./addUser.component.css']
 })
 
 export class AddUserComponent implements OnInit {
@@ -45,15 +45,15 @@ export class AddUserComponent implements OnInit {
      */
     performRegister(): void{
         this.authService.register(this.credentialsRegister).subscribe((response): void => {
-                if (response.status === 200){
-                    this.resetCredentials();
-                }else{
-                    this.setRegisterError(response.body as string);
-                }
-            },
-            (error: HttpErrorResponse): void => {
-                this.setRegisterError(error.error as string);
+            if (response.status === 200){
+                this.resetCredentials();
+            }else{
+                this.setRegisterError(response.body as string);
             }
+        },
+        (error: HttpErrorResponse): void => {
+            this.setRegisterError(error.error as string);
+        }
         );
     }
 
@@ -71,12 +71,13 @@ export class AddUserComponent implements OnInit {
 
     /**
      * Setzt die Fehlermeldung und entfernt sie nach einer bestimmten Zeit (3 Sekunden).
+     *
      * @param message Die anzuzeigende Fehlermeldung.
      */
     setRegisterError(message: string): void {
         this.registerError = message;
 
-        setTimeout(() => {
+        setTimeout((): void => {
             this.registerError = ''; // Fehlermeldung zurücksetzen
         }, 3000); // 3000 ms = 3 Sekunden
     }
@@ -85,7 +86,7 @@ export class AddUserComponent implements OnInit {
      * Setzt die Registrierungsdaten (credentialsRegister) zurück.
      */
     resetCredentials(): void{
-        this.credentialsRegister = new CredentialsRegister('', '', '', '', '', '', '');
+        this.credentialsRegister = new CredentialsRegister('', '', '', '', '', '', '', 90100);
     }
 
 }
