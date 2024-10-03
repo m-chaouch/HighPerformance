@@ -10,6 +10,7 @@ export interface EmployeeDatapoint {
     employeeId: number;
     firstName: string;
     lastName: string;
+    jobTitle: string | null;
     unit: string | null; // unit can be null, so it's good to handle it
     performanceReport: PerformanceReportDatapoint[];
 }

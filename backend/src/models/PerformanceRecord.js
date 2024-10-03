@@ -17,6 +17,7 @@ class PerformanceRecord {
         this.calculatedBonus = null;
         this.isAcceptedByCEO = false;
         this.isAcceptedByHR = false;
+        this.isAcceptedBySalesman = 0;
         this.remark = "";
     }
 }

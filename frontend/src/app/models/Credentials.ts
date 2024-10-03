@@ -21,6 +21,7 @@ export class CredentialsRegister {
         public firstname: string,
         public lastname: string,
         public email: string,
-        public jobTitle: string
+        public jobTitle: string,
+        public governmentId: number
     ) { }
 }

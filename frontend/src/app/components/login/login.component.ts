@@ -39,10 +39,10 @@ export class LoginComponent implements OnInit {
         );
     }
 
-    setLoginError(message : string): void{
+    setLoginError(message: string): void{
         this.loginError = message;
 
-        setTimeout(() => {
+        setTimeout((): void => {
             this.loginError = '';
         }, 3000);
     }

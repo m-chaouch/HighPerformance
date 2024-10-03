@@ -14,4 +14,5 @@ export interface PerformanceReportDatapoint {
     remark: string;
     isAcceptedByHR: boolean;
     isAcceptedByCEO: boolean;
+    isAcceptedBySalesman: number;
 }

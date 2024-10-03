@@ -52,7 +52,7 @@ exports.isLoggedIn = function (req, res){
  */
 exports.register = async function (req, res) {
     const db = req.app.get('db');
-    const { username, password, firstname, lastname, email, jobTitle } = req.body;
+    const { username, password, firstname, lastname, email, jobTitle , governmentId} = req.body;
 
     // Check if the user already exists
     const existingUser = await userService.get(db, username);
@@ -60,8 +60,11 @@ exports.register = async function (req, res) {
         res.status(400).send('User already exists! Please login');
     }
 
-    const user = new User(username, firstname, lastname, email, jobTitle, password, false);
+    const user = new User(username, firstname, lastname, email, jobTitle, governmentId, password, false);
 
     // authService.authenticate(req.session, user) brauchen wir nicht, da es in login gemacht wird.
-    await userService.add(db, user).then(res.send('register successful')).catch((err)=>{res.status(401).send('register failed');});
+    await userService.add(db, user)
+        .then(res.send('register successful'))
+        .catch(_ =>{res.status(401)
+            .send('register failed');});
 };

@@ -1,17 +1,9 @@
-const { SocialPerformance } = require('../models/SocialPerformance');
 const { PerformanceRecord } = require('../models/PerformanceRecord');
-const {readRatingConversion,
-    updateRatingToNumber,
-    readSocialScores,
-    updateSocialFactors,
-    defaultValueSocialPer} = require('../utils/helper')
-const {create} = require("axios");
-const {createDB} = require("../../unit-tests/support/mockdb-new");
+const {defaultValueSocialPer} = require('../utils/helper')
 const {bonusComputation} = require('../../src/services/bonus-computation-service')
-// const { getToken, baseUrl } = require('./accessToken-service');
 const {getEmployeeData} = require("../services/employee-data-service");
 const axios = require("axios");
-const qs = require("querystring");
+const {getToken, baseUrl} = require("./accessToken-service");
 
 
 
@@ -91,7 +83,6 @@ function updateObject(keyName, newVal, object) {
 /**
  * @param {Object} db - The database connection object.
  *     @param {string} salesManId - The ID of the salesperson.
- *     @param {number} date - The date for the report.
  *     @param {number} date - The year for the report.
  *     @param {Object} updateFields - The fields to update.
  *     @param {Object} [options] - Additional options for the update operation.
@@ -114,8 +105,8 @@ async function updatePerformanceReport(db, salesManId, date, updateFields, optio
         const result = await collection.updateOne({ salesManId, date }, update, options);
 
         if (result.matchedCount > 0) {
-            await storePerformanceReportInOrangeHRM(db, salesManId, date);
             console.log('Document updated successfully.');
+            storePerformanceReportInOrangeHRM(db, salesManId, date);
         } else {
             console.log('No document matched the query.');
         }
@@ -128,60 +119,52 @@ async function updatePerformanceReport(db, salesManId, date, updateFields, optio
 }
 
 async function storePerformanceReportInOrangeHRM(db, salesManId, date) {
-    try {
-        const performanceReport = (await getPerformanceReport(db, salesManId, date))[0];
-        if (!performanceReport.isAcceptedByCEO || !performanceReport.isAcceptedByHR) {
-            console.log('Performance Report is not approved by CEO or HR.');
-            return;
+
+    const performanceReport = (await getPerformanceReport(db, salesManId, date))[0];
+    if (!performanceReport) {
+        console.error('No performance report found for the given salesManId and date.');
+        return;
+    }
+
+    if (!performanceReport.isAcceptedBySalesman){
+        console.error('Performance report not accepted');
+        return;
+    }
+
+    const accessToken = await getToken();
+
+    const employeeId = await getEmployeeData(salesManId);
+    if (!employeeId) {
+        console.error('Employee ID not found for the given salesManId.');
+        return;
+    }
+
+    const bonus = performanceReport?.calculatedBonus?.totalBonus?.sum;
+    if (!bonus) {
+        console.error('Bonus data is missing in the performance report.');
+        return;
+    }
+
+    const url = `${baseUrl}/api/v1/employee/${employeeId}/bonussalary`;
+
+    // Form-Daten in x-www-form-urlencoded Format umwandeln
+    const body = new URLSearchParams();
+    body.append('year', date.split('-')[0]); // 'year-month-day'
+    body.append('value', bonus.toString());
+
+    const config = {
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Bearer ${accessToken}`,
+            Cookie: "Loggedin=True; PHPSESSID=hpldi2nsohoe0nve96udgtn8op"
         }
+    };
 
-        const baseUrl = 'https://sepp-hrm.inf.h-brs.de/symfony/web/index.php';
-        const body = qs.stringify({
-            client_id: 'api_oauth_id',
-            client_secret: 'oauth_secret',
-            grant_type: 'password',
-            username: 'ratschuweit',
-            password: '*Safb02da42Demo$'
-        });
-        const config1 = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Accept': 'application/json',
-            }
-        };
-        const res = await axios.post(`${baseUrl}/oauth/issueToken`, body, config1);
-        const accessToken = res.data['access_token'];
-
-            const bonus = performanceReport.calculatedBonus.totalBonus;
-            if (!accessToken) {
-                throw new Error('Failed to retrieve access token.');
-            }
-
-
-            const employeeId = await getEmployeeData(salesManId);
-
-
-            // employeeID von x der die selbe salesManId hat
-            const url = `${baseUrl}/api/v1/employee/${employeeId}/bonussalary?year=${date}&value=${bonus.sum}`;
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    Accept: 'application/json',
-                },
-            };
-
-
-            const response = await axios.post(url,null, config);
-
-            // Überprüfen des Statuscodes der Antwort
-            if (response.status !== 200) {
-                throw new Error(`Failed to update bonus salary. Status code: ${response.status}`);
-            }
-
-            console.log('Performance report successfully stored in OrangeHRM.');
-        } catch (error) {
-            console.error('Error storing performance report in OrangeHRM:', error.message);
+    try {
+        const response = await axios.post(url, body, config);
+        console.log(response.data);
+    } catch (error) {
+        console.error("Error:", error.response ? error.response.data : error.message);
     }
 }
 
@@ -208,7 +191,7 @@ async function updateSocialCriteria(db, salesManId, date, update) {
     // Update the performance report with the new values
     return await updatePerformanceReport(db, salesManId, date, updateFields);
 }
-async function deletePeformanceReport(db, salesManId, date) {
+async function deletePerformanceReport(db, salesManId, date) {
     const collection = db.collection(collectionName);
     const query = {salesManId, date};
     await collection.deleteOne(query);
