@@ -1,4 +1,4 @@
-const { getPerformanceReport, storePerformanceRecord, updateSocialCriteria, deletePeformanceReport, updatePerformanceReport} = require("../services/performance-report-service");
+const { getPerformanceReport, storePerformanceRecord, updateSocialCriteria, deletePerformanceReport, updatePerformanceReport} = require("../services/performance-report-service");
 const { SocialPerformance } = require('../models/SocialPerformance'); //TODO remove this
 const { PerformanceRecord } = require('../models/PerformanceRecord');
 const {createDB, deleteDB} = require('../../unit-tests/support/mockdb-new') //TODO remove after testing this and insert the real db into function
@@ -121,7 +121,7 @@ exports.deletePerformanceReport = async (req, res) => {
     const { salesManId, date } = convert(req.params);
 
     try {
-        await deletePeformanceReport(db, salesManId, date);
+        await deletePerformanceReport(db, salesManId, date);
         res.status(200).json({ message: 'Performance report deleted successfully' });
     } catch (error) {
         console.error('Error deleting performance report:', error);

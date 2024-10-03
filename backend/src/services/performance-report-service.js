@@ -203,7 +203,8 @@ module.exports = {
     storePerformanceRecord,
     getPerformanceReport,
     updatePerformanceReport,
-    updateSocialCriteria
+    updateSocialCriteria,
+    deletePerformanceReport
 }
 
 
