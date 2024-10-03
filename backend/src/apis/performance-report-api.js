@@ -128,18 +128,3 @@ exports.deletePerformanceReport = async (req, res) => {
         res.status(500).json({ error: 'An unexpected error occurred' });
     }
 };
-
-
-
-//TODO remove this
-const socialPerformance = new SocialPerformance({
-    leadershipCompetence: { actual: 5, target: 4 }, // Exceeds target
-    opennessToEmployee: { actual: 3, target: 4 },  // Below target
-    socialBehaviourToEmployee: { actual: 4, target: 4 }, // Meets target
-    attitudeTowardsClients: { actual: 6, target: 4 }, // Exceeds target
-    communicationSkills: { actual: 4, target: 4 }, // Meets target
-    integrityToCompany: { actual: 7, target: 4 } // Exceeds target
-});
-
-//const calculatedBonuses = bonusComputation(socialPerformance); //TODO fix
-//console.log('Calculated Bonuses:', calculatedBonuses);
