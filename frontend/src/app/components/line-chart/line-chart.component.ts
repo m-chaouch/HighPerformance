@@ -70,19 +70,19 @@ export class LineChartComponent implements OnChanges{
     constructor() {}
 
 
-    ngOnChanges(changes: SimpleChanges): void {
-        console.log("angekommen:", this.performanceReports);
+    ngOnChanges(): void {
         if (this.performanceReports && this.performanceReports.length > 0) {
             const data = this.performanceReports
                 .map((performanceReport) => performanceReport?.calculatedBonus?.totalBonus?.sum)
                 .filter((value) => value !== null && value !== undefined);
 
             const categories = this.performanceReports
-                .filter((performanceReport) => performanceReport?.calculatedBonus?.totalBonus?.sum !== null && performanceReport?.calculatedBonus?.totalBonus?.sum !== undefined)
+                .filter((performanceReport) =>
+                    performanceReport?.calculatedBonus?.totalBonus?.sum !== null
+                    &&
+                    performanceReport?.calculatedBonus?.totalBonus?.sum !== undefined)
                 .map((performanceReport) => Number(performanceReport.date));
             categories.sort((year0, year1): number => year0 - year1);
-            console.log(categories);
-            console.log('der data array:', data);
 
             // Neue Kopie von chartOptions erstellen WEIL ÄNDERUNGEN PER ARRAY ZUWEISUNG NICHT ERKANNT WERDEN
             this.chartOptions = {

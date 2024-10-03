@@ -19,10 +19,8 @@ export class StatsPageComponent implements OnInit{
         this.route.params.subscribe(async (params): Promise<void> => {
             const id = params.id as string;
             const date = params.date as string;
-            console.log(id, date);
             this.performanceReport = (await this.performanceReportService.getPerformanceReport(id, date))[0];
             this.performanceReports = await this.performanceReportService.getPerformanceReport(id);
-            console.log(this.performanceReport);
         });
     }
 
