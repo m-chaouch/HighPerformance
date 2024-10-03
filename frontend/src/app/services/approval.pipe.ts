@@ -23,7 +23,7 @@ export class ApprovalPipe implements PipeTransform {
         if (approvalByHR !== true) {
             return '❗ HR approval needed';
         }
-        if (isAcceptedBySalesman === 0) {
+        if (isAcceptedBySalesman === 0 || !isAcceptedBySalesman) {
             return '❗ Salesman approval needed';
         }
         return '❌ not approved';
