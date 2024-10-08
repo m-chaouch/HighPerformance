@@ -21,7 +21,6 @@ async function employeeDataService() {
     try {
         // Abrufen des Zugriffstokens für die API-Anfrage
         const accessToken = await getToken();
-        console.log(accessToken)
 
         // Konfiguration der Anfragen-header mit dem abgerufenen Token
         const config = {
@@ -52,7 +51,6 @@ async function employeeDataService() {
         }));
 
         // Ausgabe der gefilterten Mitarbeiterdaten in der Konsole
-        //console.log('Employee data:', filteredEmployees);
 
         // Rückgabe der gefilterten Mitarbeiterdaten
         return filteredEmployees;
@@ -94,7 +92,6 @@ async function getEmployeeData(id) {
     }
 
     if (salesman) {
-        console.log('Employee data:', salesman);
         return salesman.employeeId;
     } else {
         console.log('No employee found with the given employeeCode.');
@@ -134,5 +131,3 @@ exports.getEmployeeService = employeeDataService;
 exports.getOneEmployeeService = oneEmployeeDataService;
 exports.getEmployeeData = getEmployeeData;
 
-// getEmployeeData("90133");
-//employeeDataService();

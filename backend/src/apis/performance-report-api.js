@@ -1,13 +1,9 @@
 const { getPerformanceReport, storePerformanceRecord, updateSocialCriteria, deletePerformanceReport, updatePerformanceReport} = require("../services/performance-report-service");
-const { SocialPerformance } = require('../models/SocialPerformance'); //TODO remove this
+const { SocialPerformance } = require('../models/SocialPerformance');
 const { PerformanceRecord } = require('../models/PerformanceRecord');
-const {createDB, deleteDB} = require('../../unit-tests/support/mockdb-new') //TODO remove after testing this and insert the real db into function
-const express = require('express');
 const {bonusComputation} = require("../services/bonus-computation-service");
 const {SalesPerformance} = require("../models/SalesPerformance");
-const app = express();
-// var db = req.app.get('db');//TODO needs to be removed onece there is an actual db
-// createDB().then(res => db = res).then(() => console.log("db is has started running") );
+
 
 
 convert = (input) => {
@@ -23,7 +19,7 @@ convert = (input) => {
     }
 
 }
-//TODO implement the api for by using the bonus compution service
+
 exports.savePerformanceRecord = async function (req, res) {
     const db = req.app.get('db');
     const performance = req.body;
@@ -48,7 +44,6 @@ exports.savePerformanceRecord = async function (req, res) {
 
 exports.getPerformanceReport = async (req, res) => {
     const db = req.app.get('db');
-    // console.log(db)
     const {salesManId , date} = req.params
     try {
         const result = await getPerformanceReport(db, salesManId, date);
@@ -72,10 +67,9 @@ exports.getPerformanceReport = async (req, res) => {
  */
 exports.updatePerformanceReportBonus = async (req, res) => {
     const performanceReport = req.body;
-    console.log(performanceReport)
     const db = req.app.get('db');
     const { salesManId, date } = convert(performanceReport);
-    console.log("addBonus", salesManId);
+
 
     try {
             const socialPerformance = new SocialPerformance(performanceReport.socialPerformance);

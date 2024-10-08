@@ -12,7 +12,6 @@ async function test() {
     // Initialize performance classes
     const salesPerf = new SalesPerformance();
     const socialPerf = new SocialPerformance();
-    console.log("fff", socialPerf);
 
     // Adding sales data
     salesPerf.addCompanyToList({ company: "Innovative Tech", rating: "none" });

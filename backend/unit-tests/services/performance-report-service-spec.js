@@ -8,13 +8,10 @@ async function test() {
     const client = new MongoClient('mongodb+srv://oemersuezen:NDomyAOEOujuh2Cd@cluster0.in2cw.mongodb.net/');
     await client.connect();
 
-    var name = "ja";
 
     // Correct the database name here. For example, use "performanceDB" or whatever your actual DB name is.
     const db = client.db("performanceDB");  // Replace with your actual database name
-    console.log(db);
 
-    var date = new Date().getFullYear();
 
     const salesPerf = new SalesPerformance();
     const socialPerf = new SocialPerformance();
@@ -37,8 +34,7 @@ async function test() {
     socialPerf.updateCriterion('communicationSkills', 5);
     socialPerf.updateCriterion('integrityToCompany', 5);
 
-    var report = new PerformanceRecord(name, { socialPerformance: socialPerf, salesPerformance: salesPerf });
-    console.log(report);
+    let report = new PerformanceRecord(name, { socialPerformance: socialPerf, salesPerformance: salesPerf });
 
     await storePerformanceRecord(db, report);
 

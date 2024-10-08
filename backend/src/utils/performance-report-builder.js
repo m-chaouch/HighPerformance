@@ -22,14 +22,6 @@ async function initPerformanceReports(){
  * @param salesmanId (the governmentId of the salesman
  * @returns {Promise<void>}
  */
-const defaultSocialPerformance = {
-    leadershipCompetence: { actual: 5, target: 10 },
-    opennessToEmployee: { actual: 8, target: 10 },
-    socialBehaviourToEmployee: { actual: 9, target: 10 },
-    attitudeTowardsClients: { actual: 7, target: 10 },
-    communicationSkills: { actual: 6, target: 10 },
-    integrityToCompany: { actual: 10, target: 10 }
-};
 
 function randomSocialPerformance(targetValue){  // the target value is the same on each criteria
     const criteria =
@@ -61,7 +53,6 @@ function perfReportBaseBuilder(orders, accounts) {
     let uniqueCombinations = new Set();
     orders.forEach(order => {
         accounts.forEach(account => {
-            // console.log(account.governmentId, extractYear(order.createdAt), account.UID )
             // this employee did this order! The order has to be closed to be counted!
             if (order.sellerID === account.UID && order.state === "Closed / won or next step")  {
                 const salesManId = account.governmentId.toString();
@@ -84,13 +75,6 @@ function perfReportBaseBuilder(orders, accounts) {
             }
         })
     })
-
-    // filter repeating combinations of year-salesman
-    performanceReports = performanceReports.filter((obj0, index, performanceReports) => {
-        return performanceReports.findIndex(obj1 => {
-            return obj0.salesManId === obj1.salesManId && obj0.date === obj1.date;
-        }) === index
-    })
     return performanceReports;
 }
 
@@ -104,8 +88,3 @@ async function addOrderEvaluationAndSave(db, performanceReports) {
     return performanceReports;
 }
 initPerformanceReports();
-
-
-module.exports = {
-    // perfReportBuilder
-}

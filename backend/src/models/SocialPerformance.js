@@ -56,9 +56,3 @@ class SocialPerformance {
 // Export the SocialPerformance class for use in other modules
 module.exports = { SocialPerformance };
 
-
-// const tmp = new SocialPerformance();
-// for(const entry of tmp){
-//     console.log(entry)
-// }
-

@@ -161,7 +161,6 @@ async function getOrdersEvaluation(governmentId, year){
     orders.forEach(order => {
         order.positions.forEach(position => {
             const productName = position.product.name
-            // console.log(productName)
             if(!OrderEvaluation[productName]){  // to not delete the existing array
                 OrderEvaluation[productName] = [];
             }
@@ -173,7 +172,6 @@ async function getOrdersEvaluation(governmentId, year){
             });
         })
     })
-    // console.log("Orderevaluation:",OrderEvaluation)
     return OrderEvaluation
 }
 

@@ -15,10 +15,6 @@ const config = {
 async function test(){
     const contacts = await
         axios.get(`${baseUrl}/org.opencrx.kernel.account1/provider/CRX/segment/Standard/account`, config);
-
-    const accounts = contacts.data.objects;
-
-    console.log(accounts);
 }
 test();
 

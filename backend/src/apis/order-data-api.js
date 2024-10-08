@@ -24,7 +24,6 @@ const getOrdersEvaluationData = async function(req, res) {
     const year = req.query.year;
     try {
         const ordersEvaluation = await getOrdersEvaluation(salesManId, year)
-        // console.log(ordersEvaluation)
         res.send(ordersEvaluation);
     } catch(error) {
         return res.status(400).send({success: false, error: {message: "Couldn't find order with this ID."}});

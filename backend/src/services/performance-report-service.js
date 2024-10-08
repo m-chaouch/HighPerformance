@@ -94,7 +94,6 @@ function updateObject(keyName, newVal, object) {
 async function updatePerformanceReport(db, salesManId, date, updateFields, options = { upsert: false }) {
     try {
         const collection = db.collection(collectionName);
-        //console.log({ salesManId, date });
         // Prepare the update object
         const update = { $set:{} };
         // Iterate over the keys in updateFields and populate the $set object
@@ -162,7 +161,6 @@ async function storePerformanceReportInOrangeHRM(db, salesManId, date) {
 
     try {
         const response = await axios.post(url, body, config);
-        // console.log(response.data);
     } catch (error) {
         console.error("Error:", error.response ? error.response.data : error.message);
     }
